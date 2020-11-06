@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1E57A0F6254989020036BB95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A0F5254989020036BB95 /* AppDelegate.swift */; };
+		1E57A0F8254989020036BB95 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A0F7254989020036BB95 /* ViewController.swift */; };
+		1E57A0FA254989040036BB95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E57A0F9254989040036BB95 /* Assets.xcassets */; };
+		1E57A0FD254989040036BB95 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E57A0FB254989040036BB95 /* Main.storyboard */; };
+		1E57A117254A82B50036BB95 /* PairingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A116254A82B50036BB95 /* PairingFlow.swift */; };
+		1E57A119254A8DAD0036BB95 /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A118254A8DAD0036BB95 /* BLEManager.swift */; };
+		308D4683EE328B6878D2E862 /* Pods_Pero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 896A9F344049C824403EEA80 /* Pods_Pero.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1E57A0F2254989020036BB95 /* Pero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pero.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E57A0F5254989020036BB95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1E57A0F7254989020036BB95 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1E57A0F9254989040036BB95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1E57A0FC254989040036BB95 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1E57A0FE254989040036BB95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E57A0FF254989040036BB95 /* Pero.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pero.entitlements; sourceTree = "<group>"; };
+		1E57A116254A82B50036BB95 /* PairingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingFlow.swift; sourceTree = "<group>"; };
+		1E57A118254A8DAD0036BB95 /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
+		349E57387D5A6D38538C9B21 /* Pods-Pero.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pero.release.xcconfig"; path = "Target Support Files/Pods-Pero/Pods-Pero.release.xcconfig"; sourceTree = "<group>"; };
+		896A9F344049C824403EEA80 /* Pods_Pero.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pero.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D885660E7E52056B00CA0CE6 /* Pods-Pero.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pero.debug.xcconfig"; path = "Target Support Files/Pods-Pero/Pods-Pero.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1E57A0EF254989020036BB95 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				308D4683EE328B6878D2E862 /* Pods_Pero.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1E57A0E9254989020036BB95 = {
+			isa = PBXGroup;
+			children = (
+				1E57A0F4254989020036BB95 /* Pero */,
+				1E57A0F3254989020036BB95 /* Products */,
+				D8F7C2521027E017A304E7AE /* Pods */,
+				96193B6BD161808A4BB1C81C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1E57A0F3254989020036BB95 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E57A0F2254989020036BB95 /* Pero.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E57A0F4254989020036BB95 /* Pero */ = {
+			isa = PBXGroup;
+			children = (
+				1E57A11A254AEA500036BB95 /* Simulation */,
+				1E57A115254A82960036BB95 /* BLE */,
+				1E57A0F5254989020036BB95 /* AppDelegate.swift */,
+				1E57A0F7254989020036BB95 /* ViewController.swift */,
+				1E57A0F9254989040036BB95 /* Assets.xcassets */,
+				1E57A0FB254989040036BB95 /* Main.storyboard */,
+				1E57A0FE254989040036BB95 /* Info.plist */,
+				1E57A0FF254989040036BB95 /* Pero.entitlements */,
+			);
+			path = Pero;
+			sourceTree = "<group>";
+		};
+		1E57A115254A82960036BB95 /* BLE */ = {
+			isa = PBXGroup;
+			children = (
+				1E57A116254A82B50036BB95 /* PairingFlow.swift */,
+				1E57A118254A8DAD0036BB95 /* BLEManager.swift */,
+			);
+			path = BLE;
+			sourceTree = "<group>";
+		};
+		1E57A11A254AEA500036BB95 /* Simulation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Simulation;
+			sourceTree = "<group>";
+		};
+		96193B6BD161808A4BB1C81C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				896A9F344049C824403EEA80 /* Pods_Pero.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D8F7C2521027E017A304E7AE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D885660E7E52056B00CA0CE6 /* Pods-Pero.debug.xcconfig */,
+				349E57387D5A6D38538C9B21 /* Pods-Pero.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1E57A0F1254989020036BB95 /* Pero */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E57A102254989040036BB95 /* Build configuration list for PBXNativeTarget "Pero" */;
+			buildPhases = (
+				7C60163AE2573145AA8825F8 /* [CP] Check Pods Manifest.lock */,
+				1E57A0EE254989020036BB95 /* Sources */,
+				1E57A0EF254989020036BB95 /* Frameworks */,
+				1E57A0F0254989020036BB95 /* Resources */,
+				3D2972F4207D76F634F7BA09 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Pero;
+			productName = Pero;
+			productReference = 1E57A0F2254989020036BB95 /* Pero.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1E57A0EA254989020036BB95 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1160;
+				LastUpgradeCheck = 1160;
+				ORGANIZATIONNAME = "Junsung Park";
+				TargetAttributes = {
+					1E57A0F1254989020036BB95 = {
+						CreatedOnToolsVersion = 11.6;
+					};
+				};
+			};
+			buildConfigurationList = 1E57A0ED254989020036BB95 /* Build configuration list for PBXProject "Pero" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1E57A0E9254989020036BB95;
+			productRefGroup = 1E57A0F3254989020036BB95 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1E57A0F1254989020036BB95 /* Pero */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1E57A0F0254989020036BB95 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E57A0FA254989040036BB95 /* Assets.xcassets in Resources */,
+				1E57A0FD254989040036BB95 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3D2972F4207D76F634F7BA09 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Pero/Pods-Pero-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Pero/Pods-Pero-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Pero/Pods-Pero-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C60163AE2573145AA8825F8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Pero-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1E57A0EE254989020036BB95 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E57A117254A82B50036BB95 /* PairingFlow.swift in Sources */,
+				1E57A119254A8DAD0036BB95 /* BLEManager.swift in Sources */,
+				1E57A0F8254989020036BB95 /* ViewController.swift in Sources */,
+				1E57A0F6254989020036BB95 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		1E57A0FB254989040036BB95 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E57A0FC254989040036BB95 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1E57A100254989040036BB95 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1E57A101254989040036BB95 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		1E57A103254989040036BB95 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D885660E7E52056B00CA0CE6 /* Pods-Pero.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Pero/Pero.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = V48RJ83RM5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Pero/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.palmcat.Pero;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1E57A104254989040036BB95 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 349E57387D5A6D38538C9B21 /* Pods-Pero.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Pero/Pero.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = V48RJ83RM5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Pero/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.palmcat.Pero;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1E57A0ED254989020036BB95 /* Build configuration list for PBXProject "Pero" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E57A100254989040036BB95 /* Debug */,
+				1E57A101254989040036BB95 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E57A102254989040036BB95 /* Build configuration list for PBXNativeTarget "Pero" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E57A103254989040036BB95 /* Debug */,
+				1E57A104254989040036BB95 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1E57A0EA254989020036BB95 /* Project object */;
+}

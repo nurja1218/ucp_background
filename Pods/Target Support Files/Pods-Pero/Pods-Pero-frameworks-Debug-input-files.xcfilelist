@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-Pero/Pods-Pero-frameworks.sh
+${BUILT_PRODUCTS_DIR}/RZBluetooth/RZBluetooth.framework
+${BUILT_PRODUCTS_DIR}/RxBluetoothKit/RxBluetoothKit.framework
+${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework
