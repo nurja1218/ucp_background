@@ -201,24 +201,44 @@ class BLEManager: NSObject , CBCentralManagerDelegate, CBPeripheralDelegate {
     
         }
     }
-    /*
+    
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
       
 
-        let Digital = CBUUID(string: "0x2A56”)
+        let Digital = CBUUID(string: "0x2A56" )
 
-       if let charac = service.characteristics {
-        for characteristic in charac {
-          //MARK:- Light Value
-          if characteristic.uuid == Digital {
-            //self.lighCharacteristics = characteristic
-          }
+        
+        if let charac = service.characteristics
+        {
+            for characteristic in charac {
+              //MARK:- Light Value
+              if characteristic.uuid == Digital {
+                
+              }
+            }
         }
-      }
+       
     }
-    */
     
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+      // Perform any error handling if one occurred
+      if let error = error {
+        print("Characteristic value update failed: \(error.localizedDescription)")
+        return
+      }
+
+      // Retrieve the data from the characteristic
+      guard let data = characteristic.value else { return }
+
+      // Decode/Parse the data here
+      let message = String(decoding: data, as: UTF8.self)
+    }
     
+    func peripheralManager(_ peripheral: CBPeripheralManager,
+                          didReceiveWrite requests: [CBATTRequest]) {
+      guard let request = requests.first, let data = request.value else { return }
+      let message = String(decoding: data, as: UTF8.self)
+    }
     func execute()
     {
  // Hold the Command key
