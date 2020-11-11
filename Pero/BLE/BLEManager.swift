@@ -19,6 +19,9 @@ class BLEManager: NSObject , CBCentralManagerDelegate, CBPeripheralDelegate {
    required override init() {
       super.init()
       manager = CBCentralManager.init(delegate: self, queue: nil)
+    
+ 
+    
    }
 
    func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -33,6 +36,11 @@ class BLEManager: NSObject , CBCentralManagerDelegate, CBPeripheralDelegate {
         //  gestureTest()
           //0x78
           print("Scanning...")
+        
+        let user = CoreDataManager.shared.getUser(query: "jimmy@junsoft.org")
+      //   let name = user.name
+         
+         print("test")
             
     
       case .resetting:
@@ -165,6 +173,9 @@ class BLEManager: NSObject , CBCentralManagerDelegate, CBPeripheralDelegate {
         //connect
         manager.connect(peripheral, options: nil)
         self.peripheral = peripheral
+             
+        NSWorkspace.shared.launchApplication("Movist")
+        
        
        }
         

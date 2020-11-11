@@ -9,6 +9,7 @@
 import Cocoa
 import RZBluetooth
 import CoreBluetooth
+import CoreData
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -21,6 +22,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var ble:BLEManager!
 
        
+     lazy var persistentContainer: NSPersistentContainer = {
+           let container = NSPersistentContainer(name: "Users") // 여기는 파일명을 적어줘요.
+          
+          let storeURL = URL.storeURL(for: "group.junsoft.data", databaseName: "Users")
+          let storeDescription = NSPersistentStoreDescription()
+          storeDescription.shouldInferMappingModelAutomatically = true
+          storeDescription.shouldMigrateStoreAutomatically = true
+          storeDescription.url = storeURL
+          container.persistentStoreDescriptions = [storeDescription]
+           container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+               if let error = error {
+                   fatalError("Unresolved error, \((error as NSError).userInfo)")
+               }
+           })
+           return container
+       }()
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -88,6 +105,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
  
-
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
 }
 
+public extension URL {
+
+    /// Returns a URL for the given app group and database pointing to the sqlite database.
+    static func storeURL(for appGroup: String, databaseName: String) -> URL {
+        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+
+        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
+    }
+}

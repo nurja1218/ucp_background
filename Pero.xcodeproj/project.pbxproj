@@ -13,6 +13,8 @@
 		1E57A0FD254989040036BB95 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E57A0FB254989040036BB95 /* Main.storyboard */; };
 		1E57A117254A82B50036BB95 /* PairingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A116254A82B50036BB95 /* PairingFlow.swift */; };
 		1E57A119254A8DAD0036BB95 /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A118254A8DAD0036BB95 /* BLEManager.swift */; };
+		1E77F353255BC69E0014C060 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F352255BC69E0014C060 /* CoreDataManager.swift */; };
+		1E77F36A255BCBC40014C060 /* Users.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F368255BCBC40014C060 /* Users.xcdatamodeld */; };
 		308D4683EE328B6878D2E862 /* Pods_Pero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 896A9F344049C824403EEA80 /* Pods_Pero.framework */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +28,8 @@
 		1E57A0FF254989040036BB95 /* Pero.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pero.entitlements; sourceTree = "<group>"; };
 		1E57A116254A82B50036BB95 /* PairingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingFlow.swift; sourceTree = "<group>"; };
 		1E57A118254A8DAD0036BB95 /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
+		1E77F352255BC69E0014C060 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		1E77F369255BCBC40014C060 /* Users.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Users.xcdatamodel; sourceTree = "<group>"; };
 		349E57387D5A6D38538C9B21 /* Pods-Pero.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pero.release.xcconfig"; path = "Target Support Files/Pods-Pero/Pods-Pero.release.xcconfig"; sourceTree = "<group>"; };
 		896A9F344049C824403EEA80 /* Pods_Pero.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pero.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D885660E7E52056B00CA0CE6 /* Pods-Pero.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pero.debug.xcconfig"; path = "Target Support Files/Pods-Pero/Pods-Pero.debug.xcconfig"; sourceTree = "<group>"; };
@@ -67,6 +71,8 @@
 				1E57A11A254AEA500036BB95 /* Simulation */,
 				1E57A115254A82960036BB95 /* BLE */,
 				1E57A0F5254989020036BB95 /* AppDelegate.swift */,
+				1E77F368255BCBC40014C060 /* Users.xcdatamodeld */,
+				1E77F352255BC69E0014C060 /* CoreDataManager.swift */,
 				1E57A0F7254989020036BB95 /* ViewController.swift */,
 				1E57A0F9254989040036BB95 /* Assets.xcassets */,
 				1E57A0FB254989040036BB95 /* Main.storyboard */,
@@ -226,6 +232,8 @@
 				1E57A117254A82B50036BB95 /* PairingFlow.swift in Sources */,
 				1E57A119254A8DAD0036BB95 /* BLEManager.swift in Sources */,
 				1E57A0F8254989020036BB95 /* ViewController.swift in Sources */,
+				1E77F353255BC69E0014C060 /* CoreDataManager.swift in Sources */,
+				1E77F36A255BCBC40014C060 /* Users.xcdatamodeld in Sources */,
 				1E57A0F6254989020036BB95 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,6 +429,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1E77F368255BCBC40014C060 /* Users.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1E77F369255BCBC40014C060 /* Users.xcdatamodel */,
+			);
+			currentVersion = 1E77F369255BCBC40014C060 /* Users.xcdatamodel */;
+			path = Users.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1E57A0EA254989020036BB95 /* Project object */;
 }
