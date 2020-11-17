@@ -11,6 +11,7 @@ import RZBluetooth
 import CoreBluetooth
 import CoreData
 
+@available(OSX 11.0, *)
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
  
@@ -50,7 +51,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
      
         scanBLE()
-    }
+        
+     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
@@ -101,7 +103,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func scanBLE()
     {
-       ble = BLEManager()
+        if(ble == nil)
+        {
+            ble = BLEManager()
+            DispatchQueue.main.async { [self] in
+                                                
+                let instance = JoystickManager.sharedInstance()
+                instance?.delegate = ble
+                                             
+            }
+          
+        
+//            JoystickManager().setupGamepads()
+       
+        }
     }
     
  

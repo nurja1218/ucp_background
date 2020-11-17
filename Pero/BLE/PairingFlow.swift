@@ -9,7 +9,7 @@
 import Cocoa
 import CoreBluetooth
 import RxSwift
-import RxBluetoothKit
+//import RxBluetoothKit
 
 enum PairingStep {
     case none

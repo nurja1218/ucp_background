@@ -34,5 +34,11 @@
 	<true/>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Play with BLE Compatible devices</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Play with BLE Compatible devices</string>
+	<key>OSBundleUsageDescription</key>
+	<string>Play with BLE Compatible devices</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Play with BLE Compatible devices</string>
 </dict>
 </plist>

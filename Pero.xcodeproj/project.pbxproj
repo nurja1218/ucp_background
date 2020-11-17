@@ -11,14 +11,19 @@
 		1E57A0F8254989020036BB95 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A0F7254989020036BB95 /* ViewController.swift */; };
 		1E57A0FA254989040036BB95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E57A0F9254989040036BB95 /* Assets.xcassets */; };
 		1E57A0FD254989040036BB95 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E57A0FB254989040036BB95 /* Main.storyboard */; };
-		1E57A117254A82B50036BB95 /* PairingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A116254A82B50036BB95 /* PairingFlow.swift */; };
 		1E57A119254A8DAD0036BB95 /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E57A118254A8DAD0036BB95 /* BLEManager.swift */; };
+		1E6CC215256404D0001A64A3 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6CC214256404D0001A64A3 /* IOKit.framework */; };
 		1E77F353255BC69E0014C060 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F352255BC69E0014C060 /* CoreDataManager.swift */; };
 		1E77F36A255BCBC40014C060 /* Users.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F368255BCBC40014C060 /* Users.xcdatamodeld */; };
+		1EA8BCEA25634ABB00608260 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EA8BCE925634ABB00608260 /* NetworkExtension.framework */; };
+		1ED5C5972563C2D7005FB644 /* JoystickManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5C5952563C2D7005FB644 /* JoystickManager.m */; };
+		1ED5C59D2563C301005FB644 /* Joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5C59B2563C301005FB644 /* Joystick.m */; };
+		1ED5C59E2563C301005FB644 /* JoystickHatswitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5C59C2563C301005FB644 /* JoystickHatswitch.m */; };
 		308D4683EE328B6878D2E862 /* Pods_Pero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 896A9F344049C824403EEA80 /* Pods_Pero.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E0268C7255F69C60022FCCD /* Pero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pero-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E57A0F2254989020036BB95 /* Pero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E57A0F5254989020036BB95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E57A0F7254989020036BB95 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,10 +31,19 @@
 		1E57A0FC254989040036BB95 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1E57A0FE254989040036BB95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E57A0FF254989040036BB95 /* Pero.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pero.entitlements; sourceTree = "<group>"; };
-		1E57A116254A82B50036BB95 /* PairingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingFlow.swift; sourceTree = "<group>"; };
 		1E57A118254A8DAD0036BB95 /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
+		1E619ED32563CB1600A160C5 /* JoystickNotificationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoystickNotificationDelegate.h; sourceTree = "<group>"; };
+		1E6CC214256404D0001A64A3 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		1E77F352255BC69E0014C060 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		1E77F369255BCBC40014C060 /* Users.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Users.xcdatamodel; sourceTree = "<group>"; };
+		1EA8BCE925634ABB00608260 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		1ED5C573256398C6005FB644 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
+		1ED5C5952563C2D7005FB644 /* JoystickManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoystickManager.m; sourceTree = "<group>"; };
+		1ED5C5962563C2D7005FB644 /* JoystickManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoystickManager.h; sourceTree = "<group>"; };
+		1ED5C5992563C301005FB644 /* JoystickHatswitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoystickHatswitch.h; sourceTree = "<group>"; };
+		1ED5C59A2563C301005FB644 /* Joystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Joystick.h; sourceTree = "<group>"; };
+		1ED5C59B2563C301005FB644 /* Joystick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Joystick.m; sourceTree = "<group>"; };
+		1ED5C59C2563C301005FB644 /* JoystickHatswitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoystickHatswitch.m; sourceTree = "<group>"; };
 		349E57387D5A6D38538C9B21 /* Pods-Pero.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pero.release.xcconfig"; path = "Target Support Files/Pods-Pero/Pods-Pero.release.xcconfig"; sourceTree = "<group>"; };
 		896A9F344049C824403EEA80 /* Pods_Pero.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pero.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D885660E7E52056B00CA0CE6 /* Pods-Pero.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pero.debug.xcconfig"; path = "Target Support Files/Pods-Pero/Pods-Pero.debug.xcconfig"; sourceTree = "<group>"; };
@@ -40,13 +54,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E6CC215256404D0001A64A3 /* IOKit.framework in Frameworks */,
 				308D4683EE328B6878D2E862 /* Pods_Pero.framework in Frameworks */,
+				1EA8BCEA25634ABB00608260 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E0268C6255F699D0022FCCD /* GamePad */ = {
+			isa = PBXGroup;
+			children = (
+				1ED5C59A2563C301005FB644 /* Joystick.h */,
+				1ED5C59B2563C301005FB644 /* Joystick.m */,
+				1ED5C5992563C301005FB644 /* JoystickHatswitch.h */,
+				1ED5C59C2563C301005FB644 /* JoystickHatswitch.m */,
+				1E619ED32563CB1600A160C5 /* JoystickNotificationDelegate.h */,
+				1ED5C5962563C2D7005FB644 /* JoystickManager.h */,
+				1ED5C5952563C2D7005FB644 /* JoystickManager.m */,
+				1E0268C7255F69C60022FCCD /* Pero-Bridging-Header.h */,
+			);
+			path = GamePad;
+			sourceTree = "<group>";
+		};
 		1E57A0E9254989020036BB95 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +99,7 @@
 		1E57A0F4254989020036BB95 /* Pero */ = {
 			isa = PBXGroup;
 			children = (
+				1E0268C6255F699D0022FCCD /* GamePad */,
 				1E57A11A254AEA500036BB95 /* Simulation */,
 				1E57A115254A82960036BB95 /* BLE */,
 				1E57A0F5254989020036BB95 /* AppDelegate.swift */,
@@ -85,7 +117,6 @@
 		1E57A115254A82960036BB95 /* BLE */ = {
 			isa = PBXGroup;
 			children = (
-				1E57A116254A82B50036BB95 /* PairingFlow.swift */,
 				1E57A118254A8DAD0036BB95 /* BLEManager.swift */,
 			);
 			path = BLE;
@@ -101,6 +132,9 @@
 		96193B6BD161808A4BB1C81C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E6CC214256404D0001A64A3 /* IOKit.framework */,
+				1ED5C573256398C6005FB644 /* GameController.framework */,
+				1EA8BCE925634ABB00608260 /* NetworkExtension.framework */,
 				896A9F344049C824403EEA80 /* Pods_Pero.framework */,
 			);
 			name = Frameworks;
@@ -149,6 +183,7 @@
 				TargetAttributes = {
 					1E57A0F1254989020036BB95 = {
 						CreatedOnToolsVersion = 11.6;
+						LastSwiftMigration = 1160;
 					};
 				};
 			};
@@ -229,10 +264,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E57A117254A82B50036BB95 /* PairingFlow.swift in Sources */,
+				1ED5C59D2563C301005FB644 /* Joystick.m in Sources */,
 				1E57A119254A8DAD0036BB95 /* BLEManager.swift in Sources */,
 				1E57A0F8254989020036BB95 /* ViewController.swift in Sources */,
 				1E77F353255BC69E0014C060 /* CoreDataManager.swift in Sources */,
+				1ED5C5972563C2D7005FB644 /* JoystickManager.m in Sources */,
+				1ED5C59E2563C301005FB644 /* JoystickHatswitch.m in Sources */,
 				1E77F36A255BCBC40014C060 /* Users.xcdatamodeld in Sources */,
 				1E57A0F6254989020036BB95 /* AppDelegate.swift in Sources */,
 			);
@@ -302,7 +339,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -356,7 +393,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -370,6 +407,7 @@
 			baseConfigurationReference = D885660E7E52056B00CA0CE6 /* Pods-Pero.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Pero/Pero.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -382,6 +420,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.palmcat.Pero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pero/GamePad/Pero-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -391,6 +431,7 @@
 			baseConfigurationReference = 349E57387D5A6D38538C9B21 /* Pods-Pero.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Pero/Pero.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -403,6 +444,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.palmcat.Pero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pero/GamePad/Pero-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
