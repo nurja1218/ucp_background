@@ -37,6 +37,25 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         device.removeAllObjects()
     }
     
+    
+    func pressed(_ gesture: String!) {
+        print(gesture)
+        print(JoystickManager.sharedInstance()?.touches)
+ 
+        //   print(JoystickManager.sharedInstance().down)
+        JoystickManager.sharedInstance()?.gesture = ""
+        JoystickManager.sharedInstance().down = 0
+        JoystickManager.sharedInstance().up = 0
+        JoystickManager.sharedInstance()?.touches = 0
+//        [JoystickManager sharedInstance].gesture = @"";
+//        [JoystickManager sharedInstance].down = 0;
+ 
+//        [JoystickManager sharedInstance].up = 0;
+
+        
+    }
+    
+   
    
     
    
@@ -54,69 +73,12 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
       super.init()
     manager = CBCentralManager.init(delegate: self, queue: nil)
     
-   // startWatchingForControllers()
-    
-    
-  //  initGamePad()
-
+ 
     
    }
     
    
     
-    let addCallback:IOHIDDeviceCallback = { inContext, inResult, inSender, device in
-    
-        IOHIDDeviceOpen(device, IOOptionBits(kIOHIDOptionsTypeNone))
-
-        IOHIDDeviceRegisterInputValueCallback(device,  { (context, result, sender, value) in
-            
-            let element = IOHIDValueGetElement(value);
-            let device = IOHIDElementGetDevice(element);
-            let elementType = IOHIDElementGetType(element);
-           
-
-         }, inContext)
-
-     //   let elements = IOHIDDeviceCopyMatchingElements(device,nil, IOOptionBits(kIOHIDOptionsTypeNone)) as! Array<IOHIDElement>
-
-        //IOHIDDeviceCopyMatchingElements(device, 0, kIOHIDOptionsTypeNone);
-      //  let device0 = IOHIDElementGetDevice(element);
-        
-       // print(elements)
-     
-       
-    }
-    let removeCallback:IOHIDDeviceCallback = { inContext, inResult, inSender, device in
-    
-       
-    }
-    func initGamePad()
-    {
-        /*
-        hidManager = IOHIDManagerCreate( kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone));
-        var deviceMatches:[[String:Any]] = []
-           
-    
-     //   var match = [kIOHIDDeviceUsagePageKey: NSNumber(value: kHIDPage_GenericDesktop)]
-                  
-        let match = [kIOHIDDeviceUsagePageKey: kHIDPage_GenericDesktop, kIOHIDDeviceUsageKey :kHIDUsage_GD_GamePad]
-              
-      // deviceList = deviceList.adding(CreateDeviceMatchingDictionary(inUsagePage: kHIDPage_GenericDesktop, inUsage: kHIDUsage_GD_Keypad)) as NSArray
-
-        deviceMatches.append(match)
-        
-        IOHIDManagerSetDeviceMatchingMultiple(hidManager, deviceMatches as CFArray)
-        IOHIDManagerRegisterDeviceMatchingCallback(hidManager, addCallback, unsafeBitCast(self, to: UnsafeMutableRawPointer.self))
-        IOHIDManagerRegisterDeviceRemovalCallback(hidManager, removeCallback, unsafeBitCast(self, to: UnsafeMutableRawPointer.self));
-        IOHIDManagerScheduleWithRunLoop(hidManager as! IOHIDManager, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
-
-        let tIOReturn = IOHIDManagerOpen(hidManager, IOOptionBits(kIOHIDOptionsTypeNone));
-     
-        print("test")
- */
-       // JoystickManager().setupGamepads()
-       
-    }
     
     func startWatchingForControllers() {
          // Subscribe for the notes

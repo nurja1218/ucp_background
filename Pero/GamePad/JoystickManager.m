@@ -20,7 +20,6 @@ static JoystickManager *instance;
     if (self) {
         joysticks = [[NSMutableDictionary alloc] init];
         joystickIDIndex = 0;
-        touches = 0;
         [self setupGamepads];
     }
     
@@ -90,7 +89,7 @@ void gamepadWasRemoved(void* inContext, IOReturn inResult, void* inSender, IOHID
 void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValueRef value) {
     
     
-   // NSLog(@"gamepadAction from: %p",inSender);
+  //  NSLog(@"gamepadAction from: %p",inSender);
     
     IOHIDElementRef element = IOHIDValueGetElement(value);
     IOHIDDeviceRef device = IOHIDElementGetDevice(element);
@@ -107,11 +106,96 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
     
  //   NSLog(@"Device index %d reported",joystickID);
     
-    Joystick *theJoystick = [[JoystickManager sharedInstance] joystickByID:joystickID];
+    //Joystick *theJoystick = [[JoystickManager sharedInstance] joystickByID:joystickID];
     
    // NSLog(@"%@",[theJoystick giveButtonOrAxesIndex:element]);
-    [theJoystick elementReportedChange:element];
+  //  [theJoystick elementReportedChange:element];
     
+    int elementUsage = IOHIDElementGetUsage(element);
+    int value0 = IOHIDValueGetIntegerValue(value);
+    
+    int elementType = IOHIDElementGetType(element);
+ 
+    
+    if (elementType != kIOHIDElementTypeInput_Axis && elementType == kIOHIDElementTypeInput_Button) {
+        
+      
+        if (value0==1)
+        {
+            [JoystickManager sharedInstance].down ++;
+     
+            
+            if(elementUsage == 5)
+            {
+                // 상
+           //     NSLog(@"Gesture up");
+            
+                [JoystickManager sharedInstance].up = 0;
+                [JoystickManager sharedInstance].gesture = @"UP";
+         
+               
+            }
+            else if(elementUsage == 6)
+            {
+                // 하
+             //   NSLog(@"Gesture down");
+             
+                [JoystickManager sharedInstance].up = 0;
+                [JoystickManager sharedInstance].gesture = @"DOWN";
+         
+           }
+            else if(elementUsage == 7)
+            {
+                // 좌
+               // NSLog(@"Gesture Left");
+           
+                [JoystickManager sharedInstance].up = 0;
+                [JoystickManager sharedInstance].gesture = @"LEFT";
+         
+  
+            }
+            else if(elementUsage == 8)
+            {
+                // 우
+                //NSLog(@"Gesture Right");
+           
+                [JoystickManager sharedInstance].up = 0;
+                [JoystickManager sharedInstance].gesture = @"RIGHT";
+         
+      
+ 
+            }
+            else if(elementUsage >= 9)
+            {
+              //  NSLog(@"Gesture %d", elementUsage);
+                [JoystickManager sharedInstance].touches ++;
+            }
+         
+        }
+        else
+        {
+            [JoystickManager sharedInstance].up ++;
+            //NSLog(@"down:%d",[JoystickManager sharedInstance].down);
+            //NSLog(@"up:%d",[JoystickManager sharedInstance].up);
+          
+            if( [JoystickManager sharedInstance].down ==  [JoystickManager sharedInstance].up )
+            {
+                [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].gesture];
+                
+                [JoystickManager sharedInstance].down = 0;
+         
+                [JoystickManager sharedInstance].up = 0;
+ /*
+                [JoystickManager sharedInstance].gesture = @"";
+   
+  */
+
+            }
+         //   [delegate joystickButtonReleased:[self getElementIndex:theElement] onJoystick:self];
+        }
+        
+        return;
+    }
 }
 
 void gamepadWasAdded(void* inContext, IOReturn inResult, void* inSender, IOHIDDeviceRef device) {

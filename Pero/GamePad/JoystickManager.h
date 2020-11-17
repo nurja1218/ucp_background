@@ -28,11 +28,16 @@
  
     
     int                 joystickIDIndex;
-    int                 touches;
+    
+    
 }
 
 @property(assign) id joystickAddedDelegate;
 @property(assign) id<JoySticDelegate> delegate;
+@property(assign) int                 down;
+@property(assign) int                 up;
+@property(assign) int                 touches;
+@property(assign) NSString*           gesture;
 
 + (JoystickManager *)sharedInstance;
 - (unsigned long)connectedJoysticks;
