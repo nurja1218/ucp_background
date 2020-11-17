@@ -1,27 +1,3 @@
-PODS:
-  - RxBluetoothKit (6.0.0):
-    - RxSwift (~> 5.1)
-  - RxSwift (5.1.1)
-  - RZBluetooth (2.0.0):
-    - RZBluetooth/Core (= 2.0.0)
-  - RZBluetooth/Core (2.0.0)
-
-DEPENDENCIES:
-  - RxBluetoothKit
-  - RxSwift
-  - RZBluetooth
-
-SPEC REPOS:
-  trunk:
-    - RxBluetoothKit
-    - RxSwift
-    - RZBluetooth
-
-SPEC CHECKSUMS:
-  RxBluetoothKit: dad22912b15b74a40df8f60057f218d4e851746d
-  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
-  RZBluetooth: c92e21a798b24382f375e75e1e99dc0f3ba448a9
-
-PODFILE CHECKSUM: db57af6e8117e78de573ced979c2c46af07417fb
+PODFILE CHECKSUM: d28d851241dbfe84ca4c36f8b15919b5eeb895b3
 
 COCOAPODS: 1.9.1

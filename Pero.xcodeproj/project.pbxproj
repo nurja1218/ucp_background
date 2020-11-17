@@ -160,7 +160,6 @@
 				1E57A0EE254989020036BB95 /* Sources */,
 				1E57A0EF254989020036BB95 /* Frameworks */,
 				1E57A0F0254989020036BB95 /* Resources */,
-				3D2972F4207D76F634F7BA09 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -218,23 +217,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3D2972F4207D76F634F7BA09 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Pero/Pods-Pero-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Pero/Pods-Pero-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Pero/Pods-Pero-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		7C60163AE2573145AA8825F8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
