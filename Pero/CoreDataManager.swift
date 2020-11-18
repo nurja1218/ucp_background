@@ -2,11 +2,12 @@ import Foundation
 import CoreData
 import AppKit
 
+//@available(OSX 11.0, *)
 @available(OSX 11.0, *)
 class CoreDataManager: NSObject {
     static let shared: CoreDataManager = CoreDataManager()
     
-    let appDelegate: AppDelegate? =  NSApplication.shared.delegate as! AppDelegate
+    let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
    
     lazy var context = appDelegate?.persistentContainer.viewContext
     

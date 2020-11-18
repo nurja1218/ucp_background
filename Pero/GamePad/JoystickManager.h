@@ -13,6 +13,8 @@
 @protocol JoySticDelegate <NSObject>
 
 - (void)unpluged:(NSMutableDictionary*)device;
+- (void)pluged;
+
 - (void)pressed:(NSString*)gesture;
 
 

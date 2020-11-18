@@ -32,9 +32,22 @@ enum Button : Int {
 }
 
 //@available(OSX 11.0, *)
+@available(OSX 11.0, *)
 class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoySticDelegate{
+    func pluged() {
+        let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
+      
+        appDelegate!.reconstructMenu(name:"PERO")
+ 
+    }
+    
     func unpluged(_ device: NSMutableDictionary!) {
         device.removeAllObjects()
+        disconnect()
+        let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
+    
+        appDelegate!.reconstructMenu0(name:"PERO")
+ 
     }
     
     
@@ -78,231 +91,6 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
    }
     
    
-    
-    
-    func startWatchingForControllers() {
-         // Subscribe for the notes
-        let ctr = NotificationCenter.default
-        
-        ctr.addObserver(forName: .GCControllerDidConnect, object: nil, queue: .main) { note in
-            if let ctrl = note.object as? GCController {
-                self.add(ctrl)
-            }
-        }
-        ctr.addObserver(forName: .GCControllerDidDisconnect, object: nil, queue: .main) { note in
-            if let ctrl = note.object as? GCController {
-                self.remove(ctrl)
-            }
-        }
- 
-        // and kick off discovery
-        GCController.startWirelessControllerDiscovery(completionHandler: {})
- /*
-      NotificationCenter.default.addObserver(self, selector: #selector(handleControllerDidConnectNotification(_:)), name: .GCControllerDidConnect, object: nil)
-
-        if GCController.controllers().count == 0 {
-            GCController.startWirelessControllerDiscovery(completionHandler: {})
-        }
-
-       // GCController.startWirelessControllerDiscovery(completionHandler: nil)
-*/
-    }
-    @objc func handleControllerDidConnectNotification(_ notification: NSNotification) {
-        let gameController = notification.object as! GCController
-       // registerCharacterMovementEvents(gameController)
-    }
-    func readData()
-    {
-      
-    }
-    
-    
-    func stopWatchingForControllers() {
-        // Same as the first, 'cept in reverse!
-        GCController.stopWirelessControllerDiscovery()
-
-        let ctr = NotificationCenter.default
-        ctr.removeObserver(self, name: .GCControllerDidConnect, object: nil)
-        ctr.removeObserver(self, name: .GCControllerDidDisconnect, object: nil)
-    }
-
-    func add(_ controller: GCController) {
-        
-        let name = String(describing:controller.vendorName)
-        if let gamepad = controller.extendedGamepad {
-            print("connect extended (name)")
-        } else if let gamepad = controller.microGamepad {
-            print("connect micro (name)")
-        } else {
-            print("Huh? (name)")
-        }
-        gamepad = controller.microGamepad
-   //     guard let gamepad = gamepad as? GCMicroGamepad else { return }
-
-        // method
-        /*
-        gamepad.valueChangedHandler = { (gamepad, element) in
-            if let dpad = element as? GCControllerDirectionPad {
-                print("CTRL : ( dpad )")
-            } else {
-                print("element :")
-                print(element)
-                
-            }
-        }
-        
-        for button in gamepad.allButtons
-        {
-            print("button :")
-            print(button)
-            button.pressedChangedHandler = { (gamepad, value,pressed) in
-                           
-                print("pressed button")
-                print(value)
-                
-            }
-   
-        }
- */
-        /*
-        gamepad.dpad.valueChangedHandler = { (dpad, xValue, yValue) in
-            print("DPAD : ( dpad )")
-        }
-        gamepad.dpad.xAxis.valueChangedHandler = { (axis, value) in
-            print("AXIS: ( axis ) -> ( value ) ")
-        }
-        gamepad.dpad.yAxis.valueChangedHandler = { (axis, value) in
-            print("AXIS: ( axis ) -> ( value ) ")
-        }
-     
-       
-        gamepad.buttonA.pressedChangedHandler = { (gamepad, value,pressed) in
-                   
-                   
-                    
-                   print("pressed buttonA")
-               
-              
-        }
-        //GCControllerTouchpad
-        gamepad.buttonMenu.pressedChangedHandler = { (gamepad, value,pressed) in
-                         
-                         
-                          
-                         print("pressed buttonMenu")
-                     
-                    
-             
-        }
-        gamepad.buttonX.pressedChangedHandler = { (gamepad, value,pressed) in
-                                
-                                
-                                 
-                                print("pressed buttonX")
-                            
-                           
-                    
-               }
-        gamepad.dpad.down.pressedChangedHandler = { (gamepad, value,pressed) in
-            
-            
-             
-            print("pressed down")
-        
-        }
-        gamepad.dpad.up.pressedChangedHandler = { (gamepad, value,pressed) in
-                     
-               
-            print("pressed up")
-          
-          }
-        gamepad.dpad.left.pressedChangedHandler = { (gamepad, value,pressed) in
-                      
-                  
-            print("pressed left")
-           
-           }
-        gamepad.dpad.right.pressedChangedHandler = { (gamepad, value,pressed) in
-                             
-                          
-            print("pressed left")
-                  
-        }
-        /
-        gamepad.dpad.xAxis.valueChangedHandler = { (gamepad, value,value1) in
-                            
-                            print("pressed xAxis")
-                 
-                 }
-        gamepad.dpad.yAxis.valueChangedHandler = { (gamepad, value,valuevalue1) in
-                                
-                                print("pressed yAxis")
-                     
-                     }
- 
-        gamepad.dpad.left.valueChangedHandler = { (gamepad, value,pressed) in
-                                   
-                                   print("pressed right")
-                        
-                        }
-        
-        gamepad.buttonX.valueChangedHandler = { (gamepad, value,pressed) in
-                   
-                   print("pressed buttonX")
-        
-        }
-        gamepad.buttonA.valueChangedHandler = { (gamepad, value,pressed) in
-                   
-                   print("pressed buttonA")
-        
-        }
- */
-    }
-
-    func remove(_ controller: GCController) {
-
-    }
-    func getFucusedApplication()
-    {
-        /*
-        NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
-
-        for (NSRunningApplication *app in apps) {
-            if([app.bundleIdentifier.lowercaseString isEqualToString:@"com.apple.finder"]) {
-                [app activateWithOptions:NSApplicationActivateAllWindows|NSApplicationActivateIgnoringOtherApps];
-                break;
-            }
-        }
-        */
-        DispatchQueue.global(qos: .background).async {
-            
-            while true
-            {
-                let apps = NSWorkspace.shared.runningApplications
-                      for app in apps
-                      {
-                          if(app.isActive)
-                          {
-                              print(app.bundleIdentifier)
-
-                          }
-                      }
-            }
-        }
-        
-        
-      
-    }
-  //(int type, int page, int usage, int value))
-    let callback : @convention(c) ( _ type : Int32,
-        _ page : Int32,
-        _ usage : Int32, _ value:Int32 ) -> Void =
-
-    { (type, page, usage, value) in
-
-    }
-  
-
    func centralManagerDidUpdateState(_ central: CBCentralManager) {
       var consoleLog = ""
 
@@ -433,9 +221,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
      
      }
 
-    func testShortcut() {
+    func disconnect() {
 
  
+        if(self.peripheral != nil)
+        {
+            manager.cancelPeripheralConnection(self.peripheral)
+     
+        }
     }
    
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)
@@ -470,7 +263,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         //connect
         manager.connect(peripheral, options: nil)
         self.peripheral = peripheral
-        self.peripheral.delegate = self
+        
+        let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
+      
+        appDelegate!.reconstructMenu(name:"PERO")
+   //     self.peripheral.delegate = self
           
               
         
@@ -503,7 +300,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
      //   startWatchingForControllers()
      //   initGamePad()
    
-        RunLoop.current.run()
+       // RunLoop.current.run()
 
 
     }

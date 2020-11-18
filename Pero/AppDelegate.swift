@@ -47,7 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
            button.image = image
          //  button.action = #selector(togglePopover(_:))
          }
-        constructMenu()
+        reconstructMenu0(name: "PERO")
         
      
         scanBLE()
@@ -72,8 +72,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func constructMenu() {
       let menu = NSMenu()
 
-      
-        menu.addItem(NSMenuItem(title: "연결정보 연결알림", action: #selector(AppDelegate.printQuote(_:)), keyEquivalent: ""))
+  
+        
+        //menu.addItem(NSMenuItem(title: "연결정보", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
+  
+        menu.addItem(NSMenuItem(title: "설정", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
       
     //    menu.addItem(NSMenuItem.separator())
      
@@ -94,13 +97,62 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
       statusItem.menu = menu
     }
-    @objc func printQuote(_ sender: Any?) {
-      let quoteText = "Never put off until tomorrow what you can do the day after tomorrow."
-      let quoteAuthor = "Mark Twain"
-      
-      print("\(quoteText) — \(quoteAuthor)")
-    }
+    func reconstructMenu(name:String)
+    {
+        let menu = NSMenu()
+
     
+        let title = "연결정보 : " + name + " 연결됨"
+    
+        menu.addItem(NSMenuItem(title: title, action: #selector(AppDelegate.dummy(_:)), keyEquivalent: ""))
+        
+        menu.addItem(NSMenuItem(title: "설정", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
+  
+        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+
+          
+          menu.addItem(NSMenuItem(title: "PERO(제품) 정보 및 업데이트 알림", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+
+          menu.addItem(NSMenuItem.separator())
+          
+          menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+
+        statusItem.menu = menu
+    }
+    func reconstructMenu0(name:String)
+    {
+        let menu = NSMenu()
+
+    
+        let title = "연결정보 : " + name + " 연결안됨"
+        
+        menu.addItem(NSMenuItem(title: title, action: nil, keyEquivalent: ""))
+ 
+        menu.addItem(NSMenuItem(title: "설정", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
+  
+ 
+    
+        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+
+          
+          menu.addItem(NSMenuItem(title: "PERO(제품) 정보 및 업데이트 알림", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+
+          menu.addItem(NSMenuItem.separator())
+          
+          menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+
+        statusItem.menu = menu
+    }
+    @objc func processSettings(_ sender: Any?) {
+    
+        NSWorkspace.shared.launchApplication("PalmCat")
+         
+    }
+    @objc func dummy(_ sender: Any?) {
+    
+      
+         
+    }
     func scanBLE()
     {
         if(ble == nil)

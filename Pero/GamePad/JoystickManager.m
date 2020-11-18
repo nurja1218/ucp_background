@@ -69,6 +69,7 @@ static JoystickManager *instance;
     NSLog(@"Gamepad was plugged in");
     NSLog(@"Gamepads registered: %lu", joysticks.count);
   // [joystickAddedDelegate joystickAdded:joystick];
+    [[JoystickManager sharedInstance].delegate pluged];
 }
 - (void) unpulg
 {

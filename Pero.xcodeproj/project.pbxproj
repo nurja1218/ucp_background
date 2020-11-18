@@ -100,7 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				1E0268C6255F699D0022FCCD /* GamePad */,
-				1E57A11A254AEA500036BB95 /* Simulation */,
 				1E57A115254A82960036BB95 /* BLE */,
 				1E57A0F5254989020036BB95 /* AppDelegate.swift */,
 				1E77F368255BCBC40014C060 /* Users.xcdatamodeld */,
@@ -120,13 +119,6 @@
 				1E57A118254A8DAD0036BB95 /* BLEManager.swift */,
 			);
 			path = BLE;
-			sourceTree = "<group>";
-		};
-		1E57A11A254AEA500036BB95 /* Simulation */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Simulation;
 			sourceTree = "<group>";
 		};
 		96193B6BD161808A4BB1C81C /* Frameworks */ = {
