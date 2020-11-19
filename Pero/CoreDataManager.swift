@@ -2,13 +2,12 @@ import Foundation
 import CoreData
 import AppKit
 
-//@available(OSX 11.0, *)
 @available(OSX 11.0, *)
 class CoreDataManager: NSObject {
     static let shared: CoreDataManager = CoreDataManager()
     
     let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
-   
+ 
     lazy var context = appDelegate?.persistentContainer.viewContext
     
     let modelName: String = "Users"
@@ -188,60 +187,103 @@ class CoreDataManager: NSObject {
         
         
     }
-    func saveCommand(name:String, type: String, group: String,
-                  gesture: String, shortcut:String, onSuccess: @escaping ((Bool) -> Void)) {
+    
+ 
+    func updateCommand(name:String, type: String, group: String,
+                     gesture: String, shortcut:String,command:String,enable:Bool, touch:String,onSuccess: @escaping ((Bool) -> Void)) {
         if let context = context
         {
             let fetchRequest: NSFetchRequest<NSManagedObject>
                                            = NSFetchRequest<NSManagedObject>(entityName: "Command")
                                    
                
-            fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+            fetchRequest.predicate = NSPredicate(format: "(name == %@)AND(command == %@)", name, command)
                                   
             if let fetchResult = try? context.fetch(fetchRequest)  {
             
-                if(fetchResult.count == 0)
-                {
-                    
-                    let entity: NSEntityDescription
-                        = NSEntityDescription.entity(forEntityName: "Command", in: context)!
-                        
-                    let user: Command = (NSManagedObject(entity: entity, insertInto: context) as? Command)!
-                    
-                    user.name = name
-                    user.type = type
-                    user.group = group
-                    user.gesture = gesture
-                    user.shortcut = shortcut
-                    
-                    contextSave { success in
-                        onSuccess(success)
-                    }
+               let entity: NSEntityDescription
+                                    = NSEntityDescription.entity(forEntityName: "Command", in: context)!
+                           
+                  if(fetchResult.count == 0)
+                 
+                  {
+                        let user: Command = (NSManagedObject(entity: entity, insertInto: context) as? Command)!
+                                
+                                user.name = name
+                                user.type = type
+                                user.group = group
+                                user.gesture = gesture
+                                user.shortcut = shortcut
+                                user.command = command
+                                user.enable = enable
+                                user.touch = touch
+                                                
+                                contextSave { success in
+                                    onSuccess(success)
+                                }
+
+                
                 }
                 else
-                {
-                    
-                    
-                    fetchResult[0].setValue(name, forKey: "name")
-                    fetchResult[0].setValue(type, forKey: "type")
-                    fetchResult[0].setValue(group, forKey: "group")
+                  {
+                      fetchResult[0].setValue(name, forKey: "name")
+                      fetchResult[0].setValue(type, forKey: "type")
+                      fetchResult[0].setValue(group, forKey: "group")
+                                  
+                      fetchResult[0].setValue(gesture, forKey: "gesture")
                                 
-                    fetchResult[0].setValue(gesture, forKey: "gesture")
-                              
-                    fetchResult[0].setValue(shortcut, forKey: "shortcut")
-                     
+                      fetchResult[0].setValue(shortcut, forKey: "shortcut")
+                       fetchResult[0].setValue(command, forKey: "command")
+                                  
+                    fetchResult[0].setValue(enable, forKey: "enable")
+                    fetchResult[0].setValue(touch, forKey: "touch")
                   
                     contextSave { success in
-                        onSuccess(success)
-                    }
-
+                          onSuccess(success)
+                      }
+                    
                 }
+                
             }
         }
         
         
     }
-    func getCommand(query:String) -> Command    {
+    func saveCommand(name:String, type: String, group: String,
+                      gesture: String, shortcut:String,command:String,enable:Bool, touch:String,onSuccess: @escaping ((Bool) -> Void)) {
+         if let context = context
+         {
+             let fetchRequest: NSFetchRequest<NSManagedObject>
+                                            = NSFetchRequest<NSManagedObject>(entityName: "Command")
+                                    
+                
+         //    fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+                                   
+             if let fetchResult = try? context.fetch(fetchRequest)  {
+             
+                let entity: NSEntityDescription
+                                     = NSEntityDescription.entity(forEntityName: "Command", in: context)!
+                                     
+                                 let user: Command = (NSManagedObject(entity: entity, insertInto: context) as? Command)!
+                                 
+                                 user.name = name
+                                 user.type = type
+                                 user.group = group
+                                 user.gesture = gesture
+                                 user.shortcut = shortcut
+                                 user.command = command
+                                 user.enable = enable
+                                 user.touch = touch
+                                                 
+                                 contextSave { success in
+                                     onSuccess(success)
+                                 }
+             }
+         }
+         
+         
+     }
+    func getCommand(name:String, touch:String) -> [Command]   {
         //let query = "Rob"
         
         var model: Command = Command()
@@ -255,38 +297,71 @@ class CoreDataManager: NSObject {
                       
                  
                  // The == syntax may also be used to search for an exact match
-                 fetchRequest.predicate = NSPredicate(format: "name == %@", query)
+                 fetchRequest.predicate = NSPredicate(format: "(name==%@) AND(touch==%@)", name, touch)
                   
                   
             if let fetchResult = try? context.fetch(fetchRequest)  {
                  
-                     //let name = fetchResult.name
-                     
-                     //let id = fetchResult.userid
-                     if(fetchResult.count > 0)
-                     {
-                         print("find")
-                        
-                        for listEntity in fetchResult {
-                            let app = listEntity as! Command
-                            
-                           
-                            model = app
-                            return model
-                          
-                        }
-                     }
-                     
-                     
-                           // model = fetchResult
-                 }
+ 
+                return fetchResult as! [Command]
+                
+            }
             
         }
      
       
-        return model
+        return []
         
     }
+    func getGesture(name:String, touches:String) -> [Command]   {
+        //let query = "Rob"
+        
+        var model: Command = Command()
+        
+    //    let request: NSFetchRequest<Users> = Users.fetchRequest()
+    
+        if let context = context {
+            
+            let fetchRequest: NSFetchRequest<NSManagedObject>
+                              = NSFetchRequest<NSManagedObject>(entityName: "Command")
+                      
+                 
+                 // The == syntax may also be used to search for an exact match
+                 fetchRequest.predicate = NSPredicate(format: "(gesture==%@)AND(enable==true)AND(touch==%@)", name,touches)
+                  
+                  
+            if let fetchResult = try? context.fetch(fetchRequest)  {
+                 
+ 
+                return fetchResult as! [Command]
+                
+            }
+            
+        }
+     
+      
+        return []
+        
+    }
+    func deleteCommands()
+    {
+        if let context = context {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Command")
+
+            // Create Batch Delete Request
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+            do {
+                try context.execute(batchDeleteRequest)
+
+            } catch {
+                // Error Handling
+            }
+        }
+        
+    }
+    
+    
     func getAppList(query:String) -> AppList    {
         //let query = "Rob"
         
@@ -401,7 +476,9 @@ class CoreDataManager: NSObject {
         var model: Users = Users()
         
     //    let request: NSFetchRequest<Users> = Users.fetchRequest()
-    
+        
+        
+     
         if let context = context {
             
             let fetchRequest: NSFetchRequest<NSManagedObject>

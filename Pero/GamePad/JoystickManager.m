@@ -132,7 +132,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
            //     NSLog(@"Gesture up");
             
                 [JoystickManager sharedInstance].up = 0;
-                [JoystickManager sharedInstance].gesture = @"UP";
+                [JoystickManager sharedInstance].gesture = @"U";
          
                
             }
@@ -142,7 +142,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
              //   NSLog(@"Gesture down");
              
                 [JoystickManager sharedInstance].up = 0;
-                [JoystickManager sharedInstance].gesture = @"DOWN";
+                [JoystickManager sharedInstance].gesture = @"D";
          
            }
             else if(elementUsage == 7)
@@ -151,7 +151,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                // NSLog(@"Gesture Left");
            
                 [JoystickManager sharedInstance].up = 0;
-                [JoystickManager sharedInstance].gesture = @"LEFT";
+                [JoystickManager sharedInstance].gesture = @"L";
          
   
             }
@@ -161,7 +161,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                 //NSLog(@"Gesture Right");
            
                 [JoystickManager sharedInstance].up = 0;
-                [JoystickManager sharedInstance].gesture = @"RIGHT";
+                [JoystickManager sharedInstance].gesture = @"R";
          
       
  

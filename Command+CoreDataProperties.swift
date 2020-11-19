@@ -2,7 +2,7 @@
 //  Command+CoreDataProperties.swift
 //  
 //
-//  Created by Junsung Park on 2020/11/11.
+//  Created by Junsung Park on 2020/11/18.
 //
 //
 
@@ -22,5 +22,8 @@ extension Command {
     @NSManaged public var shortcut: String?
     @NSManaged public var type: String?
     @NSManaged public var userid: String?
+    @NSManaged public var command: String?
+    @NSManaged public var enable: Bool
+    @NSManaged public var touch: String?
 
 }
