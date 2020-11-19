@@ -34,8 +34,6 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSSupportsAutomaticTermination</key>
-	<true/>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Play with BLE Compatible devices</string>
 	<key>OSBundleUsageDescription</key>

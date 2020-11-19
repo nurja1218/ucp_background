@@ -79,6 +79,57 @@ class CoreDataManager: NSObject {
         return model
         
     }
+    func getUser() -> Users    {
+        //let query = "Rob"
+        var model: Users = Users()
+        
+    //    let request: NSFetchRequest<Users> = Users.fetchRequest()
+    
+        if let context = context {
+            
+            let fetchRequest: NSFetchRequest<NSManagedObject>
+                              = NSFetchRequest<NSManagedObject>(entityName: "Users")
+                      
+                 
+                 // The == syntax may also be used to search for an exact match
+            //     fetchRequest.predicate = NSPredicate(format: "(enable==%@)", true)
+                  
+                  
+            if let fetchResult = try? context.fetch(fetchRequest)  {
+                 
+                     //let name = fetchResult.name
+                     
+                     //let id = fetchResult.userid
+                     if(fetchResult.count > 0)
+                     {
+                         print("find")
+                        
+                        for listEntity in fetchResult {
+                            let user = listEntity as! Users
+                            print(user as Any)
+                            let userid = user.userid
+                            let password = user.password
+                            if(user.enable == true)
+                            {
+                                model = user
+                                return model
+                            }
+                           
+                          
+                          
+                        }
+                     }
+                     
+                     
+                           // model = fetchResult
+                 }
+            
+        }
+     
+      
+        return model
+        
+    }
     
     func saveUser(name:String, id: String, password: String,
                   country: String, answer:String, type:String, onSuccess: @escaping ((Bool) -> Void)) {
@@ -313,7 +364,7 @@ class CoreDataManager: NSObject {
         return []
         
     }
-    func getGesture(name:String, touches:String) -> [Command]   {
+    func getGesture(name:String, touches:String, id:String) -> [Command]   {
         //let query = "Rob"
         
         var model: Command = Command()
@@ -327,7 +378,7 @@ class CoreDataManager: NSObject {
                       
                  
                  // The == syntax may also be used to search for an exact match
-                 fetchRequest.predicate = NSPredicate(format: "(gesture==%@)AND(enable==true)AND(touch==%@)", name,touches)
+                 fetchRequest.predicate = NSPredicate(format: "(gesture==%@)AND(enable==true)AND(touch==%@)AND(userid==%@)", name,touches,id)
                   
                   
             if let fetchResult = try? context.fetch(fetchRequest)  {

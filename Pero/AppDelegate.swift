@@ -40,6 +40,45 @@ class AppDelegate: NSObject, NSApplicationDelegate {
            return container
        }()
     
+    
+    func fullScreenWindows(fullScreen: Bool) -> [CGWindowID] {
+        var winList: [CGWindowID] = []
+        //If the you want to get the windows in full screen, you MUST make sure the option excluding 'optionOnScreenOnly'
+        let option: CGWindowListOption = fullScreen ? .excludeDesktopElements : [.excludeDesktopElements, .optionOnScreenOnly]
+        guard let winArray: CFArray = CGWindowListCopyWindowInfo(option, kCGNullWindowID) else {
+            return winList
+        }
+        for i in 0..<CFArrayGetCount(winArray) {
+
+            //The current window's info
+            let winInfo = unsafeBitCast(CFArrayGetValueAtIndex(winArray, i), to: CFDictionary.self)
+
+            //The current window's bounds
+            guard let boundsDict = (winInfo as NSDictionary)[kCGWindowBounds],
+                let bounds = CGRect.init(dictionaryRepresentation: boundsDict as! CFDictionary) else {
+                continue
+            }
+
+            //Check the window is in full screen
+            guard __CGSizeEqualToSize(NSScreen.main!.frame.size, bounds.size) else {
+                continue
+            }
+
+            //The current window's id
+            guard let winId = (winInfo as NSDictionary)[kCGWindowNumber] as? CGWindowID,
+                winId == kCGNullWindowID else {
+                continue
+            }
+
+            winList.append(winId)
+        }
+        return winList
+    }
+    func applicationDidChangeOcclusionState(_ notification: Notification){
+        print("hide")
+      //  reconstructMenu0(name: "PERO")
+     
+    }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         if let button = statusItem.button {
@@ -52,6 +91,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      
         scanBLE()
         
+        
+        let app = NSApplication.shared
+
+        //app.addObserver(self, forKeyPath: "currentSystemPresentationOptions", options: NSKeyValueObservingOptions.new, context: nil)
+        
+        NSApp.setActivationPolicy(.prohibited)
      }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -89,7 +134,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
  //       menu.addItem(NSMenuItem.separator())
         
-        menu.addItem(NSMenuItem(title: "PERO(제품) 정보 및 업데이트 알림", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "업데이트", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
 
         menu.addItem(NSMenuItem.separator())
         
@@ -108,10 +153,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.addItem(NSMenuItem(title: "설정", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
   
-        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(AppDelegate.dummy(_:)), keyEquivalent: ""))
 
           
-          menu.addItem(NSMenuItem(title: "PERO(제품) 정보 및 업데이트 알림", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+          menu.addItem(NSMenuItem(title: "업데이트", action: #selector(AppDelegate.dummy(_:)), keyEquivalent: ""))
 
           menu.addItem(NSMenuItem.separator())
           
@@ -119,6 +164,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         statusItem.menu = menu
     }
+    
     func reconstructMenu0(name:String)
     {
         let menu = NSMenu()
@@ -135,11 +181,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem(title: "버전정보", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
 
           
-          menu.addItem(NSMenuItem(title: "PERO(제품) 정보 및 업데이트 알림", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+          menu.addItem(NSMenuItem(title: "업데이트", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
 
           menu.addItem(NSMenuItem.separator())
           
-          menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+          menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "qf"))
 
         statusItem.menu = menu
     }
@@ -153,6 +199,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       
          
     }
+    
     func scanBLE()
     {
         if(ble == nil)
@@ -173,7 +220,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
  
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        return true
+        return false
     }
 }
 

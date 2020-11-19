@@ -26,6 +26,7 @@
     <entity name="Users" representedClassName="Users" syncable="YES" codeGenerationType="class">
         <attribute name="answer" optional="YES" attributeType="String"/>
         <attribute name="country" optional="YES" attributeType="String"/>
+        <attribute name="enable" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="password" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
@@ -35,6 +36,6 @@
         <element name="AppList" positionX="-54" positionY="36" width="128" height="118"/>
         <element name="Command" positionX="-36" positionY="63" width="128" height="164"/>
         <element name="UserList" positionX="-18" positionY="99" width="128" height="88"/>
-        <element name="Users" positionX="-63" positionY="-18" width="128" height="133"/>
+        <element name="Users" positionX="-63" positionY="-18" width="128" height="134"/>
     </elements>
 </model>

@@ -50,6 +50,10 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     ,n6u:CGEvent!,n7u:CGEvent!,n8u:CGEvent!,n9u:CGEvent!
         ,plusd:CGEvent!,plusu:CGEvent!,minusd:CGEvent!,minusu:CGEvent!,escd:CGEvent!,escu:CGEvent!
         ,returnd:CGEvent!,returnu:CGEvent!,downd:CGEvent!,downu:CGEvent!, upd:CGEvent!,upu:CGEvent!
+        ,leftd:CGEvent!,leftu:CGEvent!,rightd:CGEvent!,rightu:CGEvent!,periodd:CGEvent!,periodu:CGEvent!
+        ,commad:CGEvent!,commau:CGEvent!,enterd:CGEvent!,enteru:CGEvent!,equald:CGEvent!,equalu:CGEvent!
+        ,lbracketd:CGEvent!,lbracketu:CGEvent!,rbracketd:CGEvent!,rbracketu:CGEvent!,endd:CGEvent!, endu:CGEvent!
+        ,homed:CGEvent!,homeu:CGEvent!,spaced:CGEvent!, spaceu:CGEvent!,f1d:CGEvent!,f1u:CGEvent!
     
     var src:CGEventSource!
 
@@ -85,7 +89,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             touches = "t4"
         }
         
-        let commands = CoreDataManager.shared.getGesture(name: gesture, touches: touches)
+        let commands = CoreDataManager.shared.getGesture(name: gesture, touches: touches,id:userID)
         
         for command in commands
         {
@@ -128,10 +132,15 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     
     
     var hidManager:IOHIDManager!
+    var userID:String = ""
 
    required override init() {
       super.init()
     manager = CBCentralManager.init(delegate: self, queue: nil)
+    
+    let user = CoreDataManager.shared.getUser()
+    userID = user.userid!
+    
     pressDummy()
     
     initKey()
@@ -222,14 +231,16 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             if(list[0] == "CTRL" || list[0] == "COMMAND")
             {
                 
-         //a
-              
-                cmdd?.post(tap: loc)
-                cmdu?.post(tap: loc)
-   
-            }
-            initOne(command: list[1], isCommand: true, isShift: false)
+                initOne(command: list[1], isCommand: true, isShift: false)
 
+            }
+            if(list[0] == "SHIFT")
+            {
+                print("SHIFT command0")
+                initOne(command: list[1], isCommand: false, isShift: true)
+
+            }
+        
             
             
         }
@@ -249,6 +260,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 downd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                downd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 downd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -258,12 +274,101 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             downu?.post(tap: loc)
          
         }
+        if(command == "UP")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                upd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                upd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                upd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            upd?.post(tap: loc)
+            upu?.post(tap: loc)
+         
+        }
+        if(command == "LEFT")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                leftd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                leftd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                leftd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            leftd?.post(tap: loc)
+            leftu?.post(tap: loc)
+         
+        }
+        if(command == "RIGHT")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                rightd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                rightd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                rightd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            rightd?.post(tap: loc)
+            rightu?.post(tap: loc)
+         
+        }
+        if(command == "ESC")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                escd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                escd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                escd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            escd?.post(tap: loc)
+            escu?.post(tap: loc)
+         
+        }
         if(command == "a")
         {
             if(isCommand == true && isShift == false)
             {
                 ad?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                ad?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -281,6 +386,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 bd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                bd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 bd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -296,6 +406,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 cd?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                cd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -314,6 +429,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 dd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                dd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 dd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -331,6 +451,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 ed?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                ed?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 ed?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -346,13 +471,21 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             if(isCommand == true && isShift == false)
             {
                 fd?.flags = CGEventFlags.maskCommand
+                print("f0")
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                fd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
                 fd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+                print("f1")
 
             }
+            print("f2")
 
             fd?.post(tap: loc)
             fu?.post(tap: loc)
@@ -364,6 +497,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 gd?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                gd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -382,6 +520,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 hd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                hd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 hd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -398,6 +541,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 id?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                id?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -416,6 +564,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 jd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                jd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 jd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -433,7 +586,12 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 kd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == false && isShift == true)
+            {
+                kd?.flags = CGEventFlags.maskShift
+       
+            }
+             if(isCommand == true && isShift == true)
             {
                 kd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
@@ -449,6 +607,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 ld?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                ld?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -467,6 +630,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 md?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                md?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 md?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -483,6 +651,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 nd?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                nd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -501,6 +674,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 od?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                od?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 od?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -517,6 +695,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 pd?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                pd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -535,6 +718,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 qd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                qd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 qd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -551,6 +739,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 rd?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                rd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -569,6 +762,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 wd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                wd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 wd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -585,6 +783,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 xd?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                xd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -603,6 +806,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 yd?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                yd?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 yd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -619,6 +827,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 zd?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                zd?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -637,6 +850,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 n0d?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                n0d?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 n0d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -654,6 +872,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 n1d?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                n1d?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 n1d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -669,6 +892,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 n2d?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                n2d?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -686,6 +914,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 n3d?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                n3d?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 n3d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -701,6 +934,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 n4d?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                n4d?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -718,6 +956,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 n5d?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                n5d?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 n5d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -733,6 +976,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 n6d?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                n6d?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -750,6 +998,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 n7d?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                n7d?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 n7d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -765,6 +1018,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             {
                 n8d?.flags = CGEventFlags.maskCommand
 
+            }
+            if(isCommand == false && isShift == true)
+            {
+                n8d?.flags = CGEventFlags.maskShift
+       
             }
             if(isCommand == true && isShift == true)
             {
@@ -782,6 +1040,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 n9d?.flags = CGEventFlags.maskCommand
 
             }
+            if(isCommand == false && isShift == true)
+            {
+                n9d?.flags = CGEventFlags.maskShift
+       
+            }
             if(isCommand == true && isShift == true)
             {
                 n9d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
@@ -791,6 +1054,166 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             n9d?.post(tap: loc)
             n9u?.post(tap: loc)
         }
+        if(command == ".")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                periodd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                periodd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                periodd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+
+            periodd?.post(tap: loc)
+            periodu?.post(tap: loc)
+        }
+        if(command == ",")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                commad?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                commad?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                commad?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            commad?.post(tap: loc)
+            commau?.post(tap: loc)
+
+
+        }
+        if(command == "SPACE")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                spaced?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                spaced?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                spaced?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            spaced?.post(tap: loc)
+            spaceu?.post(tap: loc)
+
+
+        }
+        if(command == "ENTER")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                enterd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                enterd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                enterd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            enterd?.post(tap: loc)
+            enteru?.post(tap: loc)
+
+
+        }
+        if(command == "]")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                rbracketd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                rbracketd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                rbracketd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            rbracketd?.post(tap: loc)
+            rbracketu?.post(tap: loc)
+
+
+        }
+        if(command == "[")
+        {
+            if(isCommand == true && isShift == false)
+            {
+                lbracketd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true)
+            {
+                lbracketd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true)
+            {
+                lbracketd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            lbracketd?.post(tap: loc)
+            lbracketu?.post(tap: loc)
+
+
+        }
+        if(command == "F1")
+        {
+            //
+            if(isCommand == true && isShift == false)
+            {
+                f1d?.flags = CGEventFlags.maskCommand
+
+            }
+            else if(isCommand == false && isShift == true)
+            {
+                f1d?.flags = CGEventFlags.maskShift
+       
+            }
+            else if(isCommand == true && isShift == true)
+            {
+                f1d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            else
+            {
+                f1d?.flags = CGEventFlags.maskSecondaryFn
+       
+            }
+            f1d?.post(tap: loc)
+            f1u?.post(tap: loc)
+
+
+        }
+        //
 
     }
     func initKey()
@@ -908,8 +1331,37 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         downd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_DownArrow), keyDown: true)
         downu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_DownArrow), keyDown: false)
 
-        upd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_DownArrow), keyDown: true)
-        upu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_DownArrow), keyDown: false)
+        upd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_UpArrow), keyDown: true)
+        upu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_UpArrow), keyDown: false)
+
+        leftd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_LeftArrow), keyDown: true)
+        leftu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_LeftArrow), keyDown: false)
+        rightd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_RightArrow), keyDown: true)
+        rightu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_RightArrow), keyDown: false)
+
+        commad = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_Comma), keyDown: true)
+        commau = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_Comma), keyDown: false)
+
+        periodd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_Period), keyDown: true)
+        periodu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_Period), keyDown: false)
+
+        enterd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_KeypadEnter), keyDown: true)
+        enteru = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_KeypadEnter), keyDown: false)
+
+        equald = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_Equal), keyDown: true)
+        equalu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_Equal), keyDown: false)
+
+        lbracketd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_LeftBracket), keyDown: true)
+        lbracketu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_LeftBracket), keyDown: false)
+
+        rbracketd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_RightBracket), keyDown: true)
+        rbracketu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_RightBracket), keyDown: false)
+
+        endd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_End), keyDown: true)
+        endu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_End), keyDown: false)
+
+        homed = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Home), keyDown: true)
+        homeu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Home), keyDown: false)
 
     }
    

@@ -2,7 +2,7 @@
 //  Command+CoreDataProperties.swift
 //  
 //
-//  Created by Junsung Park on 2020/11/18.
+//  Created by Junsung Park on 2020/11/19.
 //
 //
 
