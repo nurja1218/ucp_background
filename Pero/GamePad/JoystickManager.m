@@ -33,6 +33,15 @@ static JoystickManager *instance;
     if (!initialized) {
         initialized = YES;
         instance = [[JoystickManager alloc] init];
+        instance.code = [[NSMutableString alloc] init];
+       
+        instance.codeArray = [[NSMutableArray alloc] init];
+        for(int i=0;i<16;i++)
+        {
+            [instance.codeArray addObject:@"0"];
+     
+        }
+ 
     }
 }
 
@@ -121,11 +130,15 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
     if (elementType != kIOHIDElementTypeInput_Axis && elementType == kIOHIDElementTypeInput_Button) {
         
       
+        BOOL ldown = false;
         if (value0==1)
         {
             [JoystickManager sharedInstance].down ++;
+            [JoystickManager sharedInstance].dcode = @"1";
+            ldown = true;
+            NSMutableString;
      
-            
+            /*
             if(elementUsage == 5)
             {
                 // 상
@@ -166,23 +179,81 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
       
  
             }
+          
+         
             else if(elementUsage >= 9)
             {
               //  NSLog(@"Gesture %d", elementUsage);
                 [JoystickManager sharedInstance].touches ++;
             }
-         
+             */
+         //   [[JoystickManager sharedInstance].code appendString:@"1"];
+            if(elementUsage == 5)
+            {
+                NSLog(@"test");
+            }
+            if(elementUsage == 6)
+            {
+                NSLog(@"test");
+            }
+            if(elementUsage == 7)
+            {
+                NSLog(@"test");
+            }
+            if(elementUsage == 8)
+            {
+                NSLog(@"test");
+            }
+            [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"1";
+           // [[JoystickManager sharedInstance].code replaceCharactersInRange:NSMakeRange(elementUsage-1, elementUsage-1) withString:@"1" ];
+
+
+            
+            if(elementUsage >= 8)
+            {
+              //  NSLog(@"Gesture %d", elementUsage);
+                [JoystickManager sharedInstance].touches ++;
+            }
+            
+            
         }
         else
         {
+           // [JoystickManager sharedInstance].a
+     //       [[JoystickManager sharedInstance].code replaceCharactersInRange:NSMakeRange(elementUsage-1, elementUsage-1) withString:@"0" ];
+
+    //        [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"0";
+         
+            
+            
+        //    [JoystickManager sharedInstance].code = [JoystickManager sharedInstance].code +  [JoystickManager sharedInstance].dcode
+     
             [JoystickManager sharedInstance].up ++;
             //NSLog(@"down:%d",[JoystickManager sharedInstance].down);
             //NSLog(@"up:%d",[JoystickManager sharedInstance].up);
           
             if( [JoystickManager sharedInstance].down ==  [JoystickManager sharedInstance].up )
+          //  if(  [JoystickManager sharedInstance].up == 16 )
+         
             {
-                [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].gesture];
                 
+                for(int i=0;i<16;i++)
+                {
+                    [[JoystickManager sharedInstance].code appendString:[JoystickManager sharedInstance].codeArray[i]];
+                    
+                }
+                for(int i=0;i<16;i++)
+                {
+                    [JoystickManager sharedInstance].codeArray[i] = @"0";
+                    
+                }
+                NSString *gestureCode = [[JoystickManager sharedInstance].code substringToIndex:6];
+        
+                
+               // [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].gesture];
+                [[JoystickManager sharedInstance].delegate pressed:gestureCode];
+               
+                [JoystickManager sharedInstance].code = @"";
                 [JoystickManager sharedInstance].down = 0;
          
                 [JoystickManager sharedInstance].up = 0;

@@ -40,6 +40,11 @@
 @property(assign) int                 up;
 @property(assign) int                 touches;
 @property(assign) NSString*           gesture;
+@property(nonatomic ,retain) NSMutableString*           code;
+@property(nonatomic ,retain) NSMutableArray*           codeArray;
+
+@property(assign) NSString*           dcode;
+@property(assign) NSString*           ucode;
 
 + (JoystickManager *)sharedInstance;
 - (unsigned long)connectedJoysticks;

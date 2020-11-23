@@ -11,6 +11,9 @@ import CoreBluetooth
 import CoreGraphics
 import Carbon.HIToolbox
 import GameController
+//import RxBluetoothKit
+import IOBluetooth
+
 
 enum Button : Int {
   case a = 0
@@ -33,7 +36,7 @@ enum Button : Int {
 
 //@available(OSX 11.0, *)
 @available(OSX 11.0, *)
-class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoySticDelegate{
+class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoySticDelegate, IOBluetoothDeviceInquiryDelegate{
 
     var ad:CGEvent!, au:CGEvent!,bd:CGEvent!,bu:CGEvent!,cd:CGEvent!,cu:CGEvent!,dd:CGEvent!
     ,du:CGEvent!,ed:CGEvent!,eu:CGEvent!,fd:CGEvent!,fu:CGEvent!,gd:CGEvent!,gu:CGEvent!
@@ -59,7 +62,10 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
 
     let loc = CGEventTapLocation.cghidEventTap
 
+ 
+    var bt = IOBluetoothDevice()
 
+    
     func pluged() {
         let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
       
@@ -76,7 +82,105 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         appDelegate!.reconstructMenu0(name:"PERO")
  
     }
-    
+    /*
+     
+ 
+  
+
+   
+     else if( num == "15")
+     {
+         selectedGestureIndex = 15
+         selectedGesture = "RDLD"
+         selectedCode = ModelManager.shared.RightDownLeftDownCurve()
+
+     }
+     */
+    func getGesture(code:String) -> String
+    {
+        let ret = String()
+        if(code ==      "001000")
+        {
+            return "L"
+        }
+        else if(code == "000100")
+        {
+            return "R"
+ 
+        }
+        else if(code == "100000")
+        {
+            return "U"
+ 
+        }
+        else if(code == "010000")
+        {
+            return "D"
+ 
+            
+        }
+        else if(code == "101000")
+        {
+            return "LU"
+ 
+        }
+        else if(code == "100100")
+        {
+            return "RU"
+ 
+        }
+        else if(code == "011000")
+        {
+            return "LD"
+ 
+        }
+        else if(code == "010100")
+        {
+            return "RD"
+ 
+        }
+        else if(code == "101001")
+        {
+            return "LUC"
+ 
+        }
+        else if(code == "100101")
+        {
+            return "RUC"
+ 
+        }
+        else if(code == "011010")
+        {
+            return "LDC"
+ 
+        }
+        else if(code == "010110")
+        {
+            return "RDC"
+ 
+        }
+        else if(code == "101010")
+        {
+            return "LURU"
+ 
+        }
+        else if(code == "011001")
+        {
+            return "LDRD"
+ 
+        }
+        else if(code == "100101")
+        {
+            return "RULU"
+ 
+        }
+        else if(code == "010101")
+        {
+            return "RDLD"
+ 
+        }
+        return ret
+    }
     
     func pressed(_ gesture: String!) {
         print(gesture)
@@ -89,7 +193,31 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             touches = "t4"
         }
         
-        let commands = CoreDataManager.shared.getGesture(name: gesture, touches: touches,id:userID)
+        if let application = NSWorkspace.shared.frontmostApplication {
+              
+              
+            if(application.localizedName == "Pero")
+            {
+           
+                NSLog("localizedName: \(String(describing: application.localizedName)), processIdentifier: \(application.processIdentifier)")
+                let ret = "palmcat://" + String(JoystickManager.sharedInstance()!.touches)
+                NSWorkspace.shared.open(URL(string: ret)!)
+                
+                JoystickManager.sharedInstance()?.gesture = ""
+                JoystickManager.sharedInstance().down = 0
+                JoystickManager.sharedInstance().up = 0
+                JoystickManager.sharedInstance()?.touches = 0
+
+                return
+            }
+               
+        }
+        var gesureCode = getGesture(code: gesture)
+        
+        
+        
+        
+        let commands = CoreDataManager.shared.getGesture(name: gesureCode, touches: touches,id:userID)
         
         for command in commands
         {
@@ -134,10 +262,71 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     var hidManager:IOHIDManager!
     var userID:String = ""
 
+    func deviceInquiryStarted(_ sender: IOBluetoothDeviceInquiry) {
+        print("Inquiry Started...")
+    }
+    func deviceInquiryDeviceFound(_ sender: IOBluetoothDeviceInquiry, device: IOBluetoothDevice) {
+        print("\(device.name!)")
+    }
+    func deviceInquiryComplete(_ sender: IOBluetoothDeviceInquiry!, error: IOReturn, aborted: Bool) {
+    //optional, but can notify you once the inquiry is completed.
+        print("Inquiry completed...")
+        let devices = sender.foundDevices()
+              for device : Any? in devices! {
+                  if let thingy = device as? IOBluetoothDevice {
+                      thingy.getAddress()
+                  }
+              }
+    }
+        
+
+
    required override init() {
       super.init()
-    manager = CBCentralManager.init(delegate: self, queue: nil)
+    manager = CBCentralManager.init(delegate: self, queue: DispatchQueue.main)
     
+   
+     
+        /*
+    var ibdi = IOBluetoothDeviceInquiry(delegate: self)
+    ibdi?.updateNewDeviceNames = true
+
+    //ibdi?.updateNewDeviceNames = true
+   // ibdi?.searchType = IOBluetoothDeviceSearchTypes
+
+    ibdi?.start()
+    
+    
+    for i in IOBluetoothDevice.pairedDevices() {
+               let device = i as! IOBluetoothDevice
+               print("device: ", device.name)
+          
+    }
+ */
+  //  GCController.startWirelessControllerDiscovery(completionHandler: {})
+    
+    /*
+    let state: BluetoothState = centralManager.state
+    let disposable = centralManager.observeState()
+         .startWith(state)
+         .filter { $0 == .poweredOn }
+    
+    let AutomationIO = CBUUID(string:"504618FC-2F17-431C-BBB2-27E7F0DD34D3")
+   
+    centralManager.scanForPeripherals(withServices:[ AutomationIO])
+        .subscribe(onNext: { scannedPeripheral in
+            let advertisementData = scannedPeripheral.advertisementData
+            
+            
+            print(scannedPeripheral.peripheral.name)
+  
+            if(scannedPeripheral.peripheral.name == "PERO2")
+            {
+                scannedPeripheral.peripheral.establishConnection()
+                print("PERO2 connect")
+            }
+        })
+    */
     let user = CoreDataManager.shared.getUser()
     userID = user.userid!
     
@@ -1365,19 +1554,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
 
     }
    
-    func pressSpace()
-    {
-        let src = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
-
-        let spcd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Space), keyDown: true)
-        let spcu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Space), keyDown: false)
-
-        let loc = CGEventTapLocation.cghidEventTap
-        spcd?.post(tap: loc)
-          
-        spcu?.post(tap: loc)
-            
-    }
+ 
     func pressDummy()
     {
         let src = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
@@ -1393,86 +1570,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             
     }
     
-    func takeScreenShot()
-    {
-        let src = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
-
-        /// ㅅ크린캡쳐 시뮬레이션  /////////////////////
-        let cmdd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: true)
-        let cmdu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: false)
-       
-        let shiftd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Shift), keyDown: true)
-         
-        let shiftu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Shift), keyDown: false)
-  
-        let spcd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_3), keyDown: true)
-        let spcu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_3), keyDown: false)
-
-         spcd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift];
-
-        let loc = CGEventTapLocation.cghidEventTap
-
-        cmdd?.post(tap: loc)
-        spcd?.post(tap: loc)
-        shiftd?.post(tap: loc)
-        spcu?.post(tap: loc)
-        cmdu?.post(tap: loc)
-        shiftu?.post(tap: loc)
-        
-    }
-    func screenZoom()
-    {
+ 
    
-        let src = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
-
-        /// ㅅ크린캡쳐 시뮬레이션  /////////////////////
-       
-        let cmdd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: true)
-        let cmdu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: false)
-      
-   
-        let plusd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_KeypadPlus), keyDown: true)
-        let plusu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_KeypadPlus), keyDown: false)
-
-        plusd?.flags = CGEventFlags.maskCommand;
-
-        let loc = CGEventTapLocation.cghidEventTap
-
-        cmdd?.post(tap: loc)
-        plusd?.post(tap: loc)
-        cmdu?.post(tap: loc)
-        plusu?.post(tap: loc)
-    
-    }
-
-     func Print()
-     {
-    
-         let src = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
-
-         /// ㅅ크린캡쳐 시뮬레이션  /////////////////////
-       
-      
-        let cmdd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: true)
-        let cmdu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: false)
-        
-         let func1d = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_P), keyDown: true)
-         let func1u = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_P), keyDown: false)
-       
-    
-     //    let plusd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_KeypadPlus), keyDown: true)
-      //   let plusu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_ANSI_KeypadPlus), keyDown: false)
-
-         func1d?.flags = CGEventFlags.maskCommand;
-
-         let loc = CGEventTapLocation.cghidEventTap
-
-         cmdd?.post(tap: loc)
-         func1d?.post(tap: loc)
-         func1u?.post(tap: loc)
-         cmdu?.post(tap: loc)
-     
-     }
 
     func disconnect() {
 
@@ -1486,17 +1585,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
    
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)
     {
-     //
-        
-       // keyboardKeyDown(key: 0x7A)
-        //keyboardKeyUp(key: 0x7A)
-        //takeScreenShot()
-    
-        //screenㅠBright()
-       // screenBright()
      
-          
-          guard peripheral.name != nil else {return}
+        guard peripheral.name != nil else {return}
           
         if(peripheral.identifier != nil)
         {
@@ -1512,17 +1602,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         
         
         manager.stopScan()
-        
+     
         //connect
-        manager.connect(peripheral, options: nil)
-        self.peripheral = peripheral
+      self.peripheral = peripheral
         
-        let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
-      
-        appDelegate!.reconstructMenu(name:"PERO")
-   //     self.peripheral.delegate = self
-          
-              
+       //
+        manager.connect(peripheral, options: nil)
+        self.peripheral.delegate = self
+         
         
        // startWatchingForControllers()
           
@@ -1537,25 +1624,17 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-      //discover all service
-      /*
-         let AutomationIO = CBUUID(string: “0x1815”)
-         peripheral.discoverServices([AutomationIO])
-         
-         */
-      
-        
-     
-        peripheral.discoverServices(nil)
-      
-        peripheral.delegate = self
-        
-     //   startWatchingForControllers()
-     //   initGamePad()
    
-       // RunLoop.current.run()
+     
+        print("Sensor connect!")
+        
+        peripheral.discoverServices(nil)
 
-
+    }
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?)
+    {
+        print("didFailToConnect")
+ 
     }
      func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?)
      {
@@ -1595,8 +1674,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                          let value =  characteristic.value
                                        
               //peripheral.delegate = self
-                //peripheral.setNotifyValue(true, for: characteristic)
-             //   peripheral.readValue(for: characteristic)
+                peripheral.setNotifyValue(true, for: characteristic)
+            //    peripheral.readValue(for: characteristic)
                           
             }
              // startWatchingForControllers()
@@ -1618,71 +1697,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
       let message = String(decoding: data, as: UTF8.self)
         
         print(message)
+        
+      //  manager.connect(self.peripheral, options: nil)
+     
        //   initGamepad()
     
             
     }
     
-    func peripheralManager(_ peripheral: CBPeripheralManager,
-                          didReceiveWrite requests: [CBATTRequest]) {
-      guard let request = requests.first, let data = request.value else { return }
-      let message = String(decoding: data, as: UTF8.self)
-    }
-    func execute()
-    {
- // Hold the Command key
-        let source0 = CGEventSource(stateID: .hidSystemState)
-        let event = CGEvent(keyboardEventSource: source0, virtualKey: 55 as CGKeyCode, keyDown: true)
-        event!.setIntegerValueField(.keyboardEventAutorepeat, value: 1)
-        event!.post(tap: .cghidEventTap)
+  
 
-        // Press Tab key once
-        let source1 = CGEventSource(stateID: .hidSystemState)
-        let keyDown = CGEvent(keyboardEventSource: source1, virtualKey: 48 as CGKeyCode, keyDown: true)
-        keyDown!.flags = .maskCommand
-        keyDown!.post(tap: .cghidEventTap)
-        let keyUp = CGEvent(keyboardEventSource: source1, virtualKey: 48 as CGKeyCode, keyDown: false)
-        keyUp!.post(tap: .cghidEventTap)
-    }
-    func gestureTest()
-    {
-        let eventSource = CGEventSource (stateID: .combinedSessionState)
-        let event = CGEvent(source: eventSource);
-        event?.type = .scrollWheel
-
-    }
-    
-    
-    
-    // press the button
-    func keyboardKeyDown(key: CGKeyCode) {
-
-            let source = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
-            let event = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: true)
-            event?.post(tap: CGEventTapLocation.cghidEventTap)
-            print("key \(key) is down")
-        }
-
-    // release the button
-    func keyboardKeyUp(key: CGKeyCode) {
-            let source = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
-            let event = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: false)
-            event?.post(tap: CGEventTapLocation.cghidEventTap)
-            print("key \(key) is released")
-        }
-    
-    func newDoc()
-    {
-        let cmd_c_D = CGEvent(keyboardEventSource: nil, virtualKey: 0x2D, keyDown: true); // 0x08 is C cmd-c down key code
-        cmd_c_D!.flags = CGEventFlags.maskCommand;
-     //   CGEventPost(CGEventTapLocation.CGHIDEventTap, cmd-c-D);
-
-        cmd_c_D!.post(tap: CGEventTapLocation.cghidEventTap)
-        
-        
-        
-        let cmd_c_U = CGEvent(keyboardEventSource: nil, virtualKey: 0x2D, keyDown: false); // cmd-c up
-        cmd_c_U!.flags = CGEventFlags.maskCommand;
-        cmd_c_U!.post(tap: CGEventTapLocation.cghidEventTap);
-    }
 }
