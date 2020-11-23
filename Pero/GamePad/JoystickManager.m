@@ -33,7 +33,7 @@ static JoystickManager *instance;
     if (!initialized) {
         initialized = YES;
         instance = [[JoystickManager alloc] init];
-        instance.code = [[NSMutableString alloc] init];
+        instance.code = [[NSMutableString alloc] initWithCapacity:16];
        
         instance.codeArray = [[NSMutableArray alloc] init];
         for(int i=0;i<16;i++)
@@ -236,12 +236,19 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
           //  if(  [JoystickManager sharedInstance].up == 16 )
          
             {
-                
+             //   [JoystickManager sharedInstance].codeArray = [[NSMutableArray alloc] init];
+              //  [JoystickManager sharedInstance].code = @"";
+        
                 for(int i=0;i<16;i++)
                 {
-                    [[JoystickManager sharedInstance].code appendString:[JoystickManager sharedInstance].codeArray[i]];
+                    NSString * str = [JoystickManager sharedInstance].codeArray[i];
+                 //   [JoystickManager sharedInstance].nameString = [[JoystickManager sharedInstance].code mutableCopy];
+                  
+                    [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].codeArray[i]];
                     
                 }
+                
+             //   [JoystickManager sharedInstance].code = [[JoystickManager sharedInstance].nameString mutableCopy];
                 for(int i=0;i<16;i++)
                 {
                     [JoystickManager sharedInstance].codeArray[i] = @"0";
@@ -249,11 +256,17 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                 }
                 NSString *gestureCode = [[JoystickManager sharedInstance].code substringToIndex:6];
         
-                
+         
                // [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].gesture];
                 [[JoystickManager sharedInstance].delegate pressed:gestureCode];
+                
+                for(int i=0;i<16;i++)
+                {
+                    [[JoystickManager sharedInstance].codeArray addObject:@"0"];
+             
+                }
                
-                [JoystickManager sharedInstance].code = @"";
+               [ [JoystickManager sharedInstance].code  setString:@""];
                 [JoystickManager sharedInstance].down = 0;
          
                 [JoystickManager sharedInstance].up = 0;

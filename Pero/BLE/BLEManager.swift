@@ -1595,7 +1595,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
 
         }
         
-      if peripheral.name! == "PERO2" {
+      if peripheral.name! == "PERO_UCP" {
       
         print("Sensor Found!")
         //stopScan

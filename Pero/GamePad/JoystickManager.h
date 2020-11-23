@@ -42,6 +42,8 @@
 @property(assign) NSString*           gesture;
 @property(nonatomic ,retain) NSMutableString*           code;
 @property(nonatomic ,retain) NSMutableArray*           codeArray;
+@property(nonatomic ,retain) NSMutableString *nameString ;
+
 
 @property(assign) NSString*           dcode;
 @property(assign) NSString*           ucode;
