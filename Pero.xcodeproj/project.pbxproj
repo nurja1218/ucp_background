@@ -15,6 +15,7 @@
 		1E6CC215256404D0001A64A3 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6CC214256404D0001A64A3 /* IOKit.framework */; };
 		1E77F353255BC69E0014C060 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F352255BC69E0014C060 /* CoreDataManager.swift */; };
 		1E77F36A255BCBC40014C060 /* Users.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F368255BCBC40014C060 /* Users.xcdatamodeld */; };
+		1E97FB9A256BB64700002B18 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E97FB99256BB64700002B18 /* ServiceManagement.framework */; };
 		1EA80067256772B200D4418A /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EA80066256772B200D4418A /* IOBluetooth.framework */; };
 		1EA8BCEA25634ABB00608260 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EA8BCE925634ABB00608260 /* NetworkExtension.framework */; };
 		1ED5C5972563C2D7005FB644 /* JoystickManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5C5952563C2D7005FB644 /* JoystickManager.m */; };
@@ -37,6 +38,7 @@
 		1E6CC214256404D0001A64A3 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		1E77F352255BC69E0014C060 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		1E77F369255BCBC40014C060 /* Users.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Users.xcdatamodel; sourceTree = "<group>"; };
+		1E97FB99256BB64700002B18 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		1EA80066256772B200D4418A /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		1EA8BCE925634ABB00608260 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		1ED5C573256398C6005FB644 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E97FB9A256BB64700002B18 /* ServiceManagement.framework in Frameworks */,
 				1EA80067256772B200D4418A /* IOBluetooth.framework in Frameworks */,
 				1E6CC215256404D0001A64A3 /* IOKit.framework in Frameworks */,
 				308D4683EE328B6878D2E862 /* Pods_Pero.framework in Frameworks */,
@@ -127,6 +130,7 @@
 		96193B6BD161808A4BB1C81C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E97FB99256BB64700002B18 /* ServiceManagement.framework */,
 				1EA80066256772B200D4418A /* IOBluetooth.framework */,
 				1E6CC214256404D0001A64A3 /* IOKit.framework */,
 				1ED5C573256398C6005FB644 /* GameController.framework */,

@@ -1608,7 +1608,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         
        //
         manager.connect(peripheral, options: nil)
-        self.peripheral.delegate = self
+     //   self.peripheral.delegate = self
          
         
        // startWatchingForControllers()

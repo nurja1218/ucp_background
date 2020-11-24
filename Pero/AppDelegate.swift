@@ -10,6 +10,8 @@ import Cocoa
 //import RZBluetooth
 import CoreBluetooth
 import CoreData
+import ServiceManagement
+
 
 @available(OSX 11.0, *)
 @NSApplicationMain
@@ -18,10 +20,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let statusItem = NSStatusBar.system.statusItem(withLength:NSStatusItem.squareLength)
 
-
+ 
 
     var ble:BLEManager!
-
+    let popover = NSPopover()
+    @objc func terminate() {
+        NSApp.terminate(nil)
+    }
        
      lazy var persistentContainer: NSPersistentContainer = {
            let container = NSPersistentContainer(name: "Users") // 여기는 파일명을 적어줘요.
@@ -93,10 +98,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         
         let app = NSApplication.shared
-
+        
+//        SMLoginItemSetEnabled ("com.junsoft.Pero", true) // NO to cancel launch at login
+        let helperBundleId = "com.junsoft.Pero"
+           let ret = SMLoginItemSetEnabled(helperBundleId as CFString, true)
+          
         //app.addObserver(self, forKeyPath: "currentSystemPresentationOptions", options: NSKeyValueObservingOptions.new, context: nil)
         
-        NSApp.setActivationPolicy(.prohibited)
+     //   NSApp.setActivationPolicy(.prohibited)
+        /*
+        let mainAppIdentifier = "com.junsoft.Pero"
+              let runningApps = NSWorkspace.shared.runningApplications
+              let isRunning = !runningApps.filter { $0.bundleIdentifier == mainAppIdentifier }.isEmpty
+
+              if !isRunning {
+                  DistributedNotificationCenter.default().addObserver(self, selector: #selector(self.terminate), name: .killLauncher, object: mainAppIdentifier)
+
+                  let path = Bundle.main.bundlePath as NSString
+                  var components = path.pathComponents
+                  components.removeLast()
+                  components.removeLast()
+                  components.removeLast()
+                  components.append("MacOS")
+                  components.append("MainApplication") //main app name
+
+                  let newPath = NSString.path(withComponents: components)
+
+                  NSWorkspace.shared.launchApplication(newPath)
+              }
+              else {
+                  self.terminate()
+              }
+ */
      }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -114,34 +147,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     
-    func constructMenu() {
-      let menu = NSMenu()
-
   
-        
-        //menu.addItem(NSMenuItem(title: "연결정보", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
-  
-        menu.addItem(NSMenuItem(title: "설정", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
-      
-    //    menu.addItem(NSMenuItem.separator())
-     
-  //      menu.addItem(NSMenuItem(title: "로그인 정보 및 로그 오프", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
-      
-    
-   //     menu.addItem(NSMenuItem.separator())
-        
-        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
-
- //       menu.addItem(NSMenuItem.separator())
-        
-        menu.addItem(NSMenuItem(title: "업데이트", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
-
-        menu.addItem(NSMenuItem.separator())
-        
-        menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-
-      statusItem.menu = menu
-    }
     func reconstructMenu(name:String)
     {
         let menu = NSMenu()
@@ -153,7 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.addItem(NSMenuItem(title: "설정", action: #selector(AppDelegate.processSettings(_:)), keyEquivalent: ""))
   
-        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(AppDelegate.dummy(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(AppDelegate.viewVersion(_:)), keyEquivalent: ""))
 
           
           menu.addItem(NSMenuItem(title: "업데이트", action: #selector(AppDelegate.dummy(_:)), keyEquivalent: ""))
@@ -162,7 +168,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
           
           menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
 
-        statusItem.menu = menu
+
+            
+            statusItem.menu = menu
     }
     
     func reconstructMenu0(name:String)
@@ -178,15 +186,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
  
     
-        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "버전정보", action: #selector(AppDelegate.viewVersion(_:)), keyEquivalent: ""))
 
           
-          menu.addItem(NSMenuItem(title: "업데이트", action: #selector(NSApplication.terminate(_:)), keyEquivalent: ""))
+          menu.addItem(NSMenuItem(title: "업데이트", action: #selector(AppDelegate.dummy(_:)), keyEquivalent: ""))
 
           menu.addItem(NSMenuItem.separator())
           
           menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "qf"))
 
+  
         statusItem.menu = menu
     }
     @objc func processSettings(_ sender: Any?) {
@@ -196,7 +205,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     @objc func dummy(_ sender: Any?) {
     
-      
+   
+         
+    }
+    @objc func viewVersion(_ sender: Any?) -> Bool{
+    
+        
+        let alert = NSAlert()
+        alert.messageText = ""
+        
+
+        alert.informativeText = "Version 1.0\n\nCopyrightⓒ PalmCat All rights reserved."
+        alert.addButton(withTitle: "OK")
+        alert.alertStyle = NSAlert.Style.warning
+
+        let con =  ViewController.getController()
+        return alert.runModal() == .alertFirstButtonReturn
+ /*
+        if let button = statusItem.button {
+           popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
+         }
+ */
+ 
          
     }
     
@@ -233,5 +263,24 @@ public extension URL {
         }
 
         return fileContainer.appendingPathComponent("\(databaseName).sqlite")
+    }
+}
+
+extension Notification.Name {
+    static let killLauncher = Notification.Name("killLauncher")
+}
+
+extension ViewController {
+    // MARK: Storyboard instantiation
+    static func getController() -> ViewController {
+        //1.
+        let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
+        //2.
+        let identifier = NSStoryboard.SceneIdentifier("ViewController")
+        //3.
+        guard let viewcontroller = storyboard.instantiateController(withIdentifier: identifier) as? ViewController else {
+            fatalError("Why cant i find SampleViewController? - Check Main.storyboard")
+        }
+        return viewcontroller
     }
 }
