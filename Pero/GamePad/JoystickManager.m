@@ -125,18 +125,18 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
     int elementUsage = IOHIDElementGetUsage(element);
     int value0 = IOHIDValueGetIntegerValue(value);
     
-    int elementType = IOHIDElementGetType(element);
+     int elementType = IOHIDElementGetType(element);
  
-    
+    int page = IOHIDElementGetReportCount(element);
     if (elementType != kIOHIDElementTypeInput_Axis && elementType == kIOHIDElementTypeInput_Button) {
         
       
-     
         BOOL ldown = false;
+        NSLog(@"Gesture %d / %d", elementUsage, page);
+   
         if (value0==1)
         {
-            NSLog(@"Gesture %d", elementUsage);
-               
+                
             [JoystickManager sharedInstance].down ++;
             [JoystickManager sharedInstance].dcode = @"1";
             ldown = true;
@@ -193,6 +193,60 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
         
         return;
     }
+        /*
+        NSLog(@"Gesture %d / %d", elementUsage, page);
+        [JoystickManager sharedInstance].down ++;
+        if(value0==1)
+        {
+            [JoystickManager sharedInstance].dcode = @"1";
+     
+        }
+        else
+        {
+            [JoystickManager sharedInstance].dcode = @"0";
+
+        }
+        
+        if(elementUsage >= 8 && value0==1)
+        {
+            [JoystickManager sharedInstance].touches ++;
+
+        }
+     
+        if( [JoystickManager sharedInstance].down ==  16 )
+        {
+ 
+             for(int i=0;i<16;i++)
+             {
+               
+                 [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].codeArray[i]];
+                 
+             }
+         
+             for(int i=0;i<16;i++)
+             {
+                 [JoystickManager sharedInstance].codeArray[i] = @"0";
+                 
+             }
+ 
+  
+            [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].code ];
+         
+             for(int i=0;i<16;i++)
+             {
+                 [[JoystickManager sharedInstance].codeArray addObject:@"0"];
+          
+             }
+            
+            [ [JoystickManager sharedInstance].code  setString:@""];
+             [JoystickManager sharedInstance].down = 0;
+      
+             [JoystickManager sharedInstance].up = 0;
+        }
+        
+        return;
+    }
+         */
 }
 
 void gamepadWasAdded(void* inContext, IOReturn inResult, void* inSender, IOHIDDeviceRef device) {

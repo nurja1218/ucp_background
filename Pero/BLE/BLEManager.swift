@@ -72,11 +72,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         appDelegate!.reconstructMenu(name:"PERO")
         
   
+        manager.stopScan()
+   /*
         if(self.peripheral != nil)
         {
             manager.cancelPeripheralConnection(self.peripheral)
      
         }
+ */
     }
     
     func unpluged(_ device: NSMutableDictionary!) {
