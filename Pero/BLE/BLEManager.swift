@@ -72,6 +72,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         appDelegate!.reconstructMenu(name:"PERO")
         
   
+        if(self.peripheral != nil)
+        {
+            manager.cancelPeripheralConnection(self.peripheral)
+     
+        }
     }
     
     func unpluged(_ device: NSMutableDictionary!) {
@@ -179,6 +184,12 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             return "RDLD"
  
         }
+        else if(code == "000000")
+        {
+            return "TOUCH"
+ 
+        }
+        //
         return ret
     }
     
@@ -188,6 +199,10 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
  
       
         var touches = "t3"
+        
+        let Gesture = gesture.prefix(6)
+        let Touch = gesture.suffix(8)
+        
         if(JoystickManager.sharedInstance()!.touches > 6)
         {
             touches = "t4"
@@ -196,11 +211,13 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         if let application = NSWorkspace.shared.frontmostApplication {
               
               
-            if(application.localizedName == "Pero")
+            if(application.localizedName == "Pero" && Gesture == "000000")
             {
            
                 NSLog("localizedName: \(String(describing: application.localizedName)), processIdentifier: \(application.processIdentifier)")
-                let ret = "palmcat://" + String(JoystickManager.sharedInstance()!.touches)
+          //      let ret = "palmcat://" + String(JoystickManager.sharedInstance()!.touches)
+                let ret = "palmcat://" + String(Touch)
+              
                 NSWorkspace.shared.open(URL(string: ret)!)
                 
                 JoystickManager.sharedInstance()?.gesture = ""
@@ -212,10 +229,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             }
                
         }
-        var gesureCode = getGesture(code: gesture)
-        
-        
-        
+        let gesureCode = getGesture(code: String(Gesture))
         
         let commands = CoreDataManager.shared.getGesture(name: gesureCode, touches: touches,id:userID)
         
@@ -238,7 +252,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             }
     
         }
-
+        
+ 
         JoystickManager.sharedInstance()?.gesture = ""
         JoystickManager.sharedInstance().down = 0
         JoystickManager.sharedInstance().up = 0

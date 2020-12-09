@@ -41,6 +41,7 @@
 @property(assign) int                 touches;
 @property(assign) NSString*           gesture;
 @property(nonatomic ,retain) NSMutableString*           code;
+@property(nonatomic ,retain) NSMutableString*           touch;
 @property(nonatomic ,retain) NSMutableArray*           codeArray;
 @property(nonatomic ,retain) NSMutableString *nameString ;
 
