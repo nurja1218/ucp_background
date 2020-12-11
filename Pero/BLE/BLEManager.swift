@@ -65,13 +65,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
  
     var bt = IOBluetoothDevice()
 
-    
+ 
     func pluged() {
         let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
       
         appDelegate!.reconstructMenu(name:"PERO")
         
   
+     //   JoystickManager.sharedInstance()?.mode = false
         manager.stopScan()
    /*
         if(self.peripheral != nil)
@@ -80,14 +81,31 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
      
         }
  */
+        
+    
+        if(userID.count > 0)
+        {
+    
+        //    CoreDataManager.shared.updateUser(id: userID, touch: false)
+
+        }
     }
     
     func unpluged(_ device: NSMutableDictionary!) {
         device.removeAllObjects()
         disconnect()
         let appDelegate: AppDelegate? =  NSApp.delegate as! AppDelegate//NSApplication.shared.delegate as! AppDelegate
-    
+       // JoystickManager.sharedInstance()?.mode = false
         appDelegate!.reconstructMenu0(name:"PERO")
+       
+     //   let user = CoreDataManager.shared.getUser()
+
+        if(userID.count > 0)
+        {
+    
+       //     CoreDataManager.shared.updateUser(id: userID, touch: false)
+
+        }
  
     }
     /*
@@ -195,15 +213,188 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         //
         return ret
     }
+    func touchDown(_ gesture: Int32) {
+        
+        // 16/12/8/2/1 -> Touch
+        //15/13/9/2/1  -> Gesture
+        if let application = NSWorkspace.shared.frontmostApplication {
+              
+              
+            if(application.localizedName == "Pero" )
+            {
+           
+                let user = CoreDataManager.shared.getUser()
+/*
+                if(user.touch == true)
+                {
+                    let ret = "palmcat://" + String(gesture) + "-"
+                 
+                   NSWorkspace.shared.open(URL(string: ret)!)
+         
+                }
+                
+ */
+                let ret = "palmcat://" + String(gesture) + "-"
+                 NSWorkspace.shared.open(URL(string: ret)!)
+         /*
+                     CoreDataManager.shared.getUser { (user, success) in
+                         
+                         if(success == true)
+                         {
+                             if( user.touch == true)
+                             {
+                                let ret = "palmcat://" + String(gesture) + "-"
+                                 NSWorkspace.shared.open(URL(string: ret)!)
+                            
+                             }
+                             
+                         }
+                        
+                     }
+ */
+            }
+               
+        }
+    }
+    func touchUp(_ gesture: Int32) {
+        
+        // 16/12/8/2/1 -> Touch
+        //15/13/9/2/1  -> Gesture
+        if let application = NSWorkspace.shared.frontmostApplication {
+              
+              
+            if(application.localizedName == "Pero" )
+            {
+           /*
+                let user = CoreDataManager.shared.getUser()
+                if(user.touch == true)
+                {
+                    let ret = "palmcat://" + String(gesture) + "+";
+                  
+                    NSWorkspace.shared.open(URL(string: ret)!)
+
+                }
+*/
+                let ret = "palmcat://" + String(gesture) + "+";
+              
+                NSWorkspace.shared.open(URL(string: ret)!)
+           
+           /*
+                CoreDataManager.shared.getUser { (user, success) in
+                    
+                    if(success == true)
+                    {
+                        if( user.touch == true)
+                        {
+                            let ret = "palmcat://" + String(gesture) + "+";
+                          
+                            NSWorkspace.shared.open(URL(string: ret)!)
+                       
+                        }
+                        
+                    }
+                   
+                }
+                */
+            }
+               
+        }
+    }
+    func toggle(_ mode: Bool) {
     
+      //  let user = CoreDataManager.shared.getUser()
+
+        
+        
+         if(mode == true) // TouchMode
+        {
+          //  JoystickManager.sharedInstance()?.mode = true
+            
+      
+            if(userID.count > 0)
+            {
+        
+      //          CoreDataManager.shared.updateUser(id: userID, touch: true)
+
+            }
+ 
+            return
+            
+        }
+        else
+         {
+         //   JoystickManager.sharedInstance()?.mode = false
+            
+            if(userID.count > 0)
+            {
+        
+     //           CoreDataManager.shared.updateUser(id: userID, touch: false)
+
+            }
+ 
+            return
+         }
+    }
+    func modSet()
+    {
+        
+        CoreDataManager.shared.getUser { (user, success) in
+            
+            if(success == true)
+            {
+                if( user.touch == true)
+                {
+                    JoystickManager.sharedInstance()?.mode = true
+               
+                }
+                else
+                {
+                    JoystickManager.sharedInstance()?.mode = false
+               
+                }
+            }
+           
+        }
+        
+    
+       
+    }
     func pressed(_ gesture: String!) {
         print(gesture)
         print(JoystickManager.sharedInstance()?.touches)
  
-      
+        // 16/12/8/2/1 -> Touch
+        //15/13/9/2/1  -> Gesture
+ 
+        
+    
+     //   let user = CoreDataManager.shared.getUser()
+   
+       
+
         var touches = "t3"
         
         let Gesture = gesture.prefix(6)
+       // JoystickManager.sharedInstance()?.mode = false
+  
+        if(gesture == "0000000000000010" || gesture == "0000000000000001")
+        {
+      //      CoreDataManager.shared.updateUser(id: userID, touch: true)
+            JoystickManager.sharedInstance()?.mode = true
+            //"0000000000000010"
+        //    CoreDataManager.shared.updateUser(id: userID, touch: true)
+     
+            return
+
+        }
+        else if(gesture == "1100000000000010")
+        {
+            // Gesture mode 변경
+            //"1100000000000010"
+           // CoreDataManager.shared.updateUser(id: userID, touch: false)
+            JoystickManager.sharedInstance()?.mode = false
+            return
+        }
         let Touch = gesture.suffix(8)
         
         if(JoystickManager.sharedInstance()!.touches > 6)
@@ -217,6 +408,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             if(application.localizedName == "Pero" && Gesture == "000000")
             {
            
+                /*
                 NSLog("localizedName: \(String(describing: application.localizedName)), processIdentifier: \(application.processIdentifier)")
           //      let ret = "palmcat://" + String(JoystickManager.sharedInstance()!.touches)
                 let ret = "palmcat://" + String(Touch)
@@ -227,6 +419,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 JoystickManager.sharedInstance().down = 0
                 JoystickManager.sharedInstance().up = 0
                 JoystickManager.sharedInstance()?.touches = 0
+                */
 
                 return
             }
@@ -346,7 +539,20 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         })
     */
     let user = CoreDataManager.shared.getUser()
+
     userID = user.userid!
+    
+    
+    if( user.touch == true)
+    {
+        JoystickManager.sharedInstance()?.mode = true
+   
+    }
+    else
+    {
+        JoystickManager.sharedInstance()?.mode = false
+   
+    }
     
     pressDummy()
     

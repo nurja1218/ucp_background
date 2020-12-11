@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AppList+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:AppList+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:UserList+CoreDataClass.swift">
    </FileRef>
    <FileRef
@@ -18,6 +12,12 @@
    </FileRef>
    <FileRef
       location = "group:Users+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:AppList+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:AppList+CoreDataProperties.swift">
    </FileRef>
    <FileRef
       location = "group:Command+CoreDataClass.swift">

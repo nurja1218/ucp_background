@@ -79,6 +79,54 @@ class CoreDataManager: NSObject {
         return model
         
     }
+    func updateUser( id: String, touch:Bool) {
+        
+        if let context = context
+        {
+            let fetchRequest: NSFetchRequest<NSManagedObject>
+                              = NSFetchRequest<NSManagedObject>(entityName: "Users")
+                      
+                  
+            if let fetchResult = try? context.fetch(fetchRequest)  {
+                 
+         
+                if(fetchResult.count > 0)
+                {
+                
+                    var i:Int = 0
+                    for listEntity in fetchResult {
+                    
+                        let user = listEntity as! Users
+                        
+                        print(user as Any)
+                            
+                     //   user.enable = false
+                        if(user.userid == id )
+                        {
+                        //    fetchResult[i].setValue(true, forKey: "enable")
+                            fetchResult[i].setValue(touch, forKey: "touch")
+                
+                            contextSave { success in
+                               // onSuccess(success)
+                            }
+                            
+                            return
+                        }
+                        
+                           
+                         i = i + 1
+          
+                      
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+    }
     func getUser() -> Users    {
         //let query = "Rob"
         var model: Users = Users()
@@ -130,7 +178,63 @@ class CoreDataManager: NSObject {
         return model
         
     }
+    func getUser(onSuccess: @escaping ((Users, Bool) -> Void)) {
+        //let query = "Rob"
+        var model: Users = Users()
+        
+    //    let request: NSFetchRequest<Users> = Users.fetchRequest()
     
+        if let context = context {
+            
+            let fetchRequest: NSFetchRequest<NSManagedObject>
+                              = NSFetchRequest<NSManagedObject>(entityName: "Users")
+                      
+                 
+                 // The == syntax may also be used to search for an exact match
+            //     fetchRequest.predicate = NSPredicate(format: "(enable==%@)", true)
+                  
+                  
+            if let fetchResult = try? context.fetch(fetchRequest)  {
+                 
+                     //let name = fetchResult.name
+                     
+                     //let id = fetchResult.userid
+                     if(fetchResult.count > 0)
+                     {
+                         print("find")
+                        
+                        for listEntity in fetchResult {
+                            let user = listEntity as! Users
+                            print(user as Any)
+                            let userid = user.userid
+                            let password = user.password
+                            if(user.enable == true)
+                            {
+                                model = user
+                              //  return model
+                                onSuccess(user, true)
+                            }
+                           
+                          
+                          
+                        }
+                     }
+                    else
+                     {
+                        onSuccess(model, false)
+            
+                     }
+                     
+                     
+                           // model = fetchResult
+                 }
+            
+        }
+     
+      
+       
+        
+    }
     func saveUser(name:String, id: String, password: String,
                   country: String, answer:String, type:String, onSuccess: @escaping ((Bool) -> Void)) {
         if let context = context

@@ -42,6 +42,13 @@ static JoystickManager *instance;
             [instance.codeArray addObject:@"0"];
      
         }
+        instance.dummyArray = [[NSMutableArray alloc] init];
+        instance.toggle = false;
+        for(int i=0;i<16;i++)
+        {
+            [instance.dummyArray addObject:@"0"];
+     
+        }
  
     }
 }
@@ -96,6 +103,77 @@ void gamepadWasRemoved(void* inContext, IOReturn inResult, void* inSender, IOHID
     [[JoystickManager sharedInstance]  unpulg];
    
 }
+void commonFinalize()
+{
+    
+    for(int i=0;i<16;i++)
+    {
+      
+        [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].codeArray[i]];
+        
+    }
+    
+    for(int i=0;i<16;i++)
+    {
+        [JoystickManager sharedInstance].codeArray[i] = @"0";
+        
+        [JoystickManager sharedInstance].dummyArray[i] = @"0";
+    }
+
+
+     [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].code ];
+    [[JoystickManager sharedInstance].codeArray removeAllObjects ];
+    for(int i=0;i<16;i++)
+    {
+        [[JoystickManager sharedInstance].codeArray addObject:@"0"];
+    }
+    
+ 
+  //  [JoystickManager sharedInstance].toggle = false;
+
+   [ [JoystickManager sharedInstance].code  setString:@""];
+    [JoystickManager sharedInstance].down = 0;
+
+    [JoystickManager sharedInstance].up = 0;
+}
+void modeFinalize(BOOL mode)
+{
+    
+    for(int i=0;i<16;i++)
+    {
+      
+        [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].dummyArray[i]];
+        
+    }
+    
+    for(int i=0;i<16;i++)
+    {
+        [JoystickManager sharedInstance].codeArray[i] = @"0";
+        
+        [JoystickManager sharedInstance].dummyArray[i] = @"0";
+
+        
+    }
+
+
+    [[JoystickManager sharedInstance].delegate toggle:mode];
+ //   [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].code ];
+    [[JoystickManager sharedInstance].codeArray removeAllObjects ];
+  
+    for(int i=0;i<16;i++)
+    {
+        [[JoystickManager sharedInstance].codeArray addObject:@"0"];
+    }
+    
+ 
+   
+   [ [JoystickManager sharedInstance].code  setString:@""];
+    [JoystickManager sharedInstance].down = 0;
+
+    [JoystickManager sharedInstance].up = 0;
+    //[JoystickManager sharedInstance].toggle = false;
+
+}
 
 void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValueRef value) {
     
@@ -132,121 +210,170 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
         
       
         BOOL ldown = false;
-        NSLog(@"Gesture %d / %d", elementUsage, page);
-   
-        if (value0==1)
-        {
-                
-            [JoystickManager sharedInstance].down ++;
-            [JoystickManager sharedInstance].dcode = @"1";
-            ldown = true;
-     
+         [JoystickManager sharedInstance].dummyArray[elementUsage-1] = @"1";
+      //  NSLog(@"Gesture %d / %d", elementUsage, value0);
         
-            [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"1";
-     
+        //15/13/9/2/1  -> Gesture
+      
+        NSLog(@"dummyArray %@ / %d",  [JoystickManager sharedInstance].dummyArray[elementUsage-1], elementUsage-1);
+        /*
+        if
+        ( [JoystickManager sharedInstance].dummyArray[0] == @"1" &&
+         [JoystickManager sharedInstance].dummyArray[1] == @"1" &&
+          [JoystickManager sharedInstance].dummyArray[8] == @"1" &&
+          [JoystickManager sharedInstance].dummyArray[12] == @"1" &&
+          [JoystickManager sharedInstance].dummyArray[14] == @"1"
+         )
+       
+     {
+         // Touch
+         
+         modeFinalize(false);
+      //   return;
+
+         
+     }
+     if(
+       ( [JoystickManager sharedInstance].dummyArray[0] == @"1" &&
+        [JoystickManager sharedInstance].dummyArray[1] == @"1" &&
+         [JoystickManager sharedInstance].dummyArray[7] == @"1" &&
+         [JoystickManager sharedInstance].dummyArray[11] == @"1" &&
+         [JoystickManager sharedInstance].dummyArray[15] == @"1"
+        )
+         )
+     {
+         modeFinalize(true);
+      //   return;
+     }
+         */
+        // 16/12/8/2/1 -> Touch
+        //15/13/9/2/1  -> Gesture
+        /*
+
+        if(
+          ( [JoystickManager sharedInstance].codeArray[0] != @"1" &&
+           [JoystickManager sharedInstance].codeArray[2] != @"1" &&
+            [JoystickManager sharedInstance].codeArray[3] != @"1" &&
+            [JoystickManager sharedInstance].codeArray[4] != @"1" &&
+            [JoystickManager sharedInstance].codeArray[5] != @"1"
+           )
+            )
+         */
+ 
+        [[JoystickManager sharedInstance].delegate modSet];
+        if([JoystickManager sharedInstance].mode == true)
+        {
+           
+            // tocuh mode
+           
+            
+        
             if(elementUsage >= 8)
             {
-                [JoystickManager sharedInstance].touches ++;
-     
-            }
-            
-            
-        }
-        else
-        {
-     
-            [JoystickManager sharedInstance].up ++;
-          
-            if( [JoystickManager sharedInstance].down ==  [JoystickManager sharedInstance].up )
-         
-            {
-        
-                for(int i=0;i<16;i++)
+              
+                if (value0==1)
                 {
-                  
-                    [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].codeArray[i]];
-                    
-                }
-                
-                for(int i=0;i<16;i++)
-                {
-                    [JoystickManager sharedInstance].codeArray[i] = @"0";
-                    
-                }
-        
-         
-                 [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].code ];
-                
-                for(int i=0;i<16;i++)
-                {
-                    [[JoystickManager sharedInstance].codeArray addObject:@"0"];
+                    [JoystickManager sharedInstance].down ++;
              
+                    if([JoystickManager sharedInstance].toggle == false)
+                    {
+                        [JoystickManager sharedInstance].toggle = true;
+                        
+                      
+                       [[JoystickManager sharedInstance].delegate touchDown:elementUsage];
+                
+                        
+                   }
+           
                 }
+                else
+                {
+                    [JoystickManager sharedInstance].up ++;
+                  
+                    if( [JoystickManager sharedInstance].down ==  [JoystickManager sharedInstance].up )
+                    {
+                        [JoystickManager sharedInstance].toggle = false;
+                        [JoystickManager sharedInstance].down = 0;
+                 
+                        [JoystickManager sharedInstance].up = 0;
+          
+                        
+                        [[JoystickManager sharedInstance].delegate touchUp:elementUsage];
+          
+                        
                
-               [ [JoystickManager sharedInstance].code  setString:@""];
-                [JoystickManager sharedInstance].down = 0;
-         
-                [JoystickManager sharedInstance].up = 0;
+              
+                    }
+                    
+           
+               
+                }
+           
+            
             }
-
-        }
-        
-        return;
-    }
-        /*
-        NSLog(@"Gesture %d / %d", elementUsage, page);
-        [JoystickManager sharedInstance].down ++;
-        if(value0==1)
-        {
-            [JoystickManager sharedInstance].dcode = @"1";
-     
+            
         }
         else
         {
-            [JoystickManager sharedInstance].dcode = @"0";
-
-        }
-        
-        if(elementUsage >= 8 && value0==1)
-        {
-            [JoystickManager sharedInstance].touches ++;
-
-        }
-     
-        if( [JoystickManager sharedInstance].down ==  16 )
-        {
- 
-             for(int i=0;i<16;i++)
-             {
-               
-                 [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].codeArray[i]];
-                 
-             }
-         
-             for(int i=0;i<16;i++)
-             {
-                 [JoystickManager sharedInstance].codeArray[i] = @"0";
-                 
-             }
- 
-  
-            [[JoystickManager sharedInstance].delegate pressed:[JoystickManager sharedInstance].code ];
-         
-             for(int i=0;i<16;i++)
-             {
-                 [[JoystickManager sharedInstance].codeArray addObject:@"0"];
-          
-             }
+            // Gesture
             
-            [ [JoystickManager sharedInstance].code  setString:@""];
-             [JoystickManager sharedInstance].down = 0;
-      
-             [JoystickManager sharedInstance].up = 0;
+         
+            
+            if (value0==1)
+            {
+                    
+                [JoystickManager sharedInstance].down ++;
+                [JoystickManager sharedInstance].dcode = @"1";
+                ldown = true;
+         
+            
+                [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"1";
+                
+                // 16/12/8/2/1 -> Touch
+                //15/13/9/2/1  -> Gesture
+             
+    
+                
+           
+         
+                if(elementUsage >= 8)
+                {
+                    [JoystickManager sharedInstance].touches ++;
+                    
+                    
+                 
+                    
+                    if([JoystickManager sharedInstance].touches <= 6)
+                    {
+                        commonFinalize();
+            
+                    }
+                    else if([JoystickManager sharedInstance].touches > 6)
+                    {
+                        commonFinalize();
+            
+                    }
+                    
+             //       [[JoystickManager sharedInstance].delegate pressed2:elementUsage];
+           
+         
+                }
+                
+                
+            }
+        
+           
+           
+            
         }
         
-        return;
+       
+   
+ 
+        
+       // return;
     }
-         */
+       
 }
 
 void gamepadWasAdded(void* inContext, IOReturn inResult, void* inSender, IOHIDDeviceRef device) {

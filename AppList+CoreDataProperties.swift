@@ -2,7 +2,7 @@
 //  AppList+CoreDataProperties.swift
 //  
 //
-//  Created by Junsung Park on 2020/11/19.
+//  Created by Junsung Park on 2020/12/11.
 //
 //
 
