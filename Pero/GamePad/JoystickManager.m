@@ -129,7 +129,7 @@ void commonFinalize()
     }
     
  
-  //  [JoystickManager sharedInstance].toggle = false;
+    [JoystickManager sharedInstance].toggle = false;
 
    [ [JoystickManager sharedInstance].code  setString:@""];
     [JoystickManager sharedInstance].down = 0;
@@ -171,7 +171,7 @@ void modeFinalize(BOOL mode)
     [JoystickManager sharedInstance].down = 0;
 
     [JoystickManager sharedInstance].up = 0;
-    //[JoystickManager sharedInstance].toggle = false;
+    [JoystickManager sharedInstance].toggle = false;
 
 }
 
@@ -273,7 +273,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
               
                 if (value0==1)
                 {
-                    [JoystickManager sharedInstance].down ++;
+                 //   [JoystickManager sharedInstance].down ++;
              
                     if([JoystickManager sharedInstance].toggle == false)
                     {
@@ -288,14 +288,14 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                 }
                 else
                 {
-                    [JoystickManager sharedInstance].up ++;
+                  //  [JoystickManager sharedInstance].up ++;
                   
-                    if( [JoystickManager sharedInstance].down ==  [JoystickManager sharedInstance].up )
+                 //   if( [JoystickManager sharedInstance].down ==  [JoystickManager sharedInstance].up )
+                    if([JoystickManager sharedInstance].toggle != nil && [JoystickManager sharedInstance].toggle == true)
                     {
-                        [JoystickManager sharedInstance].toggle = false;
-                        [JoystickManager sharedInstance].down = 0;
+                  //     [JoystickManager sharedInstance].down = 0;
                  
-                        [JoystickManager sharedInstance].up = 0;
+                     //   [JoystickManager sharedInstance].up = 0;
           
                         
                         [[JoystickManager sharedInstance].delegate touchUp:elementUsage];
@@ -305,7 +305,8 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
               
                     }
                     
-           
+                    [JoystickManager sharedInstance].toggle = false;
+          
                
                 }
            
@@ -318,7 +319,8 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
             // Gesture
             
          
-            
+            [JoystickManager sharedInstance].toggle = false;
+
             if (value0==1)
             {
                     
@@ -343,12 +345,12 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                     
                  
                     
-                    if([JoystickManager sharedInstance].touches <= 6)
+                    if([JoystickManager sharedInstance].touches <= 7)
                     {
                         commonFinalize();
             
                     }
-                    else if([JoystickManager sharedInstance].touches > 6)
+                    else// if([JoystickManager sharedInstance].touches > 7)
                     {
                         commonFinalize();
             

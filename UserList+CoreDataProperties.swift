@@ -2,7 +2,7 @@
 //  UserList+CoreDataProperties.swift
 //  
 //
-//  Created by Junsung Park on 2020/12/11.
+//  Created by Junsung Park on 2020/12/14.
 //
 //
 

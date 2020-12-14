@@ -338,23 +338,19 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     func modSet()
     {
         
-        CoreDataManager.shared.getUser { (user, success) in
+        let userDefaults = UserDefaults(suiteName: "group.junsoft.data")
+       
+        JoystickManager.sharedInstance()?.mode = userDefaults!.bool(forKey: "TOUCH_MODE")
+   
+        /*
+        
+        CoreDataManager.shared.getMode { ( success) in
             
-            if(success == true)
-            {
-                if( user.touch == true)
-                {
-                    JoystickManager.sharedInstance()?.mode = true
-               
-                }
-                else
-                {
-                    JoystickManager.sharedInstance()?.mode = false
-               
-                }
-            }
+            JoystickManager.sharedInstance()?.mode = success
+   
            
         }
+ */
         
     
        
@@ -429,6 +425,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         
         let commands = CoreDataManager.shared.getGesture(name: gesureCode, touches: touches,id:userID)
         
+        print(gesureCode)
+     
         for command in commands
         {
             let shortcut = command.shortcut
@@ -542,7 +540,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
 
     userID = user.userid!
     
-    
+    /*
     if( user.touch == true)
     {
         JoystickManager.sharedInstance()?.mode = true
@@ -553,7 +551,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         JoystickManager.sharedInstance()?.mode = false
    
     }
-    
+    */
     pressDummy()
     
     initKey()

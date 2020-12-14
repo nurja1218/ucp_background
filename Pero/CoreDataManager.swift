@@ -235,6 +235,58 @@ class CoreDataManager: NSObject {
        
         
     }
+    func getMode(onSuccess: @escaping (( Bool) -> Void)) {
+        //let query = "Rob"
+ //       var model: Users = Users()
+        
+    //    let request: NSFetchRequest<Users> = Users.fetchRequest()
+    
+        if let context = context {
+            
+            let fetchRequest: NSFetchRequest<NSManagedObject>
+                              = NSFetchRequest<NSManagedObject>(entityName: "Dummy")
+                      
+                 
+                 // The == syntax may also be used to search for an exact match
+            //     fetchRequest.predicate = NSPredicate(format: "(enable==%@)", true)
+                  
+                  
+            if let fetchResult = try? context.fetch(fetchRequest)  {
+                 
+                     //let name = fetchResult.name
+                     
+                     //let id = fetchResult.userid
+                     if(fetchResult.count > 0)
+                     {
+                         print("find")
+                        
+                        for listEntity in fetchResult {
+                            let user = listEntity as! Dummy
+                      
+                            onSuccess( user.mode)
+                            return
+                 
+                          
+                          
+                        }
+                     }
+                    else
+                     {
+                        onSuccess( false)
+             
+                     }
+                     
+                     
+                           // model = fetchResult
+                 }
+            
+        }
+        onSuccess( false)
+
+      
+       
+        
+    }
     func saveUser(name:String, id: String, password: String,
                   country: String, answer:String, type:String, onSuccess: @escaping ((Bool) -> Void)) {
         if let context = context
