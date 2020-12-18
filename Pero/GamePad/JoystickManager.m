@@ -345,17 +345,25 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                     
                  
                     
-                    if([JoystickManager sharedInstance].touches <= 7)
+                    if([JoystickManager sharedInstance].touches > 6)
                     {
                         commonFinalize();
             
                     }
-                    else// if([JoystickManager sharedInstance].touches > 7)
+                    /*
+                    else if([JoystickManager sharedInstance].touches > 6)
                     {
                         commonFinalize();
             
                     }
-                    
+                     */
+                 /*
+                    if([JoystickManager sharedInstance].touches >= 6)
+                    {
+                        commonFinalize();
+            
+                    }
+                   */
              //       [[JoystickManager sharedInstance].delegate pressed2:elementUsage];
            
          

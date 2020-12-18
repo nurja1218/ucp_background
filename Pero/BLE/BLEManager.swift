@@ -57,6 +57,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         ,commad:CGEvent!,commau:CGEvent!,enterd:CGEvent!,enteru:CGEvent!,equald:CGEvent!,equalu:CGEvent!
         ,lbracketd:CGEvent!,lbracketu:CGEvent!,rbracketd:CGEvent!,rbracketu:CGEvent!,endd:CGEvent!, endu:CGEvent!
         ,homed:CGEvent!,homeu:CGEvent!,spaced:CGEvent!, spaceu:CGEvent!,f1d:CGEvent!,f1u:CGEvent!
+       
     
     var src:CGEventSource!
 
@@ -362,7 +363,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         // 16/12/8/2/1 -> Touch
         //15/13/9/2/1  -> Gesture
  
-        
+     
     
      //   let user = CoreDataManager.shared.getUser()
    
@@ -393,11 +394,33 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         let Touch = gesture.suffix(8)
         
-        if(JoystickManager.sharedInstance()!.touches > 6)
+      
+        if(touches == "t4")
+        {
+            print("t4")
+        }
+        let touch = gesture.suffix(8)
+        
+        var cnt:Int = 0
+       
+        var flag:Bool = false
+        for (index, char) in touch.enumerated() {
+            print("index = \(index), character = \(char)")
+            if(index <= 1 && char == "1")
+            {
+                flag = true
+            }
+            if(char == "1")
+            {
+                cnt = cnt + 1
+            }
+        }
+        print(touch)
+        if(cnt >= 6 && flag == true)
         {
             touches = "t4"
         }
-        
+     
         if let application = NSWorkspace.shared.frontmostApplication {
               
               
@@ -441,6 +464,20 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             print(gesture)
             if(enable == true)
             {
+              
+                
+                if(name == "Chrome")
+                {
+                    if let application = NSWorkspace.shared.frontmostApplication {
+                     
+                       print(application.localizedName)
+                        if(application.localizedName != "Google Chrome")
+                        {
+                           
+                            continue
+                        }
+                    }
+                }
                 Command(shortcut: shortcut!)
        
             }
@@ -554,6 +591,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     */
     pressDummy()
     
+   // simulEmoji2()
+    
     initKey()
     
     
@@ -639,8 +678,97 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         else if(list.count == 2)
         {
-            if(list[0] == "CTRL" || list[0] == "COMMAND")
+            var isCmd:Bool = false
+            
+            var isOption:Bool = false
+         
+            
+            var isShift:Bool = false
+            var isCtrl:Bool = false
+         
+           
+         /*
+            if((list[0] == "CTRL" || list[0] == "COMMAND" || list[0] == "CMD"))
             {
+                isCmd = true
+            }
+            if(list[1] == "OPTION" )
+            {
+                isOption = true
+            }
+            */
+            for i in 0...list.count - 1 {
+                //print(n)
+                if(list[i] == "CMD"  || list[i] == "COMMAND" )
+                {
+                    isCmd = true
+                }
+                if(list[i] == "CTRL"  )
+                {
+                    isCtrl = true
+                }
+                else if(list[i] == "OPTION"  )
+                {
+                    isOption = true
+                }
+                else if(list[i] == "SHIFT"  )
+                {
+                    isShift = true
+                }
+                else
+                {
+                    initOne(command: list[i], isCommand: isCmd, isShift: isShift, isOption: isOption, isCtrl: isCtrl)
+
+                }
+            }
+            
+            
+        }
+        else if(list.count == 3)
+        {
+            var isCmd:Bool = false
+            
+            var isOption:Bool = false
+         
+            
+            var isShift:Bool = false
+            
+           
+         
+            if((list[0] == "CTRL" || list[0] == "COMMAND" || list[0] == "CMD"))
+            {
+                isCmd = true
+            }
+            if(list[1] == "OPTION" )
+            {
+                isOption = true
+            }
+            
+            for i in 0...list.count - 1 {
+                //print(n)
+                if(list[i] == "CMD" || list[i] == "CTRL" || list[i] == "COMMAND" )
+                {
+                    isCmd = true
+                }
+                else if(list[i] == "OPTION"  )
+                {
+                    isOption = true
+                }
+                else if(list[i] == "SHIFT"  )
+                {
+                    isShift = true
+                }
+                else
+                {
+                    initOne(command: list[i], isCommand: isCmd, isShift: isShift, isOption: isOption)
+
+                }
+            }
+
+            
+            /*
+            if((list[0] == "CTRL" || list[0] == "COMMAND" || list[0] == "CMD"))
+       
                 
                 initOne(command: list[1], isCommand: true, isShift: false)
 
@@ -651,34 +779,39 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                 initOne(command: list[1], isCommand: false, isShift: true)
 
             }
+ */
         
-            
-            
-        }
-        else if(list.count == 3)
-        {
-            
         }
 
 
     }
-    func  initOne(command:String, isCommand:Bool, isShift:Bool)
+    func  initOne(command:String, isCommand:Bool, isShift:Bool, isOption:Bool = false, isCtrl:Bool = false)
     {
         if(command == "DOWN")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false && isShift == false && isCtrl == false)
             {
                 downd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true && isShift == false && isCtrl == false)
             {
                 downd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true && isShift == false && isCtrl == false)
             {
                 downd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true && isShift == false && isCtrl == false)
+            {
+                downd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                downd?.flags = CGEventFlags.maskSecondaryFn
 
             }
             downd?.post(tap: loc)
@@ -687,82 +820,159 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "UP")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false && isOption == false && isCtrl == false)
             {
                 upd?.flags = CGEventFlags.maskCommand
-
+                upd?.post(tap: loc)
+                upu?.post(tap: loc)
+            
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true && isOption == false && isCtrl == false)
             {
                 upd?.flags = CGEventFlags.maskShift
-       
+                upd?.post(tap: loc)
+                upu?.post(tap: loc)
+            
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == false && isShift == false && isOption == false && isCtrl == true)
+            {
+                NSWorkspace.shared.launchApplication("Mission Control")
+
+  
+            }
+            if(isCommand == true && isShift == true && isOption == false && isCtrl == false)
             {
                 upd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
-
+                upd?.post(tap: loc)
+                upu?.post(tap: loc)
+            
             }
-            upd?.post(tap: loc)
-            upu?.post(tap: loc)
-         
+            if(isCommand == true &&  isOption == true  && isCtrl == false)
+            {
+                upd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+                upd?.post(tap: loc)
+                upu?.post(tap: loc)
+            
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                upu?.flags = CGEventFlags.maskSecondaryFn
+                upd?.post(tap: loc)
+                upu?.post(tap: loc)
+     
+            }
         }
         if(command == "LEFT")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false && isOption == false && isCtrl == false)
             {
                 leftd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true && isOption == false && isCtrl == false)
             {
                 leftd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == false && isShift == false && isOption == false && isCtrl == true)
+            {
+               // rightd?.flags = CGEventFlags.maskControl
+               // rightu?.flags = CGEventFlags.maskControl
+              //  ctrld?.post(tap: loc)
+               // ctrlu?.post(tap: loc)
+                leftd?.flags = [CGEventFlags.maskControl, CGEventFlags.maskSecondaryFn]
+
+            }
+            if(isCommand == true && isShift == true && isOption == false && isCtrl == false)
             {
                 leftd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
+            if(isCommand == true &&  isOption == true  && isCtrl == false && isShift == false)
+            {
+                leftd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                leftd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+ 
             leftd?.post(tap: loc)
             leftu?.post(tap: loc)
          
         }
         if(command == "RIGHT")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false && isOption == false && isCtrl == false)
             {
                 rightd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true && isOption == false && isCtrl == false)
             {
                 rightd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == false && isShift == false && isOption == false && isCtrl == true)
+            {
+               // rightd?.flags = CGEventFlags.maskControl
+               // rightu?.flags = CGEventFlags.maskControl
+              //  ctrld?.post(tap: loc)
+               // ctrlu?.post(tap: loc)
+                rightd?.flags = [CGEventFlags.maskControl, CGEventFlags.maskSecondaryFn]
+
+            }
+            if(isCommand == true && isShift == true && isOption == false && isCtrl == false)
             {
                 rightd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
+            if(isCommand == true &&  isOption == true && isCtrl == false)
+            {
+                rightd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                rightd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+ 
             rightd?.post(tap: loc)
             rightu?.post(tap: loc)
          
         }
         if(command == "ESC")
         {
-            if(isCommand == true && isShift == false)
+            var flagRaw : UInt64 = 0
+
+            if(isCommand == true && isShift == false && isOption == false && isCtrl == false)
             {
                 escd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false )
             {
                 escd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&   isOption == false && isCtrl == false )
             {
                 escd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true && isShift == false && isCtrl == false)
+            {
+              //  flagRaw = CGEventFlags.maskCommand.rawValue
+                escd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate,  CGEventFlags.maskSecondaryFn]
+          //      escd?.flags =  CGEventFlags(rawValue:CGEventFlags.maskAlternate.rawValue | flagRaw)
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                escd?.flags = CGEventFlags.maskSecondaryFn
 
             }
             escd?.post(tap: loc)
@@ -771,19 +981,34 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "a")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 ad?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 ad?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 ad?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                ad?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                ad?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                ad?.flags = CGEventFlags.maskSecondaryFn
 
             }
             ad?.post(tap: loc)
@@ -792,19 +1017,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "b")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 bd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 bd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 bd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                bd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                bd?.flags = CGEventFlags.maskSecondaryFn
 
             }
             bd?.post(tap: loc)
@@ -813,19 +1048,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "c")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 cd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 cd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 cd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                cd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                cd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -835,19 +1080,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "d")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 dd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 dd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 dd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                dd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                dd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -857,19 +1112,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "e")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 ed?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 ed?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 ed?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                ed?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                ed?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -879,23 +1144,34 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "f")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 fd?.flags = CGEventFlags.maskCommand
                 print("f0")
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 fd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 fd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
                 print("f1")
 
             }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                fd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                fd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+
             print("f2")
 
             fd?.post(tap: loc)
@@ -904,19 +1180,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "g")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 gd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 gd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 gd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                gd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                gd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -926,19 +1212,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "h")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 hd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 hd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 hd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                hd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                hd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -948,19 +1244,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "i")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 id?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 id?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 id?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                id?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                id?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -970,43 +1276,63 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "j")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 jd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 jd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 jd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                jd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
 
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                jd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
             jd?.post(tap: loc)
             ju?.post(tap: loc)
 
         }
         if(command == "k")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 kd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 kd?.flags = CGEventFlags.maskShift
        
             }
-             if(isCommand == true && isShift == true)
+             if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 kd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                kd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                kd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+
 
             kd?.post(tap: loc)
             ku?.post(tap: loc)
@@ -1014,41 +1340,60 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "l")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 ld?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 ld?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 ld?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                ld?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
 
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                ld?.flags = CGEventFlags.maskSecondaryFn
+
+            }
             ld?.post(tap: loc)
             lu?.post(tap: loc)
 
         }
         if(command == "m")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 md?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 md?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 md?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                md?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                md?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1058,19 +1403,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "n")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 nd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 nd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 nd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                nd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                nd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1080,19 +1435,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "o")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 od?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 od?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 od?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                od?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                od?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1102,19 +1467,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "p")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 pd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 pd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 pd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                pd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                pd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1124,19 +1499,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "q")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 qd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 qd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 qd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                qd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                qd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1146,19 +1531,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "r")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 rd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 rd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 rd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                rd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                rd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1166,21 +1561,159 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             ru?.post(tap: loc)
 
         }
+        if(command == "s")
+        {
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
+            {
+                sd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                sd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                sd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                sd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                sd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+
+            sd?.post(tap: loc)
+            su?.post(tap: loc)
+
+        }
+        if(command == "t")
+        {
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
+            {
+                td?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                td?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                td?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                td?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                td?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+
+            td?.post(tap: loc)
+            tu?.post(tap: loc)
+
+        }
+        if(command == "u")
+        {
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
+            {
+                ud?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                ud?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                ud?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                ud?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                ud?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+
+            ud?.post(tap: loc)
+            uu?.post(tap: loc)
+
+        }
+        if(command == "v")
+        {
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
+            {
+                vd?.flags = CGEventFlags.maskCommand
+
+            }
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                vd?.flags = CGEventFlags.maskShift
+       
+            }
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
+            {
+                vd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                vd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                vd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+
+            vd?.post(tap: loc)
+            vu?.post(tap: loc)
+
+        }
         if(command == "w")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 wd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 wd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 wd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                wd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                wd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1190,19 +1723,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "x")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 xd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 xd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 xd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                xd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                xd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1212,19 +1755,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "y")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 yd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 yd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 yd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                yd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                yd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1234,19 +1787,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "z")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 zd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 zd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 zd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                zd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                zd?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1256,19 +1819,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "0")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n0d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n0d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n0d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n0d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n0d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1278,19 +1851,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "1")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n1d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n1d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n1d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n1d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n1d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1299,19 +1882,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "2")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n2d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n2d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n2d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n2d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n2d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1320,19 +1913,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "3")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n3d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n3d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n3d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n3d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n3d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1341,19 +1944,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "4")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n4d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n4d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n4d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n4d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n4d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1362,19 +1975,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "5")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n5d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n5d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n5d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n5d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n5d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1383,40 +2006,59 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "6")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n6d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n6d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n6d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n6d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
 
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n6d?.flags = CGEventFlags.maskSecondaryFn
+
+            }
             n6d?.post(tap: loc)
             n6u?.post(tap: loc)
         }
         if(command == "7")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n7d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n7d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n7d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n7d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n7d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1425,19 +2067,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "8")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n8d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n8d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n8d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n8d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n8d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1446,19 +2098,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "9")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 n9d?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n9d?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 n9d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                n9d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                n9d?.flags = CGEventFlags.maskSecondaryFn
 
             }
 
@@ -1467,40 +2129,59 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == ".")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 periodd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 periodd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 periodd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                periodd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
 
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                periodd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
             periodd?.post(tap: loc)
             periodu?.post(tap: loc)
         }
         if(command == ",")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 commad?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 commad?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 commad?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                commad?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                commad?.flags = CGEventFlags.maskSecondaryFn
 
             }
             commad?.post(tap: loc)
@@ -1510,41 +2191,61 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "SPACE")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
-                spaced?.flags = CGEventFlags.maskCommand
+                spcd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
-                spaced?.flags = CGEventFlags.maskShift
+                spcd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
-                spaced?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+                spcd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
-            spaced?.post(tap: loc)
-            spaceu?.post(tap: loc)
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                spcd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                spcd?.flags = CGEventFlags.maskSecondaryFn
+
+            }
+            spcd?.post(tap: loc)
+            spcu?.post(tap: loc)
 
 
         }
         if(command == "ENTER")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 enterd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 enterd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 enterd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                enterd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                enterd?.flags = CGEventFlags.maskSecondaryFn
 
             }
             enterd?.post(tap: loc)
@@ -1554,19 +2255,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "]")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 rbracketd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 rbracketd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 rbracketd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                rbracketd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                rbracketd?.flags = CGEventFlags.maskSecondaryFn
 
             }
             rbracketd?.post(tap: loc)
@@ -1576,19 +2287,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         }
         if(command == "[")
         {
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 lbracketd?.flags = CGEventFlags.maskCommand
 
             }
-            if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 lbracketd?.flags = CGEventFlags.maskShift
        
             }
-            if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 lbracketd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
+
+            }
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                lbracketd?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
+            {
+                lbracketd?.flags = CGEventFlags.maskSecondaryFn
 
             }
             lbracketd?.post(tap: loc)
@@ -1599,26 +2320,32 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         if(command == "F1")
         {
             //
-            if(isCommand == true && isShift == false)
+            if(isCommand == true && isShift == false &&  isOption == false && isCtrl == false)
             {
                 f1d?.flags = CGEventFlags.maskCommand
 
             }
-            else if(isCommand == false && isShift == true)
+            if(isCommand == false && isShift == true &&  isOption == false && isCtrl == false)
             {
                 f1d?.flags = CGEventFlags.maskShift
        
             }
-            else if(isCommand == true && isShift == true)
+            if(isCommand == true && isShift == true &&  isOption == false && isCtrl == false)
             {
                 f1d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskShift]
 
             }
-            else
+            if(isCommand == true &&  isOption == true &&  isShift == false && isCtrl == false)
+            {
+                f1d?.flags = [CGEventFlags.maskCommand, CGEventFlags.maskAlternate]
+
+            }
+            if(isCommand == false &&  isOption == false && isShift == false && isCtrl == false)
             {
                 f1d?.flags = CGEventFlags.maskSecondaryFn
-       
+
             }
+            
             f1d?.post(tap: loc)
             f1u?.post(tap: loc)
 
@@ -1627,6 +2354,105 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         //
 
     }
+    func simulEmoji()
+    {
+        let commandControlMask = (CGEventFlags.maskCommand.rawValue | CGEventFlags.maskControl.rawValue)
+        let commandControlMaskFlags = CGEventFlags(rawValue: commandControlMask)
+
+              // Press Space key once
+        let space = CGEventSource(stateID: .hidSystemState)
+        let keyDown = CGEvent(keyboardEventSource: space, virtualKey: 49 as CGKeyCode, keyDown: true)
+        keyDown!.flags = commandControlMaskFlags
+        keyDown!.post(tap: .cghidEventTap)
+        let keyUp = CGEvent(keyboardEventSource: space, virtualKey: 49 as CGKeyCode, keyDown: false)
+        keyUp!.flags = commandControlMaskFlags
+        keyUp!.post(tap: .cghidEventTap)
+    }
+    func simulEmoji1()
+    {
+        let commandControlMask = (CGEventFlags.maskControl.rawValue)
+        let commandControlMaskFlags = CGEventFlags(rawValue: commandControlMask)
+
+              // Press Space key once
+        let space = CGEventSource(stateID: .hidSystemState)
+        
+     //   cmdd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: true)
+      
+        let keyDown = CGEvent(keyboardEventSource: space, virtualKey: CGKeyCode(kVK_RightArrow), keyDown: true)//CGEvent(keyboardEventSource: space, virtualKey: 49 as CGKeyCode, keyDown: true)
+        keyDown!.flags = commandControlMaskFlags
+        keyDown!.post(tap: .cghidEventTap)
+        let keyUp = CGEvent(keyboardEventSource: space, virtualKey: CGKeyCode(kVK_RightArrow), keyDown: false)//CGEvent(keyboardEventSource: space, virtualKey: 49 as CGKeyCode, keyDown: false)
+        keyUp!.flags = commandControlMaskFlags
+        keyUp!.post(tap: .cghidEventTap)
+    }
+    func CtrlWithKey(keyCode:UInt) {
+        // 0x3b is Ctrl key
+        let controlKeyDownEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(0x3B), keyDown: true)
+        controlKeyDownEvent?.flags = CGEventFlags.maskControl
+        controlKeyDownEvent?.post(tap: CGEventTapLocation.cghidEventTap)
+
+        let letterKeyDownEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(keyCode), keyDown: true)
+        letterKeyDownEvent?.flags = CGEventFlags.maskControl
+        letterKeyDownEvent?.post(tap: CGEventTapLocation.cghidEventTap)
+
+        let letterKeyUpEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(keyCode), keyDown: false)
+        letterKeyUpEvent?.flags = CGEventFlags.maskControl
+        letterKeyUpEvent?.post(tap: CGEventTapLocation.cghidEventTap)
+
+        let controlKeyUpEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(0x3B), keyDown: false)
+        controlKeyUpEvent?.flags = CGEventFlags.maskControl
+        controlKeyUpEvent?.post(tap: CGEventTapLocation.cghidEventTap)
+    }
+    func simulEmoji2()
+    {
+        /*
+        if let info = CGWindowListCopyWindowInfo(.optionOnScreenOnly, kCGNullWindowID) as? [[ String : Any]] {
+            for dict in info {
+                // ...
+             
+                let appName = unsafeBitCast(CFDictionaryGetValue(dict as CFDictionary, unsafeBitCast(kCGWindowOwnerName, to: UnsafeRawPointer.self)), to: CFString.self)
+                    
+                
+            }
+        }
+ */
+        
+   //     system("osascript -l JavaScript -e \"Application('System Events').processes['Finder'].menuBars[0].menus['Apple'].menuItems['Force Quit…'].click()\"");
+       // NSWorkspace.shared.launchApplication("loginwindow")
+     
+        /*
+        var str:String = " tell application \"System Events\" " +
+        "set appList to the name of (every application process whose background only is false and name is not \"Force Quit Application\") " +
+        "end tell"
+
+      
+        let script = NSAppleScript(source: str)!
+        var errorDict : NSDictionary?
+        script.executeAndReturnError(&errorDict)
+        if errorDict != nil {
+            print(errorDict!)
+            
+        }
+ */
+           //return
+       
+        let commandControlMask = (CGEventFlags.maskCommand.rawValue | CGEventFlags.maskAlternate.rawValue | CGEventFlags.maskSecondaryFn.rawValue)
+        let commandControlMaskFlags = CGEventFlags(rawValue: commandControlMask)
+
+              // Press Space key once
+        let space = CGEventSource(stateID: .hidSystemState)
+        
+     //   cmdd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Command), keyDown: true)
+      
+        let keyDown = CGEvent(keyboardEventSource: space, virtualKey: CGKeyCode(kVK_Escape), keyDown: true)//CGEvent(keyboardEventSource: space, virtualKey: 49 as CGKeyCode, keyDown: true)
+        keyDown!.flags = commandControlMaskFlags
+        keyDown!.post(tap: .cghidEventTap)
+        let keyUp = CGEvent(keyboardEventSource: space, virtualKey: CGKeyCode(kVK_Escape), keyDown: false)//CGEvent(keyboardEventSource: space, virtualKey: 49 as CGKeyCode, keyDown: false)
+        keyUp!.flags = commandControlMaskFlags
+        keyUp!.post(tap: .cghidEventTap)
+    }
+    
+    
     func initKey()
     {
         src = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
@@ -1642,10 +2468,10 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
 
       
         optiond = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Option), keyDown: true)
-        optionu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Option), keyDown: true)
+        optionu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Option), keyDown: false)
 
         ctrld = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Control), keyDown: true)
-        ctrlu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Control), keyDown: true)
+        ctrlu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Control), keyDown: false)
 
         
 
@@ -1791,7 +2617,20 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         spcu?.post(tap: loc)
             
     }
-    
+    func pressDummy2()
+    {
+        let src = CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
+
+        let spcd = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Option), keyDown: true)
+        
+        let spcu = CGEvent(keyboardEventSource: src, virtualKey: CGKeyCode(kVK_Option), keyDown: false)
+
+        let loc = CGEventTapLocation.cghidEventTap
+        spcd?.post(tap: loc)
+          
+        spcu?.post(tap: loc)
+            
+    }
  
    
 
