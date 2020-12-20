@@ -16,9 +16,15 @@
 - (void)pluged;
 
 - (void)pressed:(NSString*)gesture;
+- (void)pressed1:(NSString*)gesture;
 - (void)touchDown:(int)gesture;
 - (void)touchUp:(int)gesture;
+
+- (void)startDownTimer;
+- (void)endDownTimer;
+
 -(void)modSet;
+-(int)getIndex;
 
 - (void)toggle:(BOOL)mode;
 
@@ -41,12 +47,19 @@
 @property(assign) id joystickAddedDelegate;
 @property(assign) id<JoySticDelegate> delegate;
 @property(assign) int                 down;
+@property(assign) int                 tdown;
 @property(assign) int                 up;
+@property(assign) int                 Gdown;
+
 @property(assign) int                 touches;
 @property(assign) BOOL                 mode;
 @property(assign) BOOL                 toggle;
+@property(assign) BOOL                 error;
+
 @property(assign) NSString*           gesture;
 @property(nonatomic ,retain) NSMutableString*           code;
+@property(nonatomic ,retain) NSMutableString*           gcode;
+
 @property(nonatomic ,retain) NSMutableString*           touch;
 @property(nonatomic ,retain) NSMutableArray*           codeArray;
 @property(nonatomic ,retain) NSMutableArray*           dummyArray;
