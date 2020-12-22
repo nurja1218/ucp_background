@@ -486,13 +486,17 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         if let app = NSWorkspace.shared.frontmostApplication{
    
       
-              if(app.bundleIdentifier == "com.apple.Safari" || app.bundleIdentifier == "com.google.Chrome"
-                    || app.bundleIdentifier == "org.mozilla.firefox"
+            if(app.bundleIdentifier?.lowercased() == "com.apple.Safari".lowercased() || app.bundleIdentifier!.lowercased() == "com.google.Chrome".lowercased()
+                || app.bundleIdentifier!.lowercased() == "org.mozilla.firefox".lowercased()
                        
                  //
               )
             {
-             //   print(app.activeTabTitle)
+                print(app.activeTabTitle)
+                if(app.activeTabTitle == nil)
+                {
+                    return
+                }
             
                 if((app.activeTabTitle?.lowercased().contains(find:"netflix"))! && name == "Netflix")
                 {
@@ -3098,10 +3102,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
 
          return currentTabUrl & "\n" & currentTabTitle
          */
+        if let app = NSWorkspace.shared.frontmostApplication{
+            print(app.activeTabTitle)
+        
+        }
         
         
         
-      if peripheral.name! == "DC_032CTI0" {
+      if peripheral.name! == "DC_032CTI" {
       
         print("Sensor Found!")
         //stopScan
