@@ -26,7 +26,7 @@
 
 /* Begin PBXFileReference section */
 		1E0268C7255F69C60022FCCD /* Pero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pero-Bridging-Header.h"; sourceTree = "<group>"; };
-		1E57A0F2254989020036BB95 /* Pero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pero.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E57A0F2254989020036BB95 /* pero core.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pero core.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E57A0F5254989020036BB95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E57A0F7254989020036BB95 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1E57A0F9254989040036BB95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		1E57A0F3254989020036BB95 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1E57A0F2254989020036BB95 /* Pero.app */,
+				1E57A0F2254989020036BB95 /* pero core.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,9 +152,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1E57A0F1254989020036BB95 /* Pero */ = {
+		1E57A0F1254989020036BB95 /* pero Core */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1E57A102254989040036BB95 /* Build configuration list for PBXNativeTarget "Pero" */;
+			buildConfigurationList = 1E57A102254989040036BB95 /* Build configuration list for PBXNativeTarget "pero Core" */;
 			buildPhases = (
 				7C60163AE2573145AA8825F8 /* [CP] Check Pods Manifest.lock */,
 				1E57A0EE254989020036BB95 /* Sources */,
@@ -165,9 +165,9 @@
 			);
 			dependencies = (
 			);
-			name = Pero;
+			name = "pero Core";
 			productName = Pero;
-			productReference = 1E57A0F2254989020036BB95 /* Pero.app */;
+			productReference = 1E57A0F2254989020036BB95 /* pero core.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1E57A0ED254989020036BB95 /* Build configuration list for PBXProject "Pero" */;
+			buildConfigurationList = 1E57A0ED254989020036BB95 /* Build configuration list for PBXProject "pero Core" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -199,7 +199,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1E57A0F1254989020036BB95 /* Pero */,
+				1E57A0F1254989020036BB95 /* pero Core */,
 			);
 		};
 /* End PBXProject section */
@@ -404,7 +404,7 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.junsoft.Pero;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "pero core";
 				PROVISIONING_PROFILE_SPECIFIER = Pero_Dist2;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pero/GamePad/Pero-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -430,7 +430,7 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.junsoft.Pero;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "pero core";
 				PROVISIONING_PROFILE_SPECIFIER = Pero_Dist2;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pero/GamePad/Pero-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -440,7 +440,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1E57A0ED254989020036BB95 /* Build configuration list for PBXProject "Pero" */ = {
+		1E57A0ED254989020036BB95 /* Build configuration list for PBXProject "pero Core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1E57A100254989040036BB95 /* Debug */,
@@ -449,7 +449,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1E57A102254989040036BB95 /* Build configuration list for PBXNativeTarget "Pero" */ = {
+		1E57A102254989040036BB95 /* Build configuration list for PBXNativeTarget "pero Core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1E57A103254989040036BB95 /* Debug */,

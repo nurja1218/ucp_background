@@ -108,7 +108,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         if let application = NSWorkspace.shared.frontmostApplication {
               
               
-            if(application.localizedName == "Pero" )
+            if(application.localizedName == "pero UCP" )
             {
            
              
@@ -141,7 +141,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         
          
        
-            if(application.localizedName == "Pero" )
+            if(application.localizedName == "pero UCP" )
             {
            
                 downGesture =  String(100)
@@ -223,7 +223,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             
             /*
               
-            if(application.localizedName == "Pero" )
+            if(application.localizedName == "pero UCP" )
             {
            
                 let ret = "palmcat://" + String(gesture) + "-"
@@ -241,7 +241,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         if let application = NSWorkspace.shared.frontmostApplication {
               
               
-            if(application.localizedName == "Pero" )
+            if(application.localizedName == "pero UCP" )
             {
            /*
                 let ret = "palmcat://" + String(gesture) + "+";
@@ -664,7 +664,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         if let application = NSWorkspace.shared.frontmostApplication {
               
               
-            if(application.localizedName == "Pero" && Gesture == "000000")
+            if(application.localizedName == "pero UCP" && Gesture == "000000")
             {
            
                 /*
@@ -819,7 +819,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         if let application = NSWorkspace.shared.frontmostApplication {
               
               
-            if(application.localizedName == "Pero" && Gesture == "000000")
+            if(application.localizedName == "pero UCP" && Gesture == "000000")
             {
            
                 /*

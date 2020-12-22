@@ -81,7 +81,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     func applicationDidChangeOcclusionState(_ notification: Notification){
         print("hide")
-      //  reconstructMenu0(name: "PERO")
+      //  reconstructMenu0(name: "pero UCP")
      
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -200,7 +200,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     @objc func processSettings(_ sender: Any?) {
     
-        NSWorkspace.shared.launchApplication("PalmCat")
+        NSWorkspace.shared.launchApplication("pero UCP")
          
     }
     @objc func dummy(_ sender: Any?) {

@@ -32,7 +32,7 @@
       location = "group:AppList+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:Pero.xcodeproj">
+      location = "group:/Users/junsungpark/Downloads/PalmCat/Pero/pero Core.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
