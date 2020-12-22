@@ -8,6 +8,8 @@
 	<array>
 		<string>group.junsoft.data</string>
 	</array>
+	<key>com.apple.security.automation.apple-events</key>
+	<true/>
 	<key>com.apple.security.cs.disable-library-validation</key>
 	<true/>
 	<key>com.apple.security.device.bluetooth</key>
@@ -20,7 +22,30 @@
 	<true/>
 	<key>com.apple.security.temporary-exception.apple-events</key>
 	<array>
-		<string>com.apple.systemevents</string>
-	</array>
+		<string>com.apple.safari</string>
+		<string>com.google.chrome</string>
+        <string>org.mozilla.firefox</string>
+        <string>com.apple.systemevents</string>
+    </array>
+	<key>com.apple.security.scripting-targets</key>
+	<dict>
+		<key>com.apple.safari</key>
+		<array>
+			<string>com.apple.safari</string>
+		</array>
+		<key>com.google.chrome</key>
+		<array>
+			<string>com.google.chrome</string>
+		</array>
+        <key>org.mozilla.firefox</key>
+        <array>
+            <string>org.mozilla.firefox</string>
+        </array>
+        <key>com.apple.systemevents</key>
+                <array>
+                    <string>com.apple.systemevents.WHATEVER</string>
+                </array>
+        
+	</dict>
 </dict>
 </plist>

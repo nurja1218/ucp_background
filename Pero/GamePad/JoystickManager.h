@@ -62,6 +62,8 @@
 
 @property(nonatomic ,retain) NSMutableString*           touch;
 @property(nonatomic ,retain) NSMutableArray*           codeArray;
+@property(nonatomic ,retain) NSMutableArray*           touchArray;
+
 @property(nonatomic ,retain) NSMutableArray*           dummyArray;
 @property(nonatomic ,retain) NSMutableString *nameString ;
 

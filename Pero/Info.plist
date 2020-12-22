@@ -37,6 +37,6 @@
 	<key>LSBackgroundOnly</key>
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>this app</string>
+	<string>this app using</string>
 </dict>
 </plist>

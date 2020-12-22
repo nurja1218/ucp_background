@@ -481,6 +481,107 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
        
     }
     
+    func processCommand(shortcut:String, name:String)
+    {
+        if let app = NSWorkspace.shared.frontmostApplication{
+   
+      
+              if(app.bundleIdentifier == "com.apple.Safari" || app.bundleIdentifier == "com.google.Chrome"
+                    || app.bundleIdentifier == "org.mozilla.firefox"
+                       
+                 //
+              )
+            {
+             //   print(app.activeTabTitle)
+            
+                if((app.activeTabTitle?.lowercased().contains(find:"netflix"))! && name == "Netflix")
+                {
+                    // Netflix 실행
+                    //
+                    Command(shortcut: shortcut)
+                    return
+           
+                }
+                else if(app.bundleIdentifier == "com.apple.safari"  && name == "Safari")
+                {
+                    Command(shortcut: shortcut)
+                    return
+     
+                }
+                else if(app.bundleIdentifier == "com.google.Chrome"  && name == "Chrome" && ((app.activeTabURL?.contains("youtube")) == false))
+                {
+                    Command(shortcut: shortcut)
+                    return
+     
+                }
+                else if(app.bundleIdentifier == "org.mozilla.firefox"  && name == "Firefox")
+                {
+                    Command(shortcut: shortcut)
+                    return
+     
+                }
+                else if((app.activeTabTitle?.lowercased().contains(find:"evernote"))! && name == "Evernote")
+                {
+                    // Netflix 실행
+                    //
+                    Command(shortcut: shortcut)
+                    return
+           
+                }
+                else if((app.activeTabTitle?.contains(find:"Google 문서") == true) && name == "Google docs")
+                {
+                    // Netflix 실행
+                    //
+                    Command(shortcut: shortcut)
+                    return
+           
+                }
+                else if((app.activeTabTitle?.contains(find:"Google 스프레드시트"))! && name == "Google spreadsheet")
+                {
+                    // Netflix 실행
+                    //
+                    Command(shortcut: shortcut)
+                    return
+           
+                }
+                else if((app.activeTabTitle?.contains(find:"Google 프리젠테이션"))! && name == "Google slides")
+                {
+                    // Netflix 실행
+                    //
+                    Command(shortcut: shortcut)
+                    return
+           
+                }
+                else if( name == "Youtube"
+               
+                            && app.activeTabTitle?.lowercased().contains(find:"evernote") == false
+                            && app.activeTabTitle?.lowercased().contains(find:"netflix") == false
+                             && app.activeTabTitle?.contains(find:"Google 프리젠테이션") == false
+                            && app.activeTabTitle?.contains(find:"Google 스프레드시트") == false
+                            && app.activeTabTitle?.contains(find:"Google 문서") == false
+               
+           )
+                {
+                    // Netflix 실행
+                    //
+                    print("Youtube")
+            
+                    Command(shortcut: shortcut)
+                    return
+           
+                }
+           }
+            else
+            {
+                print("app.activeTabURL else", app.activeTabURL)
+         
+                Command(shortcut: shortcut)
+
+            }
+           
+        }
+    }
+    
     func pressed(_ gesture: String!) {
         print(gesture)
         print(JoystickManager.sharedInstance()?.touches)
@@ -492,7 +593,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     
      //   let user = CoreDataManager.shared.getUser()
    
-       
+        let userDefaults = UserDefaults(suiteName: "group.junsoft.data")
+      
+        userID = userDefaults!.string(forKey: "USER_ID")!
+        if(userID == nil || userID.count == 0)
+        {
+            return
+        }
+      
 
         var touches = "t3"
         
@@ -529,6 +637,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         var cnt:Int = 0
        
         var flag:Bool = false
+        /*
         for (index, char) in touch.enumerated() {
             print("index = \(index), character = \(char)")
             if((index == 0 || index == 1 ) && char == "1")
@@ -541,6 +650,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             }
         }
         print(touch)
+ */
         if(cnt > 4 && flag == true)
         {
           //  touches = "t4"
@@ -575,6 +685,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         let commands = CoreDataManager.shared.getGesture(name: gesureCode, touches: touches,id:userID)
         
         print(gesureCode)
+        
+        var bMac:Bool = false
+        
+        for command in commands
+        {
+            let name = command.name
+            let shortcut = command.shortcut
+            let enable = command.enable
+         
+            if(name == "MacOS")
+            {
+                if(enable == true)
+                {
+                    bMac =  true
+                    Command(shortcut: shortcut!)
+             
+                }
+                
+                return
+   
+       
+            }
+        }
      
         for command in commands
         {
@@ -591,20 +724,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             if(enable == true)
             {
               
+               
+                processCommand(shortcut: shortcut!, name: name!)
+         
                 
-                if(name == "Chrome")
-                {
-                    if let application = NSWorkspace.shared.frontmostApplication {
-                     
-                       print(application.localizedName)
-                        if(application.localizedName != "Google Chrome")
-                        {
-                           
-                            continue
-                        }
-                    }
-                }
-                Command(shortcut: shortcut!)
+               
        
             }
     
@@ -627,7 +751,13 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         // 16/12/8/2/1 -> Touch
         //15/13/9/2/1  -> Gesture
  
-     
+        let userDefaults = UserDefaults(suiteName: "group.junsoft.data")
+      
+        userID = userDefaults!.string(forKey: "USER_ID")!
+        if(userID == nil || userID.count == 0)
+        {
+            return
+        }
     
      //   let user = CoreDataManager.shared.getUser()
    
@@ -666,7 +796,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         let touch = gesture.suffix(8)
         
         var cnt:Int = 0
-       
+       /*
         var flag:Bool = false
         for (index, char) in touch.enumerated() {
             print("index = \(index), character = \(char)")
@@ -680,11 +810,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             }
         }
         print(touch)
-        if(cnt > 4 && flag == true)
-        {
-    //        touches = "t4"
-        }
-        print(touches)
+ */
       
         if let application = NSWorkspace.shared.frontmostApplication {
               
@@ -715,6 +841,30 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         
         print(gesureCode)
      
+        var bMac:Bool = false
+        
+        for command in commands
+        {
+            let name = command.name
+            let shortcut = command.shortcut
+            let enable = command.enable
+         
+            if(name == "MacOS")
+            {
+                if(enable == true)
+                {
+                    bMac =  true
+                    Command(shortcut: shortcut!)
+                    return
+       
+                }
+                
+            
+       
+            }
+        }
+        
+        
         for command in commands
         {
             let shortcut = command.shortcut
@@ -729,8 +879,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             print(gesture)
             if(enable == true)
             {
-              
-                
+               
+                /*
                 if(name == "Chrome")
                 {
                     if let application = NSWorkspace.shared.frontmostApplication {
@@ -743,8 +893,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                         }
                     }
                 }
-                Command(shortcut: shortcut!)
-       
+                */
+                processCommand(shortcut: shortcut!, name: name!)
+         
+                
+               
+               
+            
+           
             }
     
         }
@@ -837,8 +993,13 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
         })
     */
     let user = CoreDataManager.shared.getUser()
-
-    userID = user.userid!
+    
+    let userDefaults = UserDefaults(suiteName: "group.junsoft.data")
+  
+    userID = userDefaults!.string(forKey: "USER_ID")!
+  
+ 
+  // userID = user.userid!
     
     /*
     if( user.touch == true)
@@ -2918,8 +3079,29 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             print(peripheral.name)
 
         }
+        /*
+         tell application "System Events" to set frontApp to name of first process whose frontmost is true
+
+         if (frontapp starts with "Google Chrome") or (frontApp starts with "Chromium") or (frontApp starts with "Opera") or (frontApp starts with "Vivaldi") or (frontApp starts with "Brave Browser") or (frontApp starts with "Microsoft Edge") then
+           using terms from application "Google Chrome"
+             tell application frontApp to set currentTabTitle to title of active tab of front window
+             tell application frontApp to set currentTabUrl to URL of active tab of front window
+           end using terms from
+         else if (frontApp starts with "Safari") or (frontApp starts with "Webkit") then
+           using terms from application "Safari"
+             tell application frontApp to set currentTabTitle to name of front document
+             tell application frontApp to set currentTabUrl to URL of front document
+           end using terms from
+         else
+           return "You need a supported browser as your frontmost app"
+         end if
+
+         return currentTabUrl & "\n" & currentTabTitle
+         */
         
-      if peripheral.name! == "PERO_UCP" {
+        
+        
+      if peripheral.name! == "DC_032CTI0" {
       
         print("Sensor Found!")
         //stopScan
@@ -2931,7 +3113,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
       self.peripheral = peripheral
         
        //
-        manager.connect(peripheral, options: nil)
+     //kkkkkk   manager.connect(peripheral, options: nil)
      //   self.peripheral.delegate = self
          
         
@@ -3031,4 +3213,117 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     
   
 
+}
+
+extension NSRunningApplication{
+
+    var activeTabURL: String?{
+        guard self.isActive, let bundleIdentifier = self.bundleIdentifier else {
+            return nil
+        }
+
+        let code: String? = {
+            switch(bundleIdentifier){
+            case "org.chromium.Chromium":
+                return "tell application \"Chromium\" to return URL of active tab of front window"
+            case "com.google.Chrome.canary":
+                return "tell application \"Google Chrome Canary\" to return URL of active tab of front window"
+            case "com.google.Chrome":
+                return "tell application \"Google Chrome\" to return URL of active tab of front window"
+            case "com.apple.Safari":
+                return "tell application \"Safari\" to return URL of front document"
+            case "org.mozilla.firefox":
+                return      "tell application \"Firefox\" to return name of window 1 as string"
+    
+       
+            default:
+                return nil
+            }
+        }()
+
+        var errorInfo: NSDictionary?
+      
+        if(code == nil)
+        {
+            return nil
+        }
+        let scriptObject = NSAppleScript(source: code!)
+        if let output: NSAppleEventDescriptor = scriptObject?.executeAndReturnError(&errorInfo) {
+            let urlString = output.stringValue!
+            return output.stringValue
+            
+        } else if (errorInfo != nil) {
+            print("error: \(errorInfo)")
+        }
+        /*
+        if let code = code, let script = NSAppleScript(source: code), let out: NSAppleEventDescriptor = script.executeAndReturnError(&errorInfo){
+            if let errorInfo = errorInfo{
+                print(errorInfo)
+
+            } else if let urlString = out.stringValue{
+                return NSURL(string: urlString)
+            }
+        }
+        */
+        return nil
+    }
+
+
+    var activeTabTitle: String?{
+        guard self.isActive, let bundleIdentifier = self.bundleIdentifier else {
+            return nil
+        }
+
+        let code: String? = {
+            switch(bundleIdentifier){
+            case "org.chromium.Chromium":
+                return "tell application \"Chromium\" to return title of active tab of front window"
+            case "com.google.Chrome.canary":
+                return "tell application \"Google Chrome Canary\" to return title of active tab of front window"
+            case "com.google.Chrome":
+                return "tell application \"Google Chrome\" to return title of active tab of front window"
+            case "com.apple.Safari":
+                return "tell application \"Safari\" to return name of front document"
+            case "org.mozilla.firefox":
+                return   "tell application \"Firefox\" to return name of window 1 as string"
+            default:
+                return nil
+            }
+        }()
+
+        /*
+        if let code = code, let script = NSAppleScript(source: code),
+           let out: NSAppleEventDescriptor = script.executeAndReturnError(&errorInfo){
+            if let errorInfo = errorInfo{
+                print(errorInfo)
+
+            } else {
+                return out.stringValue
+            }
+        }
+        */
+        var errorInfo: NSDictionary?
+   
+        if(code == nil)
+        {
+            return nil
+        }
+        let scriptObject = NSAppleScript(source: code!)
+        if let output: NSAppleEventDescriptor = scriptObject?.executeAndReturnError(&errorInfo) {
+            let urlString = output.stringValue!
+            return output.stringValue
+        } else if (errorInfo != nil) {
+            print("error: \(errorInfo)")
+        }
+        return nil
+    }
+}
+
+extension String {
+    func contains(find: String) -> Bool{
+        return self.range(of: find) != nil
+    }
+    func containsIgnoringCase(find: String) -> Bool{
+        return self.range(of: find, options: .caseInsensitive) != nil
+    }
 }

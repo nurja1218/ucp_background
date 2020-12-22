@@ -42,6 +42,13 @@ static JoystickManager *instance;
         [instance.gcode setString: @"0000000000000000"];
   
         instance.codeArray = [[NSMutableArray alloc] init];
+        instance.touchArray = [[NSMutableArray alloc] init];
+     
+        for(int i=0;i<16;i<i++)
+        {
+            [instance.touchArray addObject:@"0"];
+     
+        }
         for(int i=0;i<16;i++)
         {
             [instance.codeArray addObject:@"0"];
@@ -115,7 +122,8 @@ void commonFinalize()
     {
       
      //   [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].codeArray[i]];
-        
+        [JoystickManager sharedInstance].touchArray[i] = @"0";
+ 
     }
     
     for(int i=0;i<16;i++)
@@ -153,7 +161,8 @@ void commonFinalize1()
     {
       
        // [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].codeArray[i]];
-        
+        [JoystickManager sharedInstance].touchArray[i] = @"0";
+
     }
     
     for(int i=0;i<16;i++)
@@ -186,11 +195,12 @@ void commonFinalize1()
 void modeFinalize(BOOL mode)
 {
     
-    for(int i=0;i<16;i++)
+    for(int i=0;i<9;i++)
     {
       
    //     [[JoystickManager sharedInstance].code  appendString:[JoystickManager sharedInstance].dummyArray[i]];
-        
+        [JoystickManager sharedInstance].touchArray[i] = @"0";
+
     }
     
     for(int i=0;i<16;i++)
@@ -378,6 +388,8 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
 
                    // [JoystickManager sharedInstance].code = [[NSMutableString alloc] initWithCapacity:16];
                  
+                    [JoystickManager sharedInstance].touchArray[elementUsage-1] = @"1";
+              
                     [[JoystickManager sharedInstance].code  setString:@"0000000000000000"];
                  
              //       Gdown0 = 0;
@@ -411,6 +423,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                             [[JoystickManager sharedInstance].codeArray[3] isEqual:@"1" ]
                            )
                         {
+                            /*
                             if([JoystickManager sharedInstance].touches > 7)
                             {
                                 [JoystickManager sharedInstance].Gdown = 0;
@@ -425,6 +438,23 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                                 [JoystickManager sharedInstance].touches = 0;
                                   commonFinalize();
                     
+                            }
+                             */
+                            if( ([JoystickManager sharedInstance].codeArray[7] == @"1" || [JoystickManager sharedInstance].codeArray[8] == @"1")
+                               &&
+                               [JoystickManager sharedInstance].touches >= 5
+                               )
+                            {
+                                commonFinalize1();
+                    
+                            }
+                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 && [JoystickManager sharedInstance].codeArray[8] != 1)
+                                      &&
+                                      [JoystickManager sharedInstance].touches >= 5
+                                      )
+                            {
+                                commonFinalize();
+                 
                             }
                            // [JoystickManager sharedInstance].Gdown = 0;
                         
@@ -447,6 +477,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
 
                            )
                         {
+                            /*
                             if([JoystickManager sharedInstance].touches > 7)
                             {
                                 [JoystickManager sharedInstance].Gdown = 0;
@@ -461,6 +492,23 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                                 [JoystickManager sharedInstance].touches = 0;
                               commonFinalize();
                     
+                            }
+                             */
+                            if( ([JoystickManager sharedInstance].codeArray[7] == @"1" || [JoystickManager sharedInstance].codeArray[8] == @"1")
+                               &&
+                               [JoystickManager sharedInstance].touches >= 5
+                               )
+                            {
+                                commonFinalize1();
+                    
+                            }
+                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 && [JoystickManager sharedInstance].codeArray[8] != 1)
+                                      &&
+                                      [JoystickManager sharedInstance].touches >= 5
+                                      )
+                            {
+                                commonFinalize();
+                 
                             }
                           //  [JoystickManager sharedInstance].gdown = 0;
                         
@@ -479,6 +527,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                      
                         )
                         {
+                            /*
                             if([JoystickManager sharedInstance].touches > 7)
                             {
                                 [JoystickManager sharedInstance].Gdown = 0;
@@ -493,6 +542,23 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                                 [JoystickManager sharedInstance].touches = 0;
                                 commonFinalize();
                     
+                            }
+                             */
+                            if( ([JoystickManager sharedInstance].codeArray[7] == @"1" || [JoystickManager sharedInstance].codeArray[8] == @"1")
+                               &&
+                               [JoystickManager sharedInstance].touches >= 5
+                               )
+                            {
+                                commonFinalize1();
+                    
+                            }
+                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 && [JoystickManager sharedInstance].codeArray[8] != 1)
+                                      &&
+                                      [JoystickManager sharedInstance].touches >= 5
+                                      )
+                            {
+                                commonFinalize();
+                 
                             }
                            // [JoystickManager sharedInstance].gdown = 0;
                         
@@ -509,7 +575,7 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                 //    [[JoystickManager sharedInstance].code  insertString:@"1" atIndex:elementUsage - 1];
       
                   
-                    NSLog(@"code %@ ",  [JoystickManager sharedInstance].code);
+                   // NSLog(@"code %@ ",  [JoystickManager sharedInstance].code);
                      
                    
                 }
