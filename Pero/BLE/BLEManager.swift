@@ -37,10 +37,47 @@ enum Button : Int {
 //@available(OSX 11.0, *)
 @available(OSX 11.0, *)
 class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoySticDelegate, IOBluetoothDeviceInquiryDelegate{
+    func errorDown(_ gesture: Int32) {
+        
+        errorDown()
+    }
+    
     func getIndex() -> Int32 {
         let userDefaults = UserDefaults(suiteName: "group.junsoft.data")
        let ret =    userDefaults!.integer(forKey:  "TOUCH_INDEX")
      
+        if(ret == 1)
+        {
+            
+        }
+        else if(ret == 2)
+        {
+            
+        }
+        else if(ret == 3)
+        {
+            
+        }
+        else
+        {
+            /*
+            JoystickManager.sharedInstance()?.codeArray[0] = "0"
+            JoystickManager.sharedInstance()?.codeArray[1] = "0"
+            JoystickManager.sharedInstance()?.codeArray[2] = "0"
+            JoystickManager.sharedInstance()?.codeArray[4] = "0"
+            JoystickManager.sharedInstance()?.codeArray[5] = "0"
+            JoystickManager.sharedInstance()?.codeArray[6] = "0"
+            JoystickManager.sharedInstance()?.codeArray[7] = "0"
+            JoystickManager.sharedInstance()?.codeArray[8] = "0"
+            JoystickManager.sharedInstance()?.codeArray[9] = "0"
+            JoystickManager.sharedInstance()?.codeArray[10] = "0"
+            JoystickManager.sharedInstance()?.codeArray[11] = "0"
+            JoystickManager.sharedInstance()?.codeArray[12] = "0"
+            JoystickManager.sharedInstance()?.codeArray[13] = "0"
+            JoystickManager.sharedInstance()?.codeArray[14] = "0"
+            JoystickManager.sharedInstance()?.codeArray[15] = "0"
+ */
+        }
         return Int32(ret);
     }
     
@@ -74,7 +111,9 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     var bt = IOBluetoothDevice()
     
     var startDown:Bool!
-    var sTimer = Timer()
+    var sTimer: Timer? //= Timer()
+    
+    var timerArray:[Timer?] = []
    
   
     var downSuccess:Bool = false
@@ -86,22 +125,226 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
      
         startDown = true
         downGesture = ""
+        JoystickManager.sharedInstance()?.timeout =  false
+    //    JoystickManager.sharedInstance()?.toggle = false
 
-        sTimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction0), userInfo: nil, repeats: false)
-        
-        
+   
+      //  sTimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction0), userInfo: nil, repeats: false)
+       /*
+        sTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [self] (Timer) in
+                              
+            timerAction0()
+                        
+        }
+ */
+      /*
+        if(sTimer != nil)
+        {
+            print("startDownTimer0")
+            sTimer!.invalidate()
+            sTimer?.fire()
+            self.sTimer = nil
+          //  print("end timer")
+     
+        }
+        print("startDownTimer")
+   
+        self.sTimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction0), userInfo: nil, repeats: false)
+ */
+       
+        if(timerArray.count > 0)
+        {
+            for timer in timerArray
+            {
+                timer!.invalidate()
+                timer?.fire()
+               // timer = nil
+         
+            }
+            timerArray.removeAll()
+ 
+        }
+        DispatchQueue.main.async { [self] in
+            print("startDownTimer")
+    
+          
+            self.sTimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction0), userInfo: nil, repeats: false)
+            
+            timerArray.append(self.sTimer!)
+            
+            }
+ 
     }
     func endDownTimer()
     {
      
-       // downGesture = ""
+ 
+   // downGesture = ""
     //    startDown = false
-        print("end timer")
+       //  JoystickManager.sharedInstance()?.toggle = true
+
     
-        sTimer.invalidate()
-        sTimer.fire()
+    //    JoystickManager.sharedInstance()?.toggle = false
+    
+   //     startDown = false
+        /*
+        DispatchQueue.main.async {
+            if(self.sTimer != nil)
+            {
+                self.sTimer!.invalidate()
+                self.sTimer = nil
+                print("end timer")
+         
+            }
+          
+            
+        }
+ */
+        if(timerArray.count > 0)
+        {
+            for timer in timerArray
+            {
+                print("endDownTimer timer")
+       
+                timer!.invalidate()
+                timer?.fire()
+                
+                     // timer = nil
+         
+            }
+            timerArray.removeAll()
+        }
+        downGesture = ""
+
+        /*
+        if(sTimer != nil)
+        {
+            sTimer!.invalidate()
+          //  sTimer?.fire()
+            self.sTimer = nil
+            print("end timer")
+     
+        }
+ */
+        //sTimer = nil
+     //   sTimer.fire()
+ //       sTimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerAction0), userInfo: nil, repeats: false)
+   
+
   
         
+    }
+    
+    func isSuccessTouch() -> Bool
+    {
+        let index = getIndex()
+        
+        for i in 0...15 {
+            var str:String = (JoystickManager.sharedInstance()?.codeArray[i])  as! String
+            print("codeArra :",str + "/" + String(i))
+        }
+        print("index: %d",index)
+
+        if(index == 1)
+        {
+           if(
+                (JoystickManager.sharedInstance()?.codeArray[7] as! String == "1"
+                    ||  JoystickManager.sharedInstance()?.codeArray[8] as! String == "1"
+                    ||  JoystickManager.sharedInstance()?.codeArray[9] as! String == "1")
+            &&
+            (
+                (JoystickManager.sharedInstance()?.codeArray[10] as! String == "0"
+                    &&  JoystickManager.sharedInstance()?.codeArray[11] as! String == "0"
+                    &&  JoystickManager.sharedInstance()?.codeArray[12] as! String == "0"
+                    &&  JoystickManager.sharedInstance()?.codeArray[13] as! String == "0"
+                    &&  JoystickManager.sharedInstance()?.codeArray[14] as! String == "0"
+                    &&  JoystickManager.sharedInstance()?.codeArray[15] as! String == "0"
+                )
+            )
+      
+           )
+           {
+            downGesture = "8"
+                return true
+            
+           }
+         
+            
+        }
+        else if(index == 2)
+        {
+            if(
+                 (JoystickManager.sharedInstance()?.codeArray[9] as! String == "1"
+                     ||  JoystickManager.sharedInstance()?.codeArray[10] as! String == "1"
+                     ||  JoystickManager.sharedInstance()?.codeArray[11] as! String == "1"
+                    ||  JoystickManager.sharedInstance()?.codeArray[12] as! String == "1"
+                )
+             &&
+             (
+                 (JoystickManager.sharedInstance()?.codeArray[7] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[8] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[13] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[14] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[15] as! String == "0"
+                 )
+             )
+       
+            )
+            {
+                downGesture = "11"
+       
+                 return true
+             
+            }
+        }
+        else if(index == 3)
+        {
+            if(
+                 (JoystickManager.sharedInstance()?.codeArray[12] as! String == "1"
+                     ||  JoystickManager.sharedInstance()?.codeArray[13] as! String == "1"
+                     ||  JoystickManager.sharedInstance()?.codeArray[14] as! String == "1"
+                    ||  JoystickManager.sharedInstance()?.codeArray[15] as! String == "1"
+                )
+             &&
+             (
+                 (JoystickManager.sharedInstance()?.codeArray[7] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[8] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[9] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[10] as! String == "0"
+                     &&  JoystickManager.sharedInstance()?.codeArray[11] as! String == "0"
+                 )
+             )
+       
+            )
+            {
+                downGesture = "14"
+       
+                 return true
+             
+            }
+        }
+        else
+        {
+            /*
+            JoystickManager.sharedInstance()?.codeArray[0] = "0"
+            JoystickManager.sharedInstance()?.codeArray[1] = "0"
+            JoystickManager.sharedInstance()?.codeArray[2] = "0"
+            JoystickManager.sharedInstance()?.codeArray[4] = "0"
+            JoystickManager.sharedInstance()?.codeArray[5] = "0"
+            JoystickManager.sharedInstance()?.codeArray[6] = "0"
+            JoystickManager.sharedInstance()?.codeArray[7] = "0"
+            JoystickManager.sharedInstance()?.codeArray[8] = "0"
+            JoystickManager.sharedInstance()?.codeArray[9] = "0"
+            JoystickManager.sharedInstance()?.codeArray[10] = "0"
+            JoystickManager.sharedInstance()?.codeArray[11] = "0"
+            JoystickManager.sharedInstance()?.codeArray[12] = "0"
+            JoystickManager.sharedInstance()?.codeArray[13] = "0"
+            JoystickManager.sharedInstance()?.codeArray[14] = "0"
+            JoystickManager.sharedInstance()?.codeArray[15] = "0"
+ */
+        }
+        
+        return false
     }
     @objc func timerAction0(){
 
@@ -110,20 +353,33 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
               
             if(application.localizedName == "pero UCP" )
             {
-           
+                print("timerAction0")
+
              
+                endDownTimer();
            
-                JoystickManager.sharedInstance()?.error = false
+            
      
-          
-                if(downGesture.count > 0)
+                startDown = false
+                JoystickManager.sharedInstance()?.toggle = true
+       
+                JoystickManager.sharedInstance()?.timeout =  true
+
+                if( isSuccessTouch() == true && downGesture.count > 0)
                 {
-                    print("gesture down0:" + downGesture)
+                    // 정상
+                     print("gesture down0:" + downGesture)
                     startDown = false
                     let ret = "palmcat://" + downGesture + "-"
                      NSWorkspace.shared.open(URL(string: ret)!)
          
                 }
+                else
+                {
+               //     JoystickManager.sharedInstance()?.error = false
+                   // JoystickManager.sharedInstance()?.
+                }
+          //      JoystickManager.sharedInstance()?.error = false
      
             }
                
@@ -134,7 +390,10 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
     }
     func errorDown()
     {
-        endDownTimer()
+   //     return
+     //   endDownTimer()
+  
+        
         print("error down")
   
         if let application = NSWorkspace.shared.frontmostApplication {
@@ -144,95 +403,90 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
             if(application.localizedName == "pero UCP" )
             {
            
-                downGesture =  String(100)
-                if(downGesture.count > 0)
+           //     downGesture =  String(100)
+                /*
+                if(startDown == true)
                 {
-                    print("gesture down1:" + downGesture)
-              
-                    if(startDown == true)
-                    {
-                        startDown = false
-                        let ret = "palmcat://" + downGesture + "-"
-                         NSWorkspace.shared.open(URL(string: ret)!)
-                    }
-                
+                    startDown = false
+                    sTimer.invalidate()
+                    sTimer.fire()
+               //     JoystickManager.sharedInstance()?.toggle = false
+         
+                    let ret = "palmcat://" + String(100) + "-"
+                     NSWorkspace.shared.open(URL(string: ret)!)
+            
          
                 }
+ */
+                let ret = "palmcat://" + String(100) + "-"
+                 NSWorkspace.shared.open(URL(string: ret)!)
+        
      
+            
+     
+               // endDownTimer()
+                // downGesture = ""
+            //    startDown = false
+                print("end timer")
+              
+            
+           //    JoystickManager.sharedInstance()?.toggle = false
+            
+           //     startDown = false
+                
+                
+             //   sTimer!.invalidate()
+                
+             //   sTimer!.fire()
+                
+            
             }
 
       }
 
+    }
+    func isSuccess() -> Bool
+    {
+        return downSuccess
     }
     func touchDown(_ gesture: Int32) {
         
         // 16/12/8/2/1 -> Touch
         //15/13/9/2/1  -> Gesture
         if let application = NSWorkspace.shared.frontmostApplication {
-          
-            let index = getIndex()
-            downGesture = String(gesture)
-      
-            if(index == 1)
-            {
-                if( gesture <= 10)
-                {
-                    downSuccess = true
-                }
-                else
-                {
-                    downSuccess = false
-                    JoystickManager.sharedInstance()?.error = true
-                    //[JoystickManager sharedInstance].error = true
-                    errorDown()
        
-                }
-               
-            }
-            if(index == 2)
-            {
-                if( gesture >= 10 && gesture <= 13)
-                {
-                    downSuccess = true
-  
-                }
-                else
-                {
-                    downSuccess = false
-                    JoystickManager.sharedInstance()?.error = true
-         
-                    errorDown()
-                }
-                
-            }
-            if(index == 3)
-            {
-                if( gesture >= 13 && gesture <= 16)
-                {
-                    downSuccess = true
- 
-                }
-                else
-                {
-                    downSuccess = false
-                    JoystickManager.sharedInstance()?.error = true
-         
-                    errorDown()
-                }
-            }
-            
-            /*
-              
-            if(application.localizedName == "pero UCP" )
-            {
-           
-                let ret = "palmcat://" + String(gesture) + "-"
-                 NSWorkspace.shared.open(URL(string: ret)!)
-     
-            }
-            */
+            downGesture = String(gesture)
+
                
         }
+    }
+    func processUp()
+    {
+     
+        let index = getIndex()
+        
+        if(index == 1)
+        {
+            downGesture = "8"
+        }
+        else if(index == 2)
+        {
+            downGesture = "11"
+        }
+        else if(index == 3)
+        {
+            downGesture = "14"
+        }
+        let ret = "palmcat://" + downGesture + "+";
+          
+        NSWorkspace.shared.open(URL(string: ret)!)
+        
+        downGesture = ""
+   
+      //  sTimer!.invalidate()
+       // sTimer!.fire()
+     
+        JoystickManager.sharedInstance()?.toggle = false
     }
     func touchUp(_ gesture: Int32) {
         
@@ -248,28 +502,102 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
               
                 NSWorkspace.shared.open(URL(string: ret)!)
  */
-                if(JoystickManager.sharedInstance()?.error == false && startDown == false)
+        
+              
+        
+
+                print("gesture up0:" + downGesture)
+             
+                if(isSuccessTouch() == true  )
+            
                 {
+                    for i in 0...15 {
+                        JoystickManager.sharedInstance()?.codeArray[i] = "0"
+                        
+                    }
+                    JoystickManager.sharedInstance()?.timeout = false
+                    /*
+                    if(  JoystickManager.sharedInstance()?.error == true )
+                    {
+                        JoystickManager.sharedInstance()?.error = false
+                        print("JoystickManager.sharedInstance()?.error clear")
+                        let ret = "palmcat://" + String(100) + "-"
+                         NSWorkspace.shared.open(URL(string: ret)!)
+                        
+                        
+                        endDownTimer()
+                
+                        return
+                    }
+                    */
                     print("gesture up:" + downGesture)
+                    print("gesture up startDown:" + String(startDown))
+                    print("gesture up error:" + String(JoystickManager.sharedInstance()!.error))
+          
+                    processUp()
+                    /*
+                    JoystickManager.sharedInstance()?.codeArray[0] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[1] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[2] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[4] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[5] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[6] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[7] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[8] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[9] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[10] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[11] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[12] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[13] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[14] = "0"
+                    JoystickManager.sharedInstance()?.codeArray[15] = "0"
+ */
+                    
+                    
+                    JoystickManager.sharedInstance()?.down = 0;
+           
+                }
+                else
+                {
+                   // startDown = false
+             //       JoystickManager.sharedInstance()?.toggle = false
+          
+                    print("gesture up else :" + downGesture)
+              //      endDownTimer()
+                 //   startDown = false
+                    
+                }
+       
+                /*
+                if(startDown == false)
+                {
+                 //   print("gesture up:" + downGesture)
                     let ret = "palmcat://" + downGesture + "+";
                   
                     NSWorkspace.shared.open(URL(string: ret)!)
                     
                     downGesture = ""
-                   
+                    startDown = false
+     
                     sTimer.invalidate()
                     sTimer.fire()
+                    JoystickManager.sharedInstance()?.toggle = false
+               
              
                 }
                 else
                 {
+                    startDown = false
+               //     JoystickManager.sharedInstance()?.toggle = false
+          
                     print("gesture up else :" + downGesture)
                     sTimer.invalidate()
                     sTimer.fire()
+                    startDown = false
                     
                 }
                
-                
+            */
              
             }
                
@@ -292,7 +620,21 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
      
         }
  */
-        
+        JoystickManager.sharedInstance()?.codeArray[0] = "0"
+        JoystickManager.sharedInstance()?.codeArray[1] = "0"
+        JoystickManager.sharedInstance()?.codeArray[2] = "0"
+        JoystickManager.sharedInstance()?.codeArray[4] = "0"
+        JoystickManager.sharedInstance()?.codeArray[5] = "0"
+        JoystickManager.sharedInstance()?.codeArray[6] = "0"
+        JoystickManager.sharedInstance()?.codeArray[7] = "0"
+        JoystickManager.sharedInstance()?.codeArray[8] = "0"
+        JoystickManager.sharedInstance()?.codeArray[9] = "0"
+        JoystickManager.sharedInstance()?.codeArray[10] = "0"
+        JoystickManager.sharedInstance()?.codeArray[11] = "0"
+        JoystickManager.sharedInstance()?.codeArray[12] = "0"
+        JoystickManager.sharedInstance()?.codeArray[13] = "0"
+        JoystickManager.sharedInstance()?.codeArray[14] = "0"
+        JoystickManager.sharedInstance()?.codeArray[15] = "0"
     
         if(userID.count > 0)
         {
@@ -492,7 +834,8 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                  //
               )
             {
-                print(app.activeTabTitle)
+                print("bundleIdentifier:", app.bundleIdentifier)
+                print("app.activeTabTitle:", app.activeTabTitle)
                 if(app.activeTabTitle == nil)
                 {
                     return
@@ -506,20 +849,38 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                     return
            
                 }
-                else if(app.bundleIdentifier == "com.apple.safari"  && name == "Safari")
+                else if(app.bundleIdentifier?.lowercased() == "com.apple.safari"  && name == "Safari"
+                            && app.activeTabURL?.contains(find:"youtube") == false
+                            && app.activeTabTitle?.lowercased().contains(find:"evernote") == false
+                            && app.activeTabTitle?.lowercased().contains(find:"netflix") == false
+                             && app.activeTabTitle?.contains(find:"Google 프레젠테이션") == false
+                            && app.activeTabTitle?.contains(find:"Google 스프레드시트") == false
+                            && app.activeTabTitle?.contains(find:"Google 문서") == false)
+                {
+                     Command(shortcut: shortcut)
+                    return
+     
+                }
+                else if(app.bundleIdentifier == "com.google.Chrome"  && name == "Chrome"
+                            && app.activeTabURL?.contains(find:"youtube") == false
+                             && app.activeTabTitle?.lowercased().contains(find:"evernote") == false
+                            && app.activeTabTitle?.lowercased().contains(find:"netflix") == false
+                             && app.activeTabTitle?.contains(find:"Google 프레젠테이션") == false
+                            && app.activeTabTitle?.contains(find:"Google 스프레드시트") == false
+                            && app.activeTabTitle?.contains(find:"Google 문서") == false)
                 {
                     Command(shortcut: shortcut)
                     return
      
                 }
-                else if(app.bundleIdentifier == "com.google.Chrome"  && name == "Chrome" && ((app.activeTabURL?.contains("youtube")) == false))
-                {
-                    Command(shortcut: shortcut)
-                    return
-     
-                }
-                else if(app.bundleIdentifier == "org.mozilla.firefox"  && name == "Firefox")
-                {
+                else if(app.bundleIdentifier == "org.mozilla.firefox"  && name == "Firefox"
+                            && app.activeTabURL?.lowercased().contains(find:"youtube") == false
+                                && app.activeTabTitle?.lowercased().contains(find:"evernote") == false
+                           && app.activeTabTitle?.lowercased().contains(find:"netflix") == false
+                            && app.activeTabTitle?.contains(find:"Google 프레젠테이션") == false
+                           && app.activeTabTitle?.contains(find:"Google 스프레드시트") == false
+                           && app.activeTabTitle?.contains(find:"Google 문서") == false)
+               {
                     Command(shortcut: shortcut)
                     return
      
@@ -540,7 +901,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                     return
            
                 }
-                else if((app.activeTabTitle?.contains(find:"Google 스프레드시트"))! && name == "Google spreadsheet")
+                else if((app.activeTabTitle?.contains(find:"Google 스프레드시트"))! && name == "Google sheets")
                 {
                     // Netflix 실행
                     //
@@ -548,7 +909,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
                     return
            
                 }
-                else if((app.activeTabTitle?.contains(find:"Google 프리젠테이션"))! && name == "Google slides")
+                else if((app.activeTabTitle?.contains(find:"Google 프레젠테이션"))! && name == "Google slides")
                 {
                     // Netflix 실행
                     //
@@ -557,10 +918,11 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
            
                 }
                 else if( name == "Youtube"
-               
+                            && app.activeTabURL?.lowercased().contains(find:"youtube") == true
+                      
                             && app.activeTabTitle?.lowercased().contains(find:"evernote") == false
                             && app.activeTabTitle?.lowercased().contains(find:"netflix") == false
-                             && app.activeTabTitle?.contains(find:"Google 프리젠테이션") == false
+                             && app.activeTabTitle?.contains(find:"Google 프레젠테이션") == false
                             && app.activeTabTitle?.contains(find:"Google 스프레드시트") == false
                             && app.activeTabTitle?.contains(find:"Google 문서") == false
                
@@ -577,10 +939,52 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
            }
             else
             {
-                print("app.activeTabURL else", app.activeTabURL)
+             //   print("app.activeTabURL else", app.activeTabURL)
          
-                Command(shortcut: shortcut)
+                if(app.localizedName!.lowercased()  == "numbers" && name.lowercased() == "numbers")
+                {
+                    Command(shortcut: shortcut)
+                    return
 
+                }
+                else if(app.localizedName!.lowercased()  == "pages" && name.lowercased() == "pages")
+                {
+                    Command(shortcut: shortcut)
+                    return
+
+                }
+                else if(app.localizedName!.lowercased()  == "keynote" && name.lowercased() == "keynote")
+                {
+                    Command(shortcut: shortcut)
+                    return
+
+                }
+                else if(app.localizedName  == "Microsoft Word" && name == "MS word")
+                {
+                    Command(shortcut: shortcut)
+                    return
+
+                }
+                else if(app.localizedName  == "Microsoft PowerPoint" && name == "MS Powerpoint")
+                {
+                    Command(shortcut: shortcut)
+                    return
+
+                }
+                else if(app.localizedName  == "Microsoft Excel" && name == "MS Excel")
+                {
+                    Command(shortcut: shortcut)
+                    return
+
+                }
+                else if(app.localizedName  == "Evernote" && name.lowercased() == "evernote")
+                {
+                    Command(shortcut: shortcut)
+                    return
+
+                }
+                //
+        
             }
            
         }
@@ -954,7 +1358,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
       super.init()
     manager = CBCentralManager.init(delegate: self, queue: DispatchQueue.main)
     
-   
+    startDown = false
      
         /*
     var ibdi = IOBluetoothDeviceInquiry(delegate: self)
@@ -3103,9 +3507,14 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate ,JoyS
          return currentTabUrl & "\n" & currentTabTitle
          */
         if let app = NSWorkspace.shared.frontmostApplication{
-            print(app.activeTabTitle)
+          //  print(app.localizedName)
+            
+                
+              
+           
         
         }
+        
         
         
         

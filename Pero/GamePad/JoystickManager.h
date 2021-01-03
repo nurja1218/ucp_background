@@ -19,6 +19,9 @@
 - (void)pressed1:(NSString*)gesture;
 - (void)touchDown:(int)gesture;
 - (void)touchUp:(int)gesture;
+- (void)errorDown:(int)gesture;
+- (BOOL)isSuccess;
+
 
 - (void)startDownTimer;
 - (void)endDownTimer;
@@ -55,7 +58,7 @@
 @property(assign) BOOL                 mode;
 @property(assign) BOOL                 toggle;
 @property(assign) BOOL                 error;
-
+@property(assign) BOOL                 timeout;
 @property(assign) NSString*           gesture;
 @property(nonatomic ,retain) NSMutableString*           code;
 @property(nonatomic ,retain) NSMutableString*           gcode;

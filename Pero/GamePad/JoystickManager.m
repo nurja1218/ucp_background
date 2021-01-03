@@ -37,14 +37,14 @@ static JoystickManager *instance;
         instance.gcode = [[NSMutableString alloc] initWithCapacity:16];
        instance.touch = [[NSMutableString alloc] initWithCapacity:16];
         
-        
+        [JoystickManager sharedInstance].timeout  = false;
+        instance.toggle = false;
         [instance.code setString: @"0000000000000000"];
         [instance.gcode setString: @"0000000000000000"];
   
         instance.codeArray = [[NSMutableArray alloc] init];
         instance.touchArray = [[NSMutableArray alloc] init];
-     
-        for(int i=0;i<16;i<i++)
+             for(int i=0;i<16;i<i++)
         {
             [instance.touchArray addObject:@"0"];
      
@@ -236,7 +236,287 @@ void modeFinalize(BOOL mode)
 }
 
 int Gdown0 = 0;
-int oldIndex = 0;
+int oldIndex = 1;
+int oldErrorIndex = 0;
+
+
+void procesPage(int elementUsage)
+{
+    int index = [[JoystickManager sharedInstance].delegate getIndex];
+
+    if(index == 1)
+    {
+        if( elementUsage <= 10)
+        {
+            //processUp()
+            [[JoystickManager sharedInstance].delegate touchUp:elementUsage];
+
+            [JoystickManager sharedInstance].down = 0;
+            [JoystickManager sharedInstance].toggle = false;
+            for (int i=0;i<16;i++)
+            {
+               // [JoystickManager sharedInstance].codeArray[i] = @"0";
+
+            }
+        }
+      
+       
+    }
+    if(index == 2)
+    {
+        if( elementUsage >= 10 && elementUsage <= 13)
+        {
+          //  processUp()
+            [[JoystickManager sharedInstance].delegate touchUp:elementUsage];
+            [JoystickManager sharedInstance].down = 0;
+            [JoystickManager sharedInstance].toggle = false;
+             for (int i=0;i<16;i++)
+            {
+              //  [JoystickManager sharedInstance].codeArray[i] = @"0";
+
+            }
+        }
+       
+        
+    }
+    if(index == 3)
+    {
+        if( elementUsage >= 13 && elementUsage <= 16)
+        {
+           // processUp()
+            [[JoystickManager sharedInstance].delegate touchUp:elementUsage];
+            [JoystickManager sharedInstance].down = 0;
+            [JoystickManager sharedInstance].toggle = false;
+          for (int i=0;i<16;i++)
+            {
+             //   [JoystickManager sharedInstance].codeArray[i] = @"0";
+
+            }
+        }
+        
+    }
+    
+}
+
+    
+bool isSuccessTouch()
+{
+    
+    int index = [[JoystickManager sharedInstance].delegate getIndex];
+
+   
+    if(
+       ( [[JoystickManager sharedInstance].codeArray[7] isEqual: @"1"]
+        ||  [[JoystickManager sharedInstance].codeArray[8] isEqual: @"1"]
+        ||  [[JoystickManager sharedInstance].codeArray[9] isEqual:@"1"]
+       )
+       &&( [[JoystickManager sharedInstance].codeArray[10] isEqual: @"0"]
+          &&  [[JoystickManager sharedInstance].codeArray[11] isEqual: @"0"]
+          &&  [[JoystickManager sharedInstance].codeArray[12] isEqual: @"0"]
+          &&  [[JoystickManager sharedInstance].codeArray[13] isEqual: @"0"]
+          &&  [[JoystickManager sharedInstance].codeArray[14] isEqual: @"0"]
+          &&  [[JoystickManager sharedInstance].codeArray[15] isEqual:@"0"]
+          )
+    //   &&  [JoystickManager sharedInstance].down <= 3
+          && index == 1
+       )
+    {
+      
+        return true;
+        
+    }
+    else if(
+            ( [[JoystickManager sharedInstance].codeArray[9] isEqual:@"1"]
+             ||  [[JoystickManager sharedInstance].codeArray[10] isEqual: @"1"]
+             ||  [[JoystickManager sharedInstance].codeArray[11] isEqual: @"1"]
+             ||  [[JoystickManager sharedInstance].codeArray[12] isEqual:@"1"]
+        )
+            &&( [[JoystickManager sharedInstance].codeArray[7] isEqual: @"0"]
+               &&  [[JoystickManager sharedInstance].codeArray[8] isEqual: @"0"]
+          
+               &&  [[JoystickManager sharedInstance].codeArray[13] isEqual: @"0"]
+               &&  [[JoystickManager sharedInstance].codeArray[14] isEqual: @"0"]
+               &&  [[JoystickManager sharedInstance].codeArray[15] isEqual: @"0"]
+               )
+      //      &&  [JoystickManager sharedInstance].down <= 4
+         
+       && index == 2
+       )
+    {
+        return true;
+
+    }
+    else if(
+            ( [[JoystickManager sharedInstance].codeArray[12] isEqual: @"1"]
+             ||  [[JoystickManager sharedInstance].codeArray[13] isEqual: @"1"]
+             ||  [[JoystickManager sharedInstance].codeArray[14] isEqual:@"1"]
+             ||  [[JoystickManager sharedInstance].codeArray[15] isEqual: @"1"]
+        )
+            &&( [[JoystickManager sharedInstance].codeArray[7] isEqual: @"0"]
+               &&  [[JoystickManager sharedInstance].codeArray[8] isEqual:@"0"]
+               &&  [[JoystickManager sharedInstance].codeArray[9] isEqual:@"0"]
+               &&  [[JoystickManager sharedInstance].codeArray[10] isEqual: @"0"]
+               &&  [[JoystickManager sharedInstance].codeArray[11] isEqual: @"0"]
+           )
+      //      &&  [JoystickManager sharedInstance].down <= 4
+   
+       && index == 3
+       )
+    {
+        return true;
+
+    }
+
+    return false;
+}
+void procesOK(int elementUsage)
+{
+    
+    {
+    
+        int index = [[JoystickManager sharedInstance].delegate getIndex];
+        [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"1";
+  
+     //   if(![JoystickManager sharedInstance].timeout  )
+        {
+            [JoystickManager sharedInstance].toggle = true;
+            if( [JoystickManager sharedInstance].error == false)
+            {
+                [JoystickManager sharedInstance].timeout  = false;
+                [[JoystickManager sharedInstance].delegate startDownTimer];
+        
+                if(index == 1)
+                {
+                    [JoystickManager sharedInstance].codeArray[10] = @"0";
+                    [JoystickManager sharedInstance].codeArray[11] = @"0";
+                    [JoystickManager sharedInstance].codeArray[12] = @"0";
+                    [JoystickManager sharedInstance].codeArray[13] = @"0";
+                    [JoystickManager sharedInstance].codeArray[14] = @"0";
+                    [JoystickManager sharedInstance].codeArray[15] = @"0";
+                }
+                else if (index == 2)
+                {
+                    [JoystickManager sharedInstance].codeArray[7] = @"0";
+                    [JoystickManager sharedInstance].codeArray[8] = @"0";
+                    [JoystickManager sharedInstance].codeArray[13] = @"0";
+                    [JoystickManager sharedInstance].codeArray[14] = @"0";
+                    [JoystickManager sharedInstance].codeArray[15] = @"0";
+           
+                }
+                else if(index == 3)
+                {
+                    [JoystickManager sharedInstance].codeArray[7] = @"0";
+                    [JoystickManager sharedInstance].codeArray[8] = @"0";
+                    [JoystickManager sharedInstance].codeArray[9] = @"0";
+                    [JoystickManager sharedInstance].codeArray[10] = @"0";
+                    [JoystickManager sharedInstance].codeArray[11] = @"0";
+             
+                }
+                 
+            }
+          
+          
+      
+    
+            
+        }
+   
+    }
+
+    
+}
+    
+bool processError(int elementUsage, int value0)
+{
+    
+      int index = [[JoystickManager sharedInstance].delegate getIndex];
+    bool ret = false;
+      if(index == 1)
+      {
+          if(value0==1 && elementUsage > 10)
+          {
+              // error
+              if(![JoystickManager sharedInstance].timeout)
+              {
+                  [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"1";
+         
+              }
+           
+              [[JoystickManager sharedInstance].delegate errorDown:elementUsage];
+           
+              [JoystickManager sharedInstance].down = 0;
+              [JoystickManager sharedInstance].toggle = true;
+              [JoystickManager sharedInstance].error = true;
+              ret = true;
+           
+          }
+          else if(value0==0 && elementUsage > 10)
+          {
+              // error
+              
+              ret = true;
+          }
+      }
+      else if(index == 2)
+      {
+          // 9,10,11,12 OK
+          if(value0==1 &&  (elementUsage < 10 || elementUsage > 13) )
+          {
+              // error
+              if(![JoystickManager sharedInstance].timeout)
+              {
+                  [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"1";
+         
+              }
+           
+              [[JoystickManager sharedInstance].delegate errorDown:elementUsage];
+              [JoystickManager sharedInstance].down = 0;
+              [JoystickManager sharedInstance].toggle = true;
+              [JoystickManager sharedInstance].error = true;
+              ret = true;
+ 
+       
+          }
+          else if(value0==10&&  (elementUsage < 10 || elementUsage > 13) )
+          {
+              // error
+              ret = true;
+ 
+       
+          }
+      }
+      else if(index == 3)
+      {
+          // 12, 13, 14, 15 OK
+          if(value0==1 && elementUsage < 13)
+          {
+              // error
+              if(![JoystickManager sharedInstance].timeout)
+              {
+                  [JoystickManager sharedInstance].codeArray[elementUsage-1] = @"1";
+         
+              }
+           
+           
+    
+              [[JoystickManager sharedInstance].delegate errorDown:elementUsage];
+                [JoystickManager sharedInstance].down = 0;
+              [JoystickManager sharedInstance].toggle = true;
+              [JoystickManager sharedInstance].error = true;
+              ret = true;
+ 
+          }
+          else if(value0==0 && elementUsage < 13)
+          {
+              // error
+            
+              ret = true;
+ 
+       
+          }
+      }
+    return ret;
+}
 
 void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValueRef value) {
     
@@ -282,78 +562,92 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
         if([JoystickManager sharedInstance].mode == true)
         {
            
-            // tocuh mode
-           
-          //  [JoystickManager sharedInstance].gdown = 0;
- 
-        
+       
+            int index = [[JoystickManager sharedInstance].delegate getIndex];
+         
+            bool ret = processError(elementUsage,value0);
+            for(int i = 0;i<16;i++)
+            {
+             //   [JoystickManager sharedInstance].codeArray[i] = @"0";
+              
+            }
+       //     [JoystickManager sharedInstance].timeout = false;
+     
+            if(ret == true)
+            {
+                return;
+            }
+            
             if(elementUsage >= 8)
             {
               
+            
                 if (value0==1)
                 {
-                 //   [JoystickManager sharedInstance].down ++;
-                    [JoystickManager sharedInstance].tdown++;
-
-                    int index = [[JoystickManager sharedInstance].delegate getIndex];
-                    /*
-                    if([JoystickManager sharedInstance].toggle == false)
-                    {
-                        [JoystickManager sharedInstance].toggle = true;
-                        
-                        [[JoystickManager sharedInstance].delegate touchDown:elementUsage];
-                        
-                   }
-                    oldIndex = index;
-                     */
-                    if([JoystickManager sharedInstance].toggle == false)
-                    {
-                        [JoystickManager sharedInstance].toggle = true;
-      
-                        [[JoystickManager sharedInstance].delegate startDownTimer];
-                        oldIndex = index;
+                    [JoystickManager sharedInstance].down ++;
              
-                    }
-                    if(oldIndex == index)
+              
+                    if(index <= 3)
                     {
-                        [[JoystickManager sharedInstance].delegate touchDown:elementUsage];
-                        
+                        // 7,8,9 OK
+                  
+                        procesOK(elementUsage);
                     }
-               
+                       
                 }
                 else
                 {
-                  //  [JoystickManager sharedInstance].up ++;
-                  
-                 //   if( [JoystickManager sharedInstance].down ==  [JoystickManager sharedInstance].up )
+                    NSLog(@"timeout:%d/ toudch:%d / toggle:%d",[JoystickManager sharedInstance].timeout,[JoystickManager sharedInstance].down,[JoystickManager sharedInstance].toggle);
                     
-                 //   if([JoystickManager sharedInstance].toggle != nil && [JoystickManager sharedInstance].toggle == true)
-                    if(
-                       [JoystickManager sharedInstance].error == false &&
-                       [JoystickManager sharedInstance].toggle != nil &&
-                       [JoystickManager sharedInstance].toggle == true
-                       )
-                 
+                    [JoystickManager sharedInstance].error = false;
+              
+                    if([JoystickManager sharedInstance].timeout == true)
                     {
-                    //    [[JoystickManager sharedInstance].delegate endDownTimer];
-                
-                        [[JoystickManager sharedInstance].delegate touchUp:elementUsage];
-          
-                        
-              
-                        
-               
-              
-                    }
+                      //
+                        if( [JoystickManager sharedInstance].error == true)
+                        {
+                     //       return;
+                        }
+                       
+                        [JoystickManager sharedInstance].toggle = false;
+
+                        if(isSuccessTouch())
+                        {
+                            [JoystickManager sharedInstance].down = 0;
+                            procesPage(elementUsage);
+                            
+                         
                      
+                        }
+                        else
+                        {
+                            [JoystickManager sharedInstance].down --;
+                            if( [JoystickManager sharedInstance].down < 0)
+                            {
+                                [JoystickManager sharedInstance].down = 0;
+                            }
+                          
+         
+                        }
+                       
+                        
+                  
+             
+                    }
+                    else
+                    {
+                        NSLog(@"timeout false");
                     
-                    [JoystickManager sharedInstance].toggle = false;
-          
-               
+                    }
+                 
+             
+                    
                 }
-           
+             
             
             }
+          
+                     
             
         }
         else
@@ -440,17 +734,17 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                     
                             }
                              */
-                            if( ([JoystickManager sharedInstance].codeArray[7] == @"1" || [JoystickManager sharedInstance].codeArray[8] == @"1")
+                            if( [JoystickManager sharedInstance].codeArray[7] == @"1"
                                &&
-                               [JoystickManager sharedInstance].touches >= 5
+                               [JoystickManager sharedInstance].touches >= 6
                                )
                             {
                                 commonFinalize1();
                     
                             }
-                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 && [JoystickManager sharedInstance].codeArray[8] != 1)
+                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 )
                                       &&
-                                      [JoystickManager sharedInstance].touches >= 5
+                                     ( [JoystickManager sharedInstance].touches >= 3 && [JoystickManager sharedInstance].touches >= 6)
                                       )
                             {
                                 commonFinalize();
@@ -494,17 +788,17 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                     
                             }
                              */
-                            if( ([JoystickManager sharedInstance].codeArray[7] == @"1" || [JoystickManager sharedInstance].codeArray[8] == @"1")
+                            if( [JoystickManager sharedInstance].codeArray[7] == @"1"
                                &&
-                               [JoystickManager sharedInstance].touches >= 5
+                               [JoystickManager sharedInstance].touches >= 6
                                )
                             {
                                 commonFinalize1();
                     
                             }
-                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 && [JoystickManager sharedInstance].codeArray[8] != 1)
+                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 )
                                       &&
-                                      [JoystickManager sharedInstance].touches >= 5
+                                     ( [JoystickManager sharedInstance].touches >= 3 && [JoystickManager sharedInstance].touches >= 6)
                                       )
                             {
                                 commonFinalize();
@@ -544,17 +838,17 @@ void gamepadAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValu
                     
                             }
                              */
-                            if( ([JoystickManager sharedInstance].codeArray[7] == @"1" || [JoystickManager sharedInstance].codeArray[8] == @"1")
+                            if( [JoystickManager sharedInstance].codeArray[7] == @"1"
                                &&
-                               [JoystickManager sharedInstance].touches >= 5
+                               [JoystickManager sharedInstance].touches >= 6
                                )
                             {
                                 commonFinalize1();
                     
                             }
-                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 && [JoystickManager sharedInstance].codeArray[8] != 1)
+                            else   if( ([JoystickManager sharedInstance].codeArray[7] != 1 )
                                       &&
-                                      [JoystickManager sharedInstance].touches >= 5
+                                     ( [JoystickManager sharedInstance].touches >= 3 && [JoystickManager sharedInstance].touches >= 6)
                                       )
                             {
                                 commonFinalize();
