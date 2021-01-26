@@ -16,6 +16,7 @@
 		1E77F353255BC69E0014C060 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F352255BC69E0014C060 /* CoreDataManager.swift */; };
 		1E77F36A255BCBC40014C060 /* Users.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1E77F368255BCBC40014C060 /* Users.xcdatamodeld */; };
 		1E97FB9A256BB64700002B18 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E97FB99256BB64700002B18 /* ServiceManagement.framework */; };
+		1EA3621B25A46F2C0071F468 /* pero core.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1EA3621A25A46F2C0071F468 /* pero core.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1EA80067256772B200D4418A /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EA80066256772B200D4418A /* IOBluetooth.framework */; };
 		1EA8BCEA25634ABB00608260 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EA8BCE925634ABB00608260 /* NetworkExtension.framework */; };
 		1ED5C5972563C2D7005FB644 /* JoystickManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5C5952563C2D7005FB644 /* JoystickManager.m */; };
@@ -23,6 +24,19 @@
 		1ED5C59E2563C301005FB644 /* JoystickHatswitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED5C59C2563C301005FB644 /* JoystickHatswitch.m */; };
 		308D4683EE328B6878D2E862 /* Pods_Pero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 896A9F344049C824403EEA80 /* Pods_Pero.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1EA3621925A46EE10071F468 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LoginItems;
+			dstSubfolderSpec = 1;
+			files = (
+				1EA3621B25A46F2C0071F468 /* pero core.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1E0268C7255F69C60022FCCD /* Pero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pero-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -39,6 +53,7 @@
 		1E77F352255BC69E0014C060 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		1E77F369255BCBC40014C060 /* Users.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Users.xcdatamodel; sourceTree = "<group>"; };
 		1E97FB99256BB64700002B18 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		1EA3621A25A46F2C0071F468 /* pero core.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = "pero core.app"; sourceTree = "<group>"; };
 		1EA80066256772B200D4418A /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		1EA8BCE925634ABB00608260 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		1ED5C573256398C6005FB644 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
@@ -87,6 +102,7 @@
 		1E57A0E9254989020036BB95 = {
 			isa = PBXGroup;
 			children = (
+				1EA3621A25A46F2C0071F468 /* pero core.app */,
 				1E57A0F4254989020036BB95 /* Pero */,
 				1E57A0F3254989020036BB95 /* Products */,
 				D8F7C2521027E017A304E7AE /* Pods */,
@@ -160,6 +176,7 @@
 				1E57A0EE254989020036BB95 /* Sources */,
 				1E57A0EF254989020036BB95 /* Frameworks */,
 				1E57A0F0254989020036BB95 /* Resources */,
+				1EA3621925A46EE10071F468 /* CopyFiles */,
 			);
 			buildRules = (
 			);

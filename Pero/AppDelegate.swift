@@ -91,6 +91,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
            button.image = image
          //  button.action = #selector(togglePopover(_:))
          }
+        
+        let helperBundleName = "com.junsoft.Pero"
+        SMLoginItemSetEnabled(helperBundleName as CFString, true)
+        
         reconstructMenu0(name: "PERO")
         
      
